@@ -1,0 +1,12 @@
+Software Project
+
+Black Jack
+
+Card counting
+
+2-6 = +1
+
+7, 8, 9 = 0
+
+10 - A = -1
+
