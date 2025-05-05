@@ -13,10 +13,10 @@ ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
 for rank in ranks:
     for suit in suits:
-        image = pygame.image.load(f'task 1/cards/{rank}{suit}.png')
+        image = pygame.image.load(f'Github/task 1/cards/{rank}{suit}.png')
         card_images[f'{rank}{suit}'] = pygame.transform.scale(image, (card_width, card_height))
 
-back = pygame.image.load('task 1/cards/back.png')
+back = pygame.image.load('Github/task 1/cards/back.png')
 back = pygame.transform.scale(back, (card_width, card_height))
 
 total_value = 0  #actual total
@@ -84,7 +84,9 @@ def button(x, y, width, height, text):#button
 def clicked(x, y, width, height, mouse_pos):#clicked
     return x <= mouse_pos[0] <= x + width and y <= mouse_pos[1] <= y + height
 
-def draw_quiz_screen():#quiz screen
+def draw_quiz_screen():#quiz
+    global feedback, feedback_time
+
     box_width, box_height = 500, 300
     box_x = (WIDTH - box_width) // 2
     box_y = (HEIGHT - box_height) // 2
@@ -117,14 +119,26 @@ def draw_quiz_screen():#quiz screen
     screen.blit(font_small.render("any card", True, (0, 0, 0)), buttons["equal"].move(20, 10))
     screen.blit(font_small.render("   ≥10", True, (0, 0, 0)), buttons["more"].move(25, 10))
 
+    if feedback:
+        if pygame.time.get_ticks() - feedback_time < 2000:  #Show for 2 seconds
+            font_feedback = pygame.font.SysFont('Arial', 32)
+            text = font_feedback.render(feedback, True, (255, 0, 0))
+            screen.blit(text, ((WIDTH - text.get_width()) // 2, HEIGHT // 2 + 100))
+        else:
+            feedback = "" 
+
     return buttons
 
+
 def game():#game function
-    global bust, result, show_dealer, dealer_standing, total_value, count
+    global bust, result, show_dealer, dealer_standing, total_value, count, feedback, feedback_time
     reset()
     font = pygame.font.SysFont('Arial', 36)
     state = "game"
     quiz_buttons = {}
+
+    feedback = ""
+    feedback_time = 0
 
     while True:
         screen.fill((0, 128, 0))
@@ -194,25 +208,26 @@ def game():#game function
                 elif state == "quiz":   #if in quiz mode
                     if quiz_buttons["less"].collidepoint(mouse_pos):
                         if total_value > 0:  #positive total, 6 or below
-                            print("Correct quiz answer: ≤6")
                             reset()
                             state = "game"
                         else:
-                            print("Wrong answer.")
+                            feedback = "WRONG"#says wrong
+                            feedback_time = pygame.time.get_ticks()
+
                     elif quiz_buttons["equal"].collidepoint(mouse_pos):
                         if total_value == 0:  #could be all
-                            print("Correct quiz answer: any card")
                             reset()
                             state = "game"
                         else:
-                            print("Wrong answer.")
+                            feedback = "WRONG"
+                            feedback_time = pygame.time.get_ticks()
                     elif quiz_buttons["more"].collidepoint(mouse_pos):
                         if total_value < 0:  #negative total, should be 10+
-                            print("Correct quiz answer: ≥10")
                             reset()
                             state = "game"
                         else:
-                            print("Wrong answer.")
+                            feedback = "WRONG"
+                            feedback_time = pygame.time.get_ticks()
 
         pygame.display.update()
 

@@ -1,18 +1,18 @@
 import pygame
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Black Jack")
 clock = pygame.time.Clock()
 button = 0
 
-img = pygame.image.load('Task 1/images/bjlogo.png') #Load images
+img = pygame.image.load('Github/Task 1/images/bjlogo.png') #Load images
 pygame.display.set_icon(img)
-image1 = pygame.image.load('Task 1/images/blackjack_img1.png')
-image2 = pygame.image.load('Task 1/images/blackjack_2.png')
-image3 = pygame.image.load('Task 1/images/123.png')
-image4 = pygame.image.load('Task 1/images/demo.png')
-image5 = pygame.image.load('Task 1/images/demo2.png')
+image1 = pygame.image.load('Github/Task 1/images/blackjack_img1.png')
+image2 = pygame.image.load('Github/Task 1/images/blackjack_2.png')
+image3 = pygame.image.load('Github/Task 1/images/123.png')
+image4 = pygame.image.load('Github/Task 1/images/demo.png')
+image5 = pygame.image.load('Github/Task 1/images/demo2.png')
 
 def get_scaled_font(size, font_name="Arial"):
     return pygame.font.SysFont(font_name, size)
