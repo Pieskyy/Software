@@ -13,6 +13,7 @@ image2 = pygame.image.load('Github/Task 1/images/blackjack_2.png')
 image3 = pygame.image.load('Github/Task 1/images/123.png')
 image4 = pygame.image.load('Github/Task 1/images/demo.png')
 image5 = pygame.image.load('Github/Task 1/images/demo2.png')
+image6 = pygame.image.load('Github/Task 1/images/percy.png')
 
 def get_scaled_font(size, font_name="Arial"):
     return pygame.font.SysFont(font_name, size)
@@ -111,6 +112,17 @@ def drawIntro(screen, button, screen_width, screen_height):
         image = image5
 
     elif button == 6:
+        header = "Formulas"
+        body = [
+            "P(≤6) = (20 / 50) × 100 - Total.               This is the Formula for cards below or equal to 6",  
+            "P(≥10) = (20 / 50) × 100 - Total.              This is the Formula for cards hhigher then or equal to 10",
+            "P(7, 8, 9) = (20 / 50) × 100 - Total.          This is formula for 7, 8 and 9"
+
+        ]
+           
+        image = image6
+
+    elif button == 7:
         from game import game_loop
         return
 
@@ -147,7 +159,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             next_btn, back_btn = get_buttons(screen_width, screen_height)
             if next_btn.collidepoint(event.pos):
-                button = min(button + 1, 6)
+                button = min(button + 1, 7)
             elif back_btn.collidepoint(event.pos):
                 button = max(button - 1, 0)
 

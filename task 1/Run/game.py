@@ -123,7 +123,7 @@ def draw_quiz_screen():#quiz
         if pygame.time.get_ticks() - feedback_time < 2000:  #Show for 2 seconds
             font_feedback = pygame.font.SysFont('Arial', 32)
             text = font_feedback.render(feedback, True, (255, 0, 0))
-            screen.blit(text, ((WIDTH - text.get_width()) // 2, HEIGHT // 2 + 100))
+            screen.blit(text, ((WIDTH - text.get_width()) // 2, HEIGHT // 2 + 150))
         else:
             feedback = "" 
 
@@ -211,7 +211,7 @@ def game():#game function
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG! Its <6 when the Total is Positive "#says wrong
+                            feedback = "Incorrect! Its <6 when the Total is Positive according to the formula "#says wrong
                             feedback_time = pygame.time.get_ticks()
 
                     elif quiz_buttons["equal"].collidepoint(mouse_pos):
@@ -219,14 +219,14 @@ def game():#game function
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG! Its any when total = 0"
+                            feedback = "Incorrect! Its any when total = 0 according to the formula"
                             feedback_time = pygame.time.get_ticks()
                     elif quiz_buttons["more"].collidepoint(mouse_pos):
                         if total_value < 0:  #negative total, should be 10+
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG! its >10 when Total is Negative"
+                            feedback = "Incorrect! its >10 when Total is Negative according to the formula"
                             feedback_time = pygame.time.get_ticks()
 
         pygame.display.update()
