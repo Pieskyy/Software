@@ -211,7 +211,7 @@ def game():#game function
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG"#says wrong
+                            feedback = "WRONG! Its <6 when the Total is Positive "#says wrong
                             feedback_time = pygame.time.get_ticks()
 
                     elif quiz_buttons["equal"].collidepoint(mouse_pos):
@@ -219,14 +219,14 @@ def game():#game function
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG"
+                            feedback = "WRONG! Its any when total = 0"
                             feedback_time = pygame.time.get_ticks()
                     elif quiz_buttons["more"].collidepoint(mouse_pos):
                         if total_value < 0:  #negative total, should be 10+
                             reset()
                             state = "game"
                         else:
-                            feedback = "WRONG"
+                            feedback = "WRONG! its >10 when Total is Negative"
                             feedback_time = pygame.time.get_ticks()
 
         pygame.display.update()
