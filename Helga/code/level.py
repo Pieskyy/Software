@@ -14,11 +14,11 @@ from upgrade import Upgrade
 
 
 class Level:
-    def __init__(self):
-
+    def __init__(self, character='player'):
         # get the display surface
         self.display_surface = pygame.display.get_surface()
         self.game_paused = False
+        self.selected_character = character  # store selected character
 
         # sprite group setup
         self.visible_sprites = YSortCameraGroup()
@@ -74,13 +74,15 @@ class Level:
 
                         if style == 'entities':
                             if col == '394':
+                                # Use the selected character here
                                 self.player = Player(
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
                                     self.create_attack,
                                     self.destroy_attack,
-                                    self.create_magic)
+                                    self.create_magic,
+                                    character=self.selected_character)  # Pass character
                             else:
                                 if col == '390':
                                     monster_name = 'bamboo'
@@ -98,6 +100,9 @@ class Level:
                                     self.damage_player,
                                     self.trigger_death_particles,
                                     self.add_exp)
+
+    # rest of Level class unchanged...
+
 
     def create_attack(self):
 
