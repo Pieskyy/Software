@@ -6,7 +6,7 @@ from level import Level
 
 # Character select screen
 def character_select_screen(screen, clock):
-    characters = ['player', 'ninja']
+    characters = ['sam', 'ninja', 'flame']
     selected_index = 0
 
     # Load down_0 images for each character
@@ -71,7 +71,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption('Zelda')
+        pygame.display.set_caption('The Legend of Helga')
         self.clock = pygame.time.Clock()
 
         # Start background music immediately, plays during title, selection and game

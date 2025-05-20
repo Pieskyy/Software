@@ -3,14 +3,14 @@ from settings import *
 from support import import_folder
 from entity import Entity
 
-
 class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, create_attack, destroy_attack, create_magic, character='player'):
         super().__init__(groups)
 
         self.character = character
+        self.starting_position = pos  # Save starting position
 
-        # Load base image for rect and hitbox from chosen character folder
+        # Load base image
         self.image = pygame.image.load(f'../SOFTWARE/Helga/graphics/player/{self.character}/down/down_0.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-6, HITBOX_OFFSET['player'])
@@ -43,11 +43,11 @@ class Player(Entity):
 
         # Stats
         self.stats = {'health': 100, 'energy': 60, 'attack': 10, 'magic': 4, 'speed': 5}
-        self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic': 10, 'speed': 10}
-        self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic': 100, 'speed': 100}
-        self.health = self.stats['health'] * 0.5
-        self.energy = self.stats['energy'] * 0.8
-        self.exp = 5000
+        self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic': 10, 'speed': 7}
+        self.upgrade_cost = {'health': 50, 'energy': 50, 'attack': 50, 'magic': 50, 'speed': 50}
+        self.health = self.stats['health'] * 1
+        self.energy = self.stats['energy'] * 1
+        self.exp = 0
         self.speed = self.stats['speed']
 
         # Damage timer
@@ -125,7 +125,6 @@ class Player(Entity):
                 self.magic = list(magic_data.keys())[self.magic_index]
 
     def get_status(self):
-        # Idle status
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
@@ -164,8 +163,6 @@ class Player(Entity):
 
     def animate(self):
         animation = self.animations[self.status]
-
-        # Loop over frames
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
@@ -173,7 +170,6 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-        # Flicker effect when invulnerable
         if not self.vulnerable:
             alpha = self.wave_value()
             self.image.set_alpha(alpha)
@@ -181,36 +177,43 @@ class Player(Entity):
             self.image.set_alpha(255)
 
     def wave_value(self):
-        # Helper function for flicker effect during invulnerability
         value = pygame.time.get_ticks() % 500
-        if value < 250:
-            return 0
-        else:
-            return 255
+        return 0 if value < 250 else 255
 
     def get_full_weapon_damage(self):
-        base_damage = self.stats['attack']
-        weapon_damage = weapon_data[self.weapon]['damage']
-        return base_damage + weapon_damage
+        base = self.stats['attack']
+        weapon = weapon_data[self.weapon]['damage']
+        return base + weapon
 
     def get_full_magic_damage(self):
-        base_damage = self.stats['magic']
-        magic_damage = magic_data[self.magic]['strength']
-        return base_damage + magic_damage
+        base = self.stats['magic']
+        magic = magic_data[self.magic]['strength']
+        return base + magic
 
     def get_value_by_index(self, index):
-        # Return stat or upgrade cost by index; example implementation
-        stats_list = list(self.stats.values())
-        return stats_list[index]
+        return list(self.stats.values())[index]
 
     def get_cost_by_index(self, index):
-        costs_list = list(self.upgrade_cost.values())
-        return costs_list[index]
+        return list(self.upgrade_cost.values())[index]
 
     def energy_recovery(self):
         self.energy += 0.01 * self.stats['magic']
         if self.energy > self.stats['energy']:
             self.energy = self.stats['energy']
+
+    def check_death(self):
+        if self.health <= 0:
+            self.respawn()
+
+    def respawn(self):
+        # Reset player stats and position
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.exp = 0
+        self.rect.topleft = self.starting_position
+        self.hitbox.topleft = self.starting_position
+        self.vulnerable = True
+        print("Player respawned")
 
     def update(self):
         self.input()
@@ -219,3 +222,4 @@ class Player(Entity):
         self.animate()
         self.move(self.stats['speed'])
         self.energy_recovery()
+        self.check_death()
