@@ -4,9 +4,12 @@ from settings import *
 from support import import_folder
 from level import Level
 
-# Character select screen
+from npc import NPC, Textbox  # import the NPC and Textbox classes
+
+
+# Character select screen remains unchanged
 def character_select_screen(screen, clock):
-    characters = ['sam', 'ninja', 'flame']
+    characters = ['sam', 'ninja', 'flame','Skelly', 'Porky']
     selected_index = 0
 
     # Load down_0 images for each character
@@ -17,7 +20,6 @@ def character_select_screen(screen, clock):
         img = pygame.transform.scale(img, (64, 64))
         images.append(img)
 
-    # Load title screen image as background for selection screen
     title_bg = pygame.image.load('../SOFTWARE/Helga/graphics/selection_screen.png').convert()
     title_bg = pygame.transform.scale(title_bg, (WIDTH, HEIGHT))
 
@@ -37,28 +39,24 @@ def character_select_screen(screen, clock):
                 elif event.key == pygame.K_RETURN:
                     selecting = False
 
-        # Draw title screen background
         screen.blit(title_bg, (0, 0))
 
         for i, char in enumerate(characters):
             y = 150 + i * 120
-            x_img = 100  # far left position for image
-            x_text = x_img + 80  # text starts after image
+            x_img = 100
+            x_text = x_img + 80
 
-            # Draw character image
             screen.blit(images[i], (x_img, y))
 
-            # Draw character name
             color = (255, 255, 0) if i == selected_index else (255, 255, 255)
             text = font.render(char.capitalize(), True, color)
             screen.blit(text, (x_text, y + 16))
 
-            # Draw bigger yellow selection rectangle around image + text
             if i == selected_index:
                 rect_x = x_img - 15
                 rect_y = y - 15
                 rect_width = (x_text + text.get_width()) - rect_x + 15
-                rect_height = 64 + 30  # image height + padding
+                rect_height = 64 + 30
                 pygame.draw.rect(screen, (255, 255, 0), (rect_x, rect_y, rect_width, rect_height), 4)
 
         pygame.display.flip()
@@ -74,15 +72,22 @@ class Game:
         pygame.display.set_caption('The Legend of Helga')
         self.clock = pygame.time.Clock()
 
-        # Start background music immediately, plays during title, selection and game
+        self.font = pygame.font.Font(None, 30)  # Font for textbox
+
         self.main_sound = pygame.mixer.Sound('../SOFTWARE/Helga/audio/main.ogg')
         self.main_sound.set_volume(0.5)
-        self.main_sound.play(loops=-1)  # loop forever
+        self.main_sound.play(loops=-1)
 
-        self.show_title_screen()  # Show title screen first
-        self.selected_character = character_select_screen(self.screen, self.clock)  # Then character selection
+        self.show_title_screen()
+        self.selected_character = character_select_screen(self.screen, self.clock)
+        self.level = Level(self.selected_character)
 
-        self.level = Level(self.selected_character)  # Pass selected character to Level
+        # Initialize NPC and Textbox here
+        self.npc = NPC((300, 200), '../SOFTWARE/Helga/graphics/npc/npcclear.png')
+        self.textbox = Textbox(1500, 450, 5000, 100, self.font)
+
+        self.dialogue_active = False
+        self.current_text = ""
 
     def show_title_screen(self):
         title_image = pygame.image.load('../SOFTWARE/Helga/graphics/title_screen.png').convert()
@@ -106,12 +111,15 @@ class Game:
             self.clock.tick(FPS)
 
     def run(self):
-        # Music already playing from __init__, no need to play here
+        player_rect = pygame.Rect(100, 100, 1, 1)
+        player_speed = 5
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_m:
                         self.level.toggle_menu()
@@ -119,8 +127,40 @@ class Game:
                         pygame.quit()
                         sys.exit()
 
+                    if event.key == pygame.K_SPACE and self.dialogue_active:
+                        self.dialogue_active = False
+                        self.textbox.set_text("")
+
+            keys = pygame.key.get_pressed()
+
+            # Only allow movement if not in dialogue
+            if not self.dialogue_active:
+                if keys[pygame.K_LEFT]:
+                    player_rect.x -= player_speed
+                if keys[pygame.K_RIGHT]:
+                    player_rect.x += player_speed
+                if keys[pygame.K_UP]:
+                    player_rect.y -= player_speed
+                if keys[pygame.K_DOWN]:
+                    player_rect.y += player_speed
+
+                if keys[pygame.K_SPACE]:
+                    if player_rect.colliderect(self.npc.rect) and not self.dialogue_active:
+                        self.current_text = self.npc.interact()
+                        self.textbox.set_text(self.current_text)
+                        self.dialogue_active = True
+
+            # Draw game elements
             self.screen.fill(WATER_COLOR)
             self.level.run()
+
+            # Draw NPC on top
+            self.screen.blit(self.npc.image, self.npc.rect)
+
+            # Draw textbox if dialogue is active
+            if self.dialogue_active:
+                self.textbox.draw(self.screen)
+
             pygame.display.update()
             self.clock.tick(FPS)
 
