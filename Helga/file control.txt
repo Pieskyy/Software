@@ -1,0 +1,25 @@
+CHARACTER.PY
+	Controls NPC
+	Controls Player
+	Controls Enemy
+	Controls Entity
+
+UPGRADE.PY
+	Controls Weapons
+	Controls Items
+	Controls Magic
+	Controls Upgrades
+
+LEVEL.PY
+	Controls Camera
+	Controls Level
+	Controls UI
+	Controls Tile
+	Controls Animation Player
+	Controls Particles
+	Controls Debug
+Settings.py
+	Controls Settings
+	Controls Support
+
+	

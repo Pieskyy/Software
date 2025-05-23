@@ -1,17 +1,8 @@
 import pygame
 from settings import *
-from tile import Tile
-from player import Player
-from debug import debug
-from support import *
 from random import choice, randint
-from weapon import Weapon
-from ui import UI
-from enemy import Enemy
-from particles import AnimationPlayer
-from magic import MagicPlayer
-from upgrade import Upgrade
-from npc import NPC, Textbox  # Import NPC and Textbox classes
+from upgrade import Upgrade, Weapon, MagicPlayer
+from character import NPC, Textbox, Enemy, Player  # Import NPC and Textbox classes
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
@@ -213,9 +204,185 @@ class Level:
                             self.dialogue_active = False
                             self.textbox.set_text("test")
             else:
-                if self.player.rect.colliderect(npc.rect.inflate(500, 20)):
+                if self.player.rect.colliderect(npc.rect.inflate(20, 20)):
                     if keys[pygame.K_SPACE]:
                         self.current_dialogue = npc.interact()
                         self.textbox.set_text(self.current_dialogue)
                         self.dialogue_active = True
 
+class UI:
+    def __init__(self):
+
+        # general
+        self.display_surface = pygame.display.get_surface()
+        self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
+
+        # bar setup
+        self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
+        self.energy_bar_rect = pygame.Rect(10, 34, ENERGY_BAR_WIDTH, BAR_HEIGHT)
+
+        # convert weapon dictionary
+        self.weapon_graphics = []
+        for weapon in weapon_data.values():
+            path = weapon['graphic']
+            weapon = pygame.image.load(path).convert_alpha()
+            self.weapon_graphics.append(weapon)
+
+        # convert magic dictionary
+        self.magic_graphics = []
+        for magic in magic_data.values():
+            magic = pygame.image.load(magic['graphic']).convert_alpha()
+            self.magic_graphics.append(magic)
+
+    def show_bar(self, current, max_amount, bg_rect, color):
+        # draw bg
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+
+        # converting stat to pixel
+        ratio = current / max_amount
+        current_width = bg_rect.width * ratio
+        current_rect = bg_rect.copy()
+        current_rect.width = current_width
+
+        # drawing the bar
+        pygame.draw.rect(self.display_surface, color, current_rect)
+        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
+
+    def show_exp(self, exp):
+        text_surf = self.font.render(str(int(exp)), False, TEXT_COLOR)
+        x = self.display_surface.get_size()[0] - 20
+        y = self.display_surface.get_size()[1] - 20
+        text_rect = text_surf.get_rect(bottomright=(x, y))
+
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, text_rect.inflate(20, 20))
+        self.display_surface.blit(text_surf, text_rect)
+        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, text_rect.inflate(20, 20), 3)
+
+    def selection_box(self, left, top, has_switched):
+        bg_rect = pygame.Rect(left, top, ITEM_BOX_SIZE, ITEM_BOX_SIZE)
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+        if has_switched:
+            pygame.draw.rect(self.display_surface, UI_BORDER_COLOR_ACTIVE, bg_rect, 3)
+        else:
+            pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
+        return bg_rect
+
+    def weapon_overlay(self, weapon_index, has_switched):
+        bg_rect = self.selection_box(10, 630, has_switched)
+        weapon_surf = self.weapon_graphics[weapon_index]
+        weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
+
+        self.display_surface.blit(weapon_surf, weapon_rect)
+
+    def magic_overlay(self, magic_index, has_switched):
+        bg_rect = self.selection_box(80, 635, has_switched)
+        magic_surf = self.magic_graphics[magic_index]
+        magic_rect = magic_surf.get_rect(center=bg_rect.center)
+
+        self.display_surface.blit(magic_surf, magic_rect)
+
+    def display(self, player):
+        self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
+        self.show_bar(player.energy, player.stats['energy'], self.energy_bar_rect, ENERGY_COLOR)
+
+        self.show_exp(player.exp)
+
+        self.weapon_overlay(player.weapon_index, not player.can_switch_weapon)
+        self.magic_overlay(player.magic_index, not player.can_switch_magic)
+
+class Tile(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, sprite_type, surface=pygame.Surface((TILESIZE, TILESIZE))):
+        super().__init__(groups)
+        self.sprite_type = sprite_type
+        y_offset = HITBOX_OFFSET[sprite_type]
+        self.image = surface
+        if sprite_type == 'object':
+            self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - TILESIZE))
+        else:
+            self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(0, y_offset)
+
+class AnimationPlayer:
+    def __init__(self):
+        self.frames = {
+            # magic
+            'flame': import_folder('../SOFTWARE/Helga/graphics/particles/flame/frames'),
+            'aura': import_folder('../SOFTWARE/Helga/graphics/particles/aura'),
+            'heal': import_folder('../SOFTWARE/Helga/graphics/particles/heal/frames'),
+
+            # attacks
+            'claw': import_folder('../SOFTWARE/Helga/graphics/particles/claw'),
+            'slash': import_folder('../SOFTWARE/Helga/graphics/particles/slash'),
+            'sparkle': import_folder('../SOFTWARE/Helga/graphics/particles/sparkle'),
+            'leaf_attack': import_folder('../SOFTWARE/Helga/graphics/particles/leaf_attack'),
+            'thunder': import_folder('../SOFTWARE/Helga/graphics/particles/thunder'),
+
+            # monster deaths
+            'squid': import_folder('../SOFTWARE/Helga/graphics/particles/smoke_orange'),
+            'raccoon': import_folder('../SOFTWARE/Helga/graphics/particles/raccoon'),
+            'spirit': import_folder('../SOFTWARE/Helga/graphics/particles/nova'),
+            'bamboo': import_folder('../SOFTWARE/Helga/graphics/particles/bamboo'),
+
+            # leafs
+            'leaf': (
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf1'),
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf2'),
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf3'),
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf4'),
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf5'),
+                import_folder('../SOFTWARE/Helga/graphics/particles/leaf6'),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf1')),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf2')),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf3')),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf4')),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf5')),
+                self.reflect_images(import_folder('../SOFTWARE/Helga/graphics/particles/leaf6'))
+            )
+        }
+
+    def reflect_images(self, frames):
+        new_frames = []
+
+        for frame in frames:
+            flipped_frame = pygame.transform.flip(frame, True, False)
+            new_frames.append(flipped_frame)
+        return new_frames
+
+    def create_grass_particles(self, pos, groups):
+        animation_frames = choice(self.frames['leaf'])
+        ParticleEffect(pos, animation_frames, groups)
+
+    def create_particles(self, animation_type, pos, groups):
+        animation_frames = self.frames[animation_type]
+        ParticleEffect(pos, animation_frames, groups)
+
+class ParticleEffect(pygame.sprite.Sprite):
+
+    def __init__(self, pos, animation_frames, groups):
+        super().__init__(groups)
+        self.sprite_type = 'magic'
+        self.frame_index = 0
+        self.animation_speed = 0.15
+        self.frames = animation_frames
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=pos)
+
+    def animate(self):
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(self.frames):
+            self.kill()
+        else:
+            self.image = self.frames[int(self.frame_index)]
+
+    def update(self):
+        self.animate()
+
+pygame.init()
+font = pygame.font.Font(None, 30)
+
+def debug(info, y=10, x=10):
+    display_surface = pygame.display.get_surface()
+    debug_surf = font.render(str(info), True, 'White')
+    debug_rect = debug_surf.get_rect(topleft=(x, y))
+    pygame.draw.rect(display_surface, 'Black', debug_rect)
+    display_surface.blit(debug_surf, debug_rect)

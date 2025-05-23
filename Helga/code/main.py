@@ -1,13 +1,9 @@
 import pygame
 import sys
 from settings import *
-from support import import_folder
-from level import Level
+from level import Level, debug
+from character import NPC, Textbox  # import the NPC and Textbox classes
 
-from npc import NPC, Textbox  # import the NPC and Textbox classes
-
-
-# Character select screen remains unchanged
 def character_select_screen(screen, clock):
     characters = ['sam', 'ninja', 'flame','Skelly', 'Porky']
     selected_index = 0
@@ -84,7 +80,7 @@ class Game:
 
         # Initialize NPC and Textbox here
         self.npc = NPC((300, 200), '../SOFTWARE/Helga/graphics/npc/npcclear.png')
-        self.textbox = Textbox(1500, 450, 5000, 100, self.font)
+        self.textbox = Textbox(100, 40, 50, 100, self.font)
 
         self.dialogue_active = False
         self.current_text = ""

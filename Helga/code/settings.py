@@ -1,4 +1,7 @@
-# game setup
+from csv import reader
+from os import walk
+import pygame
+
 WIDTH = 1280
 HEIGHT = 720
 FPS = 60
@@ -61,3 +64,23 @@ monster_data = {
     'bamboo': {'health': 70, 'exp': 12, 'damage': 2, 'attack_type': 'leaf_attack',
                'attack_sound': '../SOFTWARE/Helga/audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 50,
                'notice_radius': 200}}
+
+def import_csv_layout(path):
+    terrain_map = []
+    with open(path) as level_map:
+        layout = reader(level_map, delimiter=',')
+        for row in layout:
+            terrain_map.append(list(row))
+        return terrain_map
+
+
+def import_folder(path):
+    surface_list = []
+
+    for _, __, img_files in walk(path):
+        for image in img_files:
+            full_path = path + '/' + image
+            image_surf = pygame.image.load(full_path).convert_alpha()
+            surface_list.append(image_surf)
+
+    return surface_list
