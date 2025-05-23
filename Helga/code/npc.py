@@ -23,9 +23,12 @@ class NPC(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.dialogue = [
-            "Hey there, adventurer!",
-            "Could you collect 5 mushrooms for me?",
-            "Thanks! Come back when you're done!"
+            "Hey you! can you help me?",
+            "Thanks, Helga has gone missing.",
+            "i fear shes been captured",
+            "can you help me find her??",
+            "Before we get her, we have to train you up.",
+            " can you kill 5 bamboos for me?"
         ]
         self.dialogue_index = 0
         self.interacted = False

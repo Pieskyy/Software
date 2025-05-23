@@ -54,7 +54,7 @@ monster_data = {
               'notice_radius': 200},
     'raccoon': {'health': 800, 'exp': 250, 'damage': 40, 'attack_type': 'claw',
                 'attack_sound': '../SOFTWARE/Helga/audio/attack/claw.wav', 'speed': 1, 'resistance': 4, 'attack_radius': 100,
-                'notice_radius': 300},
+                'notice_radius': 500},
     'spirit': {'health': 100, 'exp': 10, 'damage': 5, 'attack_type': 'thunder',
                'attack_sound': '../SOFTWARE/Helga/audio/attack/fireball.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 60,
                'notice_radius': 200},
