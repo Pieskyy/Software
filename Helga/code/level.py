@@ -1,8 +1,11 @@
 import pygame
 from settings import *
 from random import choice, randint
-from upgrade import Upgrade, Weapon, MagicPlayer
+from weapon import Weapon, MagicPlayer, Item
 from character import NPC, Textbox, Enemy, Player  # Import NPC and Textbox classes
+
+pygame.init()
+font = pygame.font.Font(None, 30)
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
@@ -36,6 +39,7 @@ class Level:
     def __init__(self, character='player'):
         self.display_surface = pygame.display.get_surface()
         self.game_paused = False
+        self.show_upgrade = False
         self.selected_character = character
 
         # Sprite groups
@@ -47,22 +51,23 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
 
-        # UI, upgrade, particles
+        # UI and upgrade
         self.ui = UI()
-        
-        # Create map and player
-        self.npc_group = pygame.sprite.GroupSingle()
-        self.create_map()
-        
-        self.upgrade = Upgrade(self.player)
         self.animation_player = AnimationPlayer()
         self.magic_player = MagicPlayer(self.animation_player)
 
-        # Dialogue system setup
+        self.npc_group = pygame.sprite.GroupSingle()
+        self.create_map()
+
+        # Dialogue system
         self.font = pygame.font.Font(None, 30)
-        self.textbox = Textbox(400, 450, 500, 100, self.font)
+        self.textbox = Textbox(400, 450, 500, 150, self.font)
         self.dialogue_active = False
         self.current_dialogue = ""
+
+        # Cooldown for input
+        self.last_interaction_time = 0
+        self.interaction_cooldown = 300  # milliseconds
 
     def create_map(self):
         layouts = {
@@ -86,11 +91,7 @@ class Level:
                             Tile((x, y), [self.obstacle_sprites], 'invisible')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
-                            Tile(
-                                (x, y),
-                                [self.visible_sprites, self.obstacle_sprites, self.attackable_sprites],
-                                'grass',
-                                random_grass_image)
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites, self.attackable_sprites], 'grass', random_grass_image)
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
@@ -105,24 +106,12 @@ class Level:
                                     self.create_magic,
                                     character=self.selected_character)
                             else:
-                                if col == '390':
-                                    monster_name = 'bamboo'
-                                elif col == '391':
-                                    monster_name = 'spirit'
-                                elif col == '392':
-                                    monster_name = 'raccoon'
-                                else:
-                                    monster_name = 'squid'
-                                Enemy(
-                                    monster_name,
-                                    (x, y),
-                                    [self.visible_sprites, self.attackable_sprites],
-                                    self.obstacle_sprites,
-                                    self.damage_player,
-                                    self.trigger_death_particles,
-                                    self.add_exp)
+                                monster_name = {'390': 'bamboo', '391': 'spirit', '392': 'raccoon'}.get(col, 'squid')
+                                Enemy(monster_name, (x, y), [self.visible_sprites, self.attackable_sprites],
+                                      self.obstacle_sprites, self.damage_player,
+                                      self.trigger_death_particles, self.add_exp)
 
-        # Add an NPC manually (static image)
+        # Static NPC
         npc_position = (37 * TILESIZE, 21.5 * TILESIZE)
         npc = NPC(npc_position, '../SOFTWARE/Helga/graphics/npc/npc.png')
         self.npc_group.add(npc)
@@ -134,7 +123,7 @@ class Level:
     def create_magic(self, style, strength, cost):
         if style == 'heal':
             self.magic_player.heal(self.player, strength, cost, [self.visible_sprites])
-        if style == 'flame':
+        elif style == 'flame':
             self.magic_player.flame(self.player, cost, [self.visible_sprites, self.attack_sprites])
 
     def destroy_attack(self):
@@ -146,16 +135,15 @@ class Level:
         if self.attack_sprites:
             for attack_sprite in self.attack_sprites:
                 collision_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
-                if collision_sprites:
-                    for target_sprite in collision_sprites:
-                        if target_sprite.sprite_type == 'grass':
-                            pos = target_sprite.rect.center
-                            offset = pygame.math.Vector2(0, 75)
-                            for leaf in range(randint(3, 6)):
-                                self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
-                            target_sprite.kill()
-                        else:
-                            target_sprite.get_damage(self.player, attack_sprite.sprite_type)
+                for target_sprite in collision_sprites:
+                    if target_sprite.sprite_type == 'grass':
+                        pos = target_sprite.rect.center
+                        offset = pygame.math.Vector2(0, 75)
+                        for _ in range(randint(3, 6)):
+                            self.animation_player.create_grass_particles(pos - offset, [self.visible_sprites])
+                        target_sprite.kill()
+                    else:
+                        target_sprite.get_damage(self.player, attack_sprite.sprite_type)
 
     def damage_player(self, amount, attack_type):
         if self.player.vulnerable:
@@ -172,43 +160,46 @@ class Level:
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
+        self.show_upgrade = self.game_paused
 
     def run(self):
-        # If game paused, show upgrade menu only
         if self.game_paused:
             self.upgrade.display()
-            self.ui.display(self.player)  # still display UI
-            self.visible_sprites.custom_draw(self.player)  # still draw world
+            self.ui.display(self.player)
+            self.visible_sprites.custom_draw(self.player)
             return
 
-        # Update and draw world
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
         self.player_attack_logic()
         self.visible_sprites.custom_draw(self.player)
         self.ui.display(self.player)
 
-        # NPC interaction and dialogue system
+        # NPC dialogue handling
         npc = self.npc_group.sprite
         keys = pygame.key.get_pressed()
+        current_time = pygame.time.get_ticks()
 
         if npc:
-            # If dialogue active, prevent player movement and draw textbox
-            if self.dialogue_active:
-                # Draw dialogue box
-                self.textbox.draw(self.display_surface)
-                # Close dialogue if player presses RETURN
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            self.dialogue_active = False
-                            self.textbox.set_text("test")
-            else:
-                if self.player.rect.colliderect(npc.rect.inflate(20, 20)):
-                    if keys[pygame.K_SPACE]:
+            if self.player.rect.colliderect(npc.rect.inflate(50, 50)):
+                if keys[pygame.K_e] and current_time - self.last_interaction_time > self.interaction_cooldown:
+                    self.last_interaction_time = current_time
+
+                    if not self.dialogue_active:
+                        self.dialogue_active = True
                         self.current_dialogue = npc.interact()
                         self.textbox.set_text(self.current_dialogue)
-                        self.dialogue_active = True
+                    else:
+                        self.current_dialogue = npc.interact()
+                        self.textbox.set_text(self.current_dialogue)
+
+                        if npc.interacted and npc.dialogue_index >= len(npc.dialogue):
+                            self.dialogue_active = False  # Optional auto-close
+
+        if self.dialogue_active:
+            self.textbox.draw(self.display_surface)
+            if keys[pygame.K_q]:  # Manual close
+                self.dialogue_active = False
 
 class UI:
     def __init__(self):
@@ -376,9 +367,6 @@ class ParticleEffect(pygame.sprite.Sprite):
 
     def update(self):
         self.animate()
-
-pygame.init()
-font = pygame.font.Font(None, 30)
 
 def debug(info, y=10, x=10):
     display_surface = pygame.display.get_surface()

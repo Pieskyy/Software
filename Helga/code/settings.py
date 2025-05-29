@@ -52,18 +52,67 @@ magic_data = {
 
 # enemy
 monster_data = {
-    'squid': {'health': 100, 'exp': 10, 'damage': 5, 'attack_type': 'slash',
-              'attack_sound': '../SOFTWARE/Helga/audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 80,
-              'notice_radius': 200},
-    'raccoon': {'health': 800, 'exp': 250, 'damage': 40, 'attack_type': 'claw',
-                'attack_sound': '../SOFTWARE/Helga/audio/attack/claw.wav', 'speed': 1, 'resistance': 4, 'attack_radius': 100,
-                'notice_radius': 500},
-    'spirit': {'health': 100, 'exp': 10, 'damage': 5, 'attack_type': 'thunder',
-               'attack_sound': '../SOFTWARE/Helga/audio/attack/fireball.wav', 'speed': 3, 'resistance': 3, 'attack_radius': 60,
-               'notice_radius': 200},
-    'bamboo': {'health': 70, 'exp': 12, 'damage': 2, 'attack_type': 'leaf_attack',
-               'attack_sound': '../SOFTWARE/Helga/audio/attack/slash.wav', 'speed': 2, 'resistance': 3, 'attack_radius': 50,
-               'notice_radius': 200}}
+    'squid': {
+        'health': 75,
+        'exp': 20,
+        'damage': 5,
+        'attack_type': 'slash',
+        'attack_sound': '../SOFTWARE/Helga/audio/attack/slash.wav',
+        'speed': 2,
+        'resistance': 3,
+        'attack_radius': 80,
+        'notice_radius': 200,
+        'attack_cooldown': 500,
+        'invincibility_duration': 300,
+        'respawn_time': 7000,
+        'animation_speed': 0.15
+    },
+    'raccoon': {
+        'health': 800,
+        'exp': 250,
+        'damage': 40,
+        'attack_type': 'claw',
+        'attack_sound': '../SOFTWARE/Helga/audio/attack/claw.wav',
+        'speed': 1,
+        'resistance': 4,
+        'attack_radius': 100,
+        'notice_radius': 500,
+        'attack_cooldown': 800,
+        'invincibility_duration': 600,
+        'respawn_time': 15000,
+        'animation_speed': 0.1
+    },
+    'spirit': {
+        'health': 30,
+        'exp': 5,
+        'damage':3,
+        'attack_type': 'thunder',
+        'attack_sound': '../SOFTWARE/Helga/audio/attack/fireball.wav',
+        'speed': 3,
+        'resistance': 3,
+        'attack_radius': 60,
+        'notice_radius': 200,
+        'attack_cooldown': 300,
+        'invincibility_duration': 200,
+        'respawn_time': 5000,
+        'animation_speed': 0.2
+    },
+    'bamboo': {
+        'health': 50,
+        'exp': 10,
+        'damage': 2,
+        'attack_type': 'leaf_attack',
+        'attack_sound': '../SOFTWARE/Helga/audio/attack/slash.wav',
+        'speed': 2,
+        'resistance': 3,
+        'attack_radius': 50,
+        'notice_radius': 200,
+        'attack_cooldown': 400,
+        'invincibility_duration': 300,
+        'respawn_time': 5000,
+        'animation_speed': 0.25
+    }
+}
 
 def import_csv_layout(path):
     terrain_map = []

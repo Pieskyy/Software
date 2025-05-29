@@ -1,6 +1,5 @@
 import pygame
 from settings import *
-
 from math import sin
 
 class Entity(pygame.sprite.Sprite):
@@ -250,11 +249,9 @@ class Player(Entity):
         # Reset player stats and position
         self.health = self.stats['health']
         self.energy = self.stats['energy']
-        self.exp = 0
         self.rect.topleft = self.starting_position
         self.hitbox.topleft = self.starting_position
         self.vulnerable = True
-        print("Player respawned")
 
     def update(self):
         self.input()
@@ -264,8 +261,6 @@ class Player(Entity):
         self.move(self.stats['speed'])
         self.energy_recovery()
         self.check_death()
-
-        import pygame
 
 class Textbox:
     def __init__(self, x, y, w, h, font, text=''):
@@ -290,13 +285,12 @@ class NPC(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.dialogue = [
-            "Hey you! can you help me?",
-            "Thanks, Helga has gone missing.",
-            "i fear shes been captured",
-            "can you help me find her??",
-            "Before we get her, we have to train you up.",
-            " can you kill 5 bamboos for me?"
-        ]
+    "GET AWAY YOU BEAST! I'LL GET Y-\n         Wait . . . \n\nYou dont look like a monster\n\n[Q] to close.",
+    "Well uhm . . .  \nWhile i have you here . . .\nWould you be able to help me with something?\nTheres a reward if you do\n\n[Q] to close.",
+    "I fear she's been captured.\nCan you help me find her??",
+    "Before we get her, we have to train you up.\nCan you kill 5 bamboos for me?"
+]
+
         self.dialogue_index = 0
         self.interacted = False
 
@@ -311,24 +305,24 @@ class NPC(pygame.sprite.Sprite):
 
 class Enemy(Entity):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, trigger_death_particles, add_exp):
-
-        # general setup
         super().__init__(groups)
         self.sprite_type = 'enemy'
 
-        # graphics setup
+        # Graphics setup
         self.import_graphics(monster_name)
         self.status = 'idle'
-        self.image = self.animations[self.status][self.frame_index]
+        self.frame_index = 0
 
-        # movement
+        self.monster_name = monster_name
+        monster_info = monster_data[self.monster_name]
+
+        self.animation_speed = monster_info['animation_speed']
+        self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)
         self.obstacle_sprites = obstacle_sprites
 
-        # stats
-        self.monster_name = monster_name
-        monster_info = monster_data[self.monster_name]
+        # Stats
         self.health = monster_info['health']
         self.exp = monster_info['exp']
         self.speed = monster_info['speed']
@@ -338,20 +332,20 @@ class Enemy(Entity):
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
 
-        # player interaction
+        # Player interaction
         self.can_attack = True
         self.attack_time = None
-        self.attack_cooldown = 400
+        self.attack_cooldown = monster_info['attack_cooldown']
         self.damage_player = damage_player
         self.trigger_death_particles = trigger_death_particles
         self.add_exp = add_exp
 
-        # invincibility timer
+        # Invincibility timer
         self.vulnerable = True
         self.hit_time = None
-        self.invincibility_duration = 300
+        self.invincibility_duration = monster_info['invincibility_duration']
 
-        # sounds
+        # Sounds
         self.death_sound = pygame.mixer.Sound('../SOFTWARE/Helga/audio/death.wav')
         self.hit_sound = pygame.mixer.Sound('../SOFTWARE/Helga/audio/hit.wav')
         self.attack_sound = pygame.mixer.Sound(monster_info['attack_sound'])
@@ -359,8 +353,14 @@ class Enemy(Entity):
         self.hit_sound.set_volume(0.6)
         self.attack_sound.set_volume(0.6)
 
+        # Respawn
+        self.alive = True
+        self.respawn_time = monster_info['respawn_time']
+        self.death_time = None
+        self.starting_pos = pos
+
     def import_graphics(self, name):
-        self.animations = {'idle': [], 'move': [], 'attack': []}
+        self.animations = {'idle': [], 'move': [], 'attack': [], 'death': []}
         main_path = f'../SOFTWARE/Helga/graphics/monsters/{name}/'
         for animation in self.animations.keys():
             self.animations[animation] = import_folder(main_path + animation)
@@ -401,12 +401,16 @@ class Enemy(Entity):
 
     def animate(self):
         animation = self.animations[self.status]
-
         self.frame_index += self.animation_speed
-        if self.frame_index >= len(animation):
-            if self.status == 'attack':
-                self.can_attack = False
-            self.frame_index = 0
+
+        if self.status == 'death':
+            if self.frame_index >= len(animation):
+                self.frame_index = len(animation) - 1  # freeze on last frame
+        else:
+            if self.frame_index >= len(animation):
+                if self.status == 'attack':
+                    self.can_attack = False
+                self.frame_index = 0
 
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
@@ -428,7 +432,7 @@ class Enemy(Entity):
                 self.vulnerable = True
 
     def get_damage(self, player, attack_type):
-        if self.vulnerable:
+        if self.vulnerable and self.alive:
             self.hit_sound.play()
             self.direction = self.get_player_distance_direction(player)[1]
             if attack_type == 'weapon':
@@ -439,24 +443,44 @@ class Enemy(Entity):
             self.vulnerable = False
 
     def check_death(self):
-        if self.health <= 0:
-            self.kill()
+        if self.health <= 0 and self.alive:
+            self.alive = False
+            self.status = 'death'
+            self.frame_index = 0  # Start death animation
+            self.death_time = pygame.time.get_ticks()
             self.trigger_death_particles(self.rect.center, self.monster_name)
             self.add_exp(self.exp)
             self.death_sound.play()
+
+    def respawn(self):
+        self.health = monster_data[self.monster_name]['health']
+        self.rect.topleft = self.starting_pos
+        self.hitbox = self.rect.inflate(0, -10)
+        self.alive = True
+        self.status = 'idle'
+        self.frame_index = 0
+        self.vulnerable = True
+        self.can_attack = True
+        self.image.set_alpha(255)
 
     def hit_reaction(self):
         if not self.vulnerable:
             self.direction *= -self.resistance
 
     def update(self):
-        self.hit_reaction()
-        self.move(self.speed)
-        self.animate()
-        self.cooldowns()
-        self.check_death()
+        current_time = pygame.time.get_ticks()
+        if self.alive:
+            self.hit_reaction()
+            self.move(self.speed)
+            self.animate()
+            self.cooldowns()
+            self.check_death()
+        else:
+            self.animate()  # So the death animation plays even while dead
+            if current_time - self.death_time >= self.respawn_time:
+                self.respawn()
 
     def enemy_update(self, player):
-        self.get_status(player)
-        self.actions(player)
-
+        if self.alive:
+            self.get_status(player)
+            self.actions(player)

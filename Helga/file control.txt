@@ -21,5 +21,19 @@ LEVEL.PY
 Settings.py
 	Controls Settings
 	Controls Support
+		Has weapon data
+		Has Magic Data
+		Has Enemy Data
+
+
+	TO DO:
+
+FIX STATS UPGRADE
+NPC:
+QUEST
+	"kill 5 bamboo"
+Reward
+	"So and so sword"
+
 
 	

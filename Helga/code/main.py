@@ -1,14 +1,13 @@
 import pygame
 import sys
 from settings import *
-from level import Level, debug
-from character import NPC, Textbox  # import the NPC and Textbox classes
+from level import Level
+from character import NPC, Textbox  # Make sure these are implemented
 
 def character_select_screen(screen, clock):
-    characters = ['sam', 'ninja', 'flame','Skelly', 'Porky']
+    characters = ['sam', 'ninja', 'flame', 'Skelly', 'Porky']
     selected_index = 0
 
-    # Load down_0 images for each character
     images = []
     for char in characters:
         path = f'../SOFTWARE/Helga/graphics/player/{char}/down/down_0.png'
@@ -38,12 +37,11 @@ def character_select_screen(screen, clock):
         screen.blit(title_bg, (0, 0))
 
         for i, char in enumerate(characters):
-            y = 150 + i * 120
+            y = 100 + i * 120
             x_img = 100
             x_text = x_img + 80
 
             screen.blit(images[i], (x_img, y))
-
             color = (255, 255, 0) if i == selected_index else (255, 255, 255)
             text = font.render(char.capitalize(), True, color)
             screen.blit(text, (x_text, y + 16))
@@ -54,7 +52,6 @@ def character_select_screen(screen, clock):
                 rect_width = (x_text + text.get_width()) - rect_x + 15
                 rect_height = 64 + 30
                 pygame.draw.rect(screen, (255, 255, 0), (rect_x, rect_y, rect_width, rect_height), 4)
-
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -68,7 +65,7 @@ class Game:
         pygame.display.set_caption('The Legend of Helga')
         self.clock = pygame.time.Clock()
 
-        self.font = pygame.font.Font(None, 30)  # Font for textbox
+        self.font = pygame.font.Font(None, 30)
 
         self.main_sound = pygame.mixer.Sound('../SOFTWARE/Helga/audio/main.ogg')
         self.main_sound.set_volume(0.5)
@@ -78,7 +75,6 @@ class Game:
         self.selected_character = character_select_screen(self.screen, self.clock)
         self.level = Level(self.selected_character)
 
-        # Initialize NPC and Textbox here
         self.npc = NPC((300, 200), '../SOFTWARE/Helga/graphics/npc/npcclear.png')
         self.textbox = Textbox(100, 40, 50, 100, self.font)
 
@@ -116,21 +112,9 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m:
-                        self.level.toggle_menu()
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-
-                    if event.key == pygame.K_SPACE and self.dialogue_active:
-                        self.dialogue_active = False
-                        self.textbox.set_text("")
-
             keys = pygame.key.get_pressed()
 
-            # Only allow movement if not in dialogue
-            if not self.dialogue_active:
+            if not self.dialogue_active and not self.level.show_upgrade:
                 if keys[pygame.K_LEFT]:
                     player_rect.x -= player_speed
                 if keys[pygame.K_RIGHT]:
@@ -146,14 +130,11 @@ class Game:
                         self.textbox.set_text(self.current_text)
                         self.dialogue_active = True
 
-            # Draw game elements
             self.screen.fill(WATER_COLOR)
             self.level.run()
 
-            # Draw NPC on top
             self.screen.blit(self.npc.image, self.npc.rect)
 
-            # Draw textbox if dialogue is active
             if self.dialogue_active:
                 self.textbox.draw(self.screen)
 
