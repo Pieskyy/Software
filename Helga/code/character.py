@@ -47,26 +47,60 @@ class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites, create_attack, destroy_attack, create_magic, character='player'):
         super().__init__(groups)
 
-        self.character = character
-        self.starting_position = pos  # Save starting position
+        character_stats = {
+    'sam': {
+        'health': 80,
+        'energy': 60,
+        'attack': 10,
+        'magic': 6,
+        'speed': 5
+    },
+    'ninja': {
+        'health': 70,
+        'energy': 90,
+        'attack': 14,
+        'magic': 5,
+        'speed': 8
+    },
+     'flame': {
+        'health': 100,
+        'energy': 120,
+        'attack': 4,
+        'magic': 10,
+        'speed': 6
+    },
+    'Skelly': {
+        'health': 1000,
+        'energy': 0.0001,
+        'attack': 0,
+        'magic': 0.001,
+        'speed': 7
+    },
+     'Porky': {
+        'health': 200,
+        'energy': 50,
+        'attack': 20,
+        'magic': 0,
+        'speed': 4
+    }
+}
 
-        # Load base image
+
+        self.character = character
+        self.starting_position = pos
+
         self.image = pygame.image.load(f'../SOFTWARE/Helga/graphics/player/{self.character}/down/down_0.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-6, HITBOX_OFFSET['player'])
-
-        # Graphics setup
         self.import_player_assets()
         self.status = 'down'
 
-        # Movement and action flags
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
 
-        # Weapon
-        self.create_attack = create_attack
+        self.create_attack = create_attack #weapon
         self.destroy_attack = destroy_attack
         self.weapon_index = 0
         self.weapon = list(weapon_data.keys())[self.weapon_index]
@@ -74,28 +108,22 @@ class Player(Entity):
         self.weapon_switch_time = None
         self.switch_duration_cooldown = 200
 
-        # Magic
-        self.create_magic = create_magic
+        self.create_magic = create_magic #magic
         self.magic_index = 0
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
 
-        # Stats
-        self.stats = {'health': 100, 'energy': 60, 'attack': 10, 'magic': 4, 'speed': 5}
-        self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic': 10, 'speed': 7}
-        self.upgrade_cost = {'health': 50, 'energy': 50, 'attack': 50, 'magic': 50, 'speed': 50}
+        self.stats = character_stats[self.character]
         self.health = self.stats['health'] * 1
         self.energy = self.stats['energy'] * 1
         self.exp = 0
         self.speed = self.stats['speed']
 
-        # Damage timer
         self.vulnerable = True
         self.hurt_time = None
         self.invulnerability_duration = 500
 
-        # Sounds
         self.weapon_attack_sound = pygame.mixer.Sound('../SOFTWARE/Helga/audio/sword.wav')
         self.weapon_attack_sound.set_volume(0.4)
 
@@ -284,24 +312,89 @@ class NPC(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.dialogue = [
-    "GET AWAY YOU BEAST! I'LL GET Y-\n         Wait . . . \n\nYou dont look like a monster\n\n[Q] to close.",
-    "Well uhm . . .  \nWhile i have you here . . .\nWould you be able to help me with something?\nTheres a reward if you do\n\n[Q] to close.",
-    "I fear she's been captured.\nCan you help me find her??",
-    "Before we get her, we have to train you up.\nCan you kill 5 bamboos for me?"
-]
 
+        # Initial story/dialogue
+        self.dialogue = [
+            "GET AWAY YOU BEAST! I'LL GET Y-\n         Wait . . . \n\nYou dont look like a monster\n\n[Q] to close.",
+            "Well uhm . . .  \nWhile i have you here . . .\nWould you be able to help me with something?\nTheres a reward if you do\n\n[Q] to close.",
+            "Y- You will?? THANKS!\nIts my . . . friend, Helga,\nI fear she's been captured.\n\nCan you help me find her??\n[Q] to close.",
+            "YOU WILL HELP ME!! YAYYY\nNow,\nBefore we get her, \nwe have to train you up.\n\n[Q] to close.",
+            "Can you kill 5 bamboos for me?\n\n\n\n\n[. . Surely you know how to close by now] to close."
+        ]
+
+        # Quest-related follow-up dialogues
+        self.quest1_complete_dialogue = [
+            "You did it!! All 5 bamboos!\nYou're ready to begin the rescue.\nMeet me by the waterfall.\n\n[Q] to close."
+        ]
+
+        self.quest2_intro_dialogue = [
+            "Now we begin the real mission.\nWe have to save Helga from the cave.\n\n[Q] to close."
+        ]
+
+        self.quest2_complete_dialogue = [
+            "You found Helga?! Incredible!\nI'll never forget this.\n\n[Q] to close."
+        ]
+
+        # Dialogue tracking
         self.dialogue_index = 0
-        self.interacted = False
+        self.interacted = False  # For external checks
+
+        # Quest state
+        self.quest1_started = False
+        self.quest1_bamboos_killed = 0
+        self.quest1_completed = False
+
+        self.quest2_started = False
+        self.quest2_helga_found = False
+        self.quest2_completed = False
 
     def interact(self):
-        if self.dialogue_index < len(self.dialogue):
-            dialogue_line = self.dialogue[self.dialogue_index]
-            self.dialogue_index += 1
-            return dialogue_line
-        else:
-            self.interacted = True
-            return "You're awesome!"
+        # 1. Initial dialogue
+        if not self.quest1_started:
+            if self.dialogue_index < len(self.dialogue):
+                line = self.dialogue[self.dialogue_index]
+                self.dialogue_index += 1
+
+                # When final intro dialogue ends
+                if self.dialogue_index == len(self.dialogue):
+                    self.quest1_started = True
+                    self.interacted = True
+
+                return line
+
+        # 2. Quest 1 - Kill 5 bamboos
+        if self.quest1_started and not self.quest1_completed:
+            if self.quest1_bamboos_killed >= 5:
+                self.quest1_completed = True
+                return self.quest1_complete_dialogue[0]
+            else:
+                return f"You're still working on killing 5 bamboos.\nProgress: {self.quest1_bamboos_killed}/5\n\n[Q] to close."
+
+        # 3. Quest 2 - Find Helga
+        if self.quest1_completed and not self.quest2_started:
+            self.quest2_started = True
+            return self.quest2_intro_dialogue[0]
+
+        if self.quest2_started and not self.quest2_completed:
+            if self.quest2_helga_found:
+                self.quest2_completed = True
+                return self.quest2_complete_dialogue[0]
+            else:
+                return "Look near the cave entrance.\nThat’s where Helga was last seen.\n\n[Q] to close."
+
+        # 4. After all quests
+        if self.quest2_completed:
+            return "You're a true hero. Thank you again.\n\n[Q] to close."
+
+    def bamboo_killed(self):
+        if self.quest1_started and not self.quest1_completed:
+            self.quest1_bamboos_killed += 1
+            print(f"[DEBUG] Bamboo kill registered! Total: {self.quest1_bamboos_killed}/5")
+
+    def helga_found(self):
+        if self.quest2_started and not self.quest2_completed:
+            self.quest2_helga_found = True
+            print("[DEBUG] Helga rescue triggered!")
 
 class Enemy(Entity):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, damage_player, trigger_death_particles, add_exp):

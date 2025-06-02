@@ -203,40 +203,40 @@ class Level:
 
 class UI:
     def __init__(self):
-
-        # general
+        # General setup
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
 
-        # bar setup
+        # Bar setup (position and size)
         self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
         self.energy_bar_rect = pygame.Rect(10, 34, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
-        # convert weapon dictionary
+        # Load weapon graphics from weapon_data dictionary
         self.weapon_graphics = []
         for weapon in weapon_data.values():
             path = weapon['graphic']
-            weapon = pygame.image.load(path).convert_alpha()
-            self.weapon_graphics.append(weapon)
+            weapon_img = pygame.image.load(path).convert_alpha()
+            self.weapon_graphics.append(weapon_img)
 
-        # convert magic dictionary
+        # Load magic graphics from magic_data dictionary
         self.magic_graphics = []
         for magic in magic_data.values():
-            magic = pygame.image.load(magic['graphic']).convert_alpha()
-            self.magic_graphics.append(magic)
+            magic_img = pygame.image.load(magic['graphic']).convert_alpha()
+            self.magic_graphics.append(magic_img)
 
     def show_bar(self, current, max_amount, bg_rect, color):
-        # draw bg
+        # Draw background bar
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
-        # converting stat to pixel
-        ratio = current / max_amount
-        current_width = bg_rect.width * ratio
-        current_rect = bg_rect.copy()
-        current_rect.width = current_width
+        # Calculate fill ratio and clamp it between 0 and 1
+        ratio = max(0, min(current / max_amount, 1))
+        current_width = int(bg_rect.width * ratio)
 
-        # drawing the bar
+        # Draw filled part of the bar
+        current_rect = pygame.Rect(bg_rect.left, bg_rect.top, current_width, bg_rect.height)
         pygame.draw.rect(self.display_surface, color, current_rect)
+
+        # Draw border around the bar
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
     def show_exp(self, exp):
@@ -273,11 +273,14 @@ class UI:
         self.display_surface.blit(magic_surf, magic_rect)
 
     def display(self, player):
+        # Draw health and energy bars
         self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
         self.show_bar(player.energy, player.stats['energy'], self.energy_bar_rect, ENERGY_COLOR)
 
+        # Show experience points
         self.show_exp(player.exp)
 
+        # Show weapon and magic overlays
         self.weapon_overlay(player.weapon_index, not player.can_switch_weapon)
         self.magic_overlay(player.magic_index, not player.can_switch_magic)
 

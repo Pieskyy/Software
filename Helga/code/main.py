@@ -2,17 +2,16 @@ import pygame
 import sys
 from settings import *
 from level import Level
-from character import NPC, Textbox  # Make sure these are implemented
+from character import NPC, Textbox
 
-def character_select_screen(screen, clock):
+def character_selection(screen, clock): #character selection options.
     characters = ['sam', 'ninja', 'flame', 'Skelly', 'Porky']
     selected_index = 0
 
     images = []
     for char in characters:
-        path = f'../SOFTWARE/Helga/graphics/player/{char}/down/down_0.png'
+        path = f'../SOFTWARE/Helga/graphics/player/{char}/down/down_0.png'#grab from file with the name from characters
         img = pygame.image.load(path).convert_alpha()
-        img = pygame.transform.scale(img, (64, 64))
         images.append(img)
 
     title_bg = pygame.image.load('../SOFTWARE/Helga/graphics/selection_screen.png').convert()
@@ -72,7 +71,7 @@ class Game:
         self.main_sound.play(loops=-1)
 
         self.show_title_screen()
-        self.selected_character = character_select_screen(self.screen, self.clock)
+        self.selected_character = character_selection(self.screen, self.clock)
         self.level = Level(self.selected_character)
 
         self.npc = NPC((300, 200), '../SOFTWARE/Helga/graphics/npc/npcclear.png')
