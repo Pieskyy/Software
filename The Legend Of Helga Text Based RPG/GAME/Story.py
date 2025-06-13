@@ -6,6 +6,11 @@ from settings import *
 
 
 
+
+
+
+
+
 #________________________________________GAME_START_____________________________________
 print('\n' * 30)#Screen Clear
 
@@ -92,10 +97,9 @@ print('\n'*15)
 time.sleep(3)
 
 
+def choose_path(player, dime, tree):
 
-
-
-print('\n' * 30) #Screen Clear
+    print('\n' * 30) #Screen Clear
 
 
 
@@ -113,6 +117,13 @@ print('\n' * 30) #Screen Clear
 
 
 #_______________________________________________________________________________________________
+
+
+
+
+
+
+
 
 
 
@@ -138,7 +149,7 @@ print('    *Bushes rustling in the distance, getting louder and louder as it app
 
 
 time.sleep(2)
-print('     *You see a figure jump out of the bushes, wielding a sword and charging at you*\n')
+print('    *You see a figure jump out of the bushes, wielding a sword and charging at you*\n')
 
 
 
@@ -178,12 +189,7 @@ time.sleep(4)
 print('\n' * 20)
 
 
-
-
-#____________________________________NEW CHARACTER_____________________________________
-
-
-
+#new character
 print(f"Fellow created with name: {dime.user} and health: {dime.health} and race: {dime.race.name}")
 print('\n'*13)
 time.sleep(5)
@@ -266,6 +272,28 @@ time.sleep(3)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+#______________________________________FIRST SELECTION_____________________________________
+
+
+
+
+
+
+
+
+
 #path choosing, defined so it can be called back on to come back to.
 def choose_path(player, dime, tree):
     player_health = player.health
@@ -288,6 +316,14 @@ def choose_path(player, dime, tree):
                        'a) Through the Forest?\n'#                                      |
                        'b) To the Field of Foe?\n'#                                     |
                        'c) The Tavern of Many?\n\n').lower()#                           |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|___________________________________FIRST PLACE________________________________________|
+#|                                                                                      |
 #|                                                                                      |
 #|                                                                                      |
 #|                                                                                      |
@@ -342,26 +378,51 @@ def choose_path(player, dime, tree):
 #|                                                                                      |
 #|                                                                                      |
 #|                                                                                      |
-                if fight == 'a':#                                                       |
-#|                                                                                      |
+                if fight == 'a':
                     print('You get your weapon ready and engage in battle... against a tree?\n\n')
-                    time.sleep(1)#                                                      |
-                    print('   You attack the Tree and it smacks you back')#             |
-#|                                                                                      |    
-#|                                                                                      |
-#|                   PLayer and Enemy (Tree) take                                       |
-                    player.take_damage(tree.damage)#                                    |
-                    tree.health -= player.weapon_damage#                                |
-#|                                                                                      |
-#|                   if Tree health goes into Negatives (e.g, -15), its registered as 0 |
-                    if tree.health < 0:#                                                |
-                        tree.health = 0#                                                |
-#|                                                                                      |    
-#|                   Prints Tree and player Health so player can know whos at what      |
-                    print(f"{player.user}'s health: {player.health}")#                  |
-                    print(f"{tree.user}'s health: {tree.health}")#                      |
-                    time.sleep(1)#                                                      |
-#|                                                                                      |
+                    time.sleep(1)
+                    print('   You attack the Tree and it smacks you back')
+    
+    
+                    #Health exchange
+                    player.take_damage(tree.damage)
+                    tree.health -= player.weapon_damage
+
+                    #Set tree health to 0 if it goes negative
+                    if tree.health < 0:
+                        tree.health = 0
+
+                    #Show health updates
+                    print(f"{player.user}'s health: {player.health}")
+                    print(f"{tree.user}'s health: {tree.health}")
+                    time.sleep(1)
+
+                    #If the Tree is dead
+                    if tree.health == 0:
+                        print("\n\n *THUD*. The tree drops.")
+                        print("It dropped some items.")
+        
+       
+                    for item in tree.drop_items:
+                        player.add_to_inventory(item)
+
+                    
+                    while True:
+                        print("\nYou keep walking through the forest.")
+                        print("What do you want to do?")
+                        print("  a) Go back")
+                        print("  b) Check inventory")
+                        choice = input("").lower()
+
+                        if choice in ['a', 'go back']:
+                            print("You head back the way you came...")
+                            return
+                        elif choice in ['b', 'check inventory']:
+                            player.print_inventory()
+
+                        else:
+                            print("Invalid option. Try again.")
+#|                                                                                      |                                                                                      |
 #|                                                                                      |
 #|                                                                                      |
 #|///_______________________________FIGHT 1 B________________________________________\\\|
@@ -414,6 +475,19 @@ def choose_path(player, dime, tree):
                 else:#                                                                  |
                     print("That’s not a valid option. Try again.")#                     |
             break#                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
 #|                                                                                      |
 #|                                                                                      |
 #|/____________________________________OPTION B________________________________________\|        
@@ -560,11 +634,199 @@ def choose_path(player, dime, tree):
                 print('     "Uhhh dude, theres 2 doors. pick one"')
                 time.sleep(2)
             break
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|                                                                                      |
+#|///______________________________________CHOICE C__________________________________\\\|
+
 
         elif choice == 'c':
-            print('You step into the tavern, the smell of ale and stories thick in the air...')
-            break
 
+            print('          *swish swoosh*\n')
+            time.sleep(1)
+            print('          You step into the tavern, the smell of ale and stories thick in the air...\n')
+            time.sleep(2)
+            print('          You hear \n')
+            print('          "NO WEAPONS"\n')
+            print(           'Yelled across the bar from the Bartender\n')
+            time.sleep(1.5)
+            print('          You Put your weapons at the door and continue walking in with Dime. \n')
+            time.sleep(1.5)
+            print('          You sit down at the bar and order a drink\n')
+            time.sleep(2)
+            print('          "Eyy What are you here for?"\n')
+            time.sleep(1)
+            print('          "something you need? You arent our usual folk"\n')
+            print('          - Someone sitting next to you on stool\n')
+            time.sleep(1.3)
+            print('I uhh . . .  We are . . .\n ')
+            time.sleep(1)
+            print('"Someone we know was kidnapped. we need infomation.\n')
+            time.sleep(1.5)
+            print('Yeah, what he said\n')
+            time.sleep(1.3)
+            print('          *The stranger chewing on a tooth pick*\n')
+            time.sleep(1)
+            print('          "I Think i can be of service"\n')
+            time.sleep(1)
+            print('          *Tips his cowboy like hat down to you"')
+            time.sleep(1.5)
+            print('\n         "First im going to need some names."')
+            time.sleep(2)
+            print('\n"Im Dime and he is ', player.user,', we are looking some by the name Helga"')
+            time.sleep(1)
+            print('     *Still chewing tooth pick but moves it to other side*\n')
+            time.sleep(1)
+            print('     "That rings a bell, Helga. I might be able to help"')
+            time.sleep(1)
+            print('Thanks, We never got you name.')
+            time.sleep(1)
+            print('     "Bane, Cad Bane"\n\n      "Go sit in that booth there and wait for me"')#totally not a taken name
+            time.sleep(1)
+            print('     *You and Dime walk to the booth at which Bane pointed at and wait*\n\n')
+            time.sleep(1)
+            print('     "Who is this Helga to you"')
+
+            while True:
+                stranger = input('''
+                a) I dont know her, Dimes friend
+                b) Our Friend
+                c) My Mother
+                d) Thats not of your concern
+                ''').lower()
+                time.sleep(1)
+
+                if stranger == 'a':
+                    pet  = input('''        '     "What are you some pet?"
+                    a) Yes
+                    b) No
+                       ''')
+                    time.sleep(1)
+
+                    if pet == 'b':
+                        print('     "Whatever you say.')
+                        time.sleep(1)
+                        print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                        time.sleep(1)
+                        trowser = input('''
+                        a) trowser?
+                        b) Ive heard of him. Where is he?
+                            ''')
+                        time.sleep(1)
+                        if trowser == 'a':
+                            print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                            return choose_path
+
+                        elif trowser == 'b':
+                            print('        "I doubt you of all people have hear of him. He can be found in the Field of Foe"')
+
+
+
+                    elif pet == 'a':
+                        print('     "Uhhhhh . . . ."')
+                        time.sleep(1)
+                        print('Will you still help us?')
+                        time.sleep(.5)
+                        print('     "I Guess"')
+                        time.sleep(1)
+                        print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                        time.sleep(1)
+                        trowser = input('''
+                        a) trowser?
+                        b) Ive heard of him. Where is he?
+                                ''')
+                        time.sleep(1)
+                        if trowser == 'a':
+                            print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                            return 
+
+                        elif trowser == 'b':
+                            print('        "I doubt you of all people have hear of him. He can be found in the Field of Foe"')
+
+                        else:
+                            print('     "Wierd way to answer a yes or no question')
+                            time.sleep(1)
+                            print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                            time.sleep(1)
+                            trowser = input('''
+                        a) trowser?
+                        b) Ive heard of him. Where is he?
+                            ''')
+                            time.sleep(1)
+                            if trowser == 'a':
+                                print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                                return choose_path
+
+
+                elif stranger == 'b':
+                    print('     "Really? Shes friends with you? I dont buy it" ')
+                    time.sleep(1)
+                    print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                    time.sleep(1)
+                    trowser = input('''
+                    a) trowser?
+                    b) Ive heard of him. Where is he?
+                        ''')
+                    time.sleep(1)
+                    if trowser == 'a':
+                        print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                        return choose_path
+
+                    elif trowser == 'b':
+                        print('        "I doubt you of all people have hear of him. He can be found in the Field of Foe"')
+
+
+                elif stranger == 'c':
+                    print('     "Oh Really? Shes YOUR mother? She had no kids idiot"')
+                    time.sleep(1)
+                    print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                    time.sleep(1)
+                    trowser = input('''
+                    a) trowser?
+                    b) Ive heard of him. Where is he?
+                        ''')
+                    time.sleep(1)
+                    if trowser == 'a':
+                        print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                        return choose_path
+
+                    elif trowser == 'b':
+                        print('        "I doubt you of all people have hear of him. He can be found in the Field of Foe"')
+
+
+                elif stranger == 'd':
+                    print('     "Oh Mr Grumpy pants over here."')
+                    time.sleep(1)
+                    print('     "Helga was taken by a Humaniod Turtle called Trowser')
+                    time.sleep(1)
+                    trowser = input('''
+                    a) trowser?
+                    b) Ive heard of him. Where is he?
+                        ''')
+                    time.sleep(1)
+                    if trowser == 'a':
+                        print('     "The Humanoid Turle? i just said that, anyways, go through the fielf of foe"')
+                        return choose_path
+
+                    elif trowser == 'b':
+                        print('        "I doubt you of all people have hear of him. He can be found in the Field of Foe"')
+
+
+                else:
+                    print('Not an Option')
+                    time.sleep(2)
+
+            
+
+            
         else:
             print("That’s not a valid choice. Try again.")
 

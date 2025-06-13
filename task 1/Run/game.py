@@ -13,10 +13,10 @@ ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
 for rank in ranks:
     for suit in suits:
-        image = pygame.image.load(f'Github/task 1/cards/{rank}{suit}.png')
+        image = pygame.image.load(f'Software/Task 1/cards/{rank}{suit}.png')
         card_images[f'{rank}{suit}'] = pygame.transform.scale(image, (card_width, card_height))
 
-back = pygame.image.load('Github/task 1/cards/back.png')
+back = pygame.image.load('Software/Task 1/cards/back.png')
 back = pygame.transform.scale(back, (card_width, card_height))
 
 total_value = 0  #actual total
