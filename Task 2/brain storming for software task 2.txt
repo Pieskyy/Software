@@ -1,0 +1,30 @@
+brain storming for software task 2
+
+
+	RPG GAME
+
+Pokémon style;
+	Critter vs Critter battle game
+
+
+
+	GAME START:
+
+Play
+
+Race; Human, golem, troll, etc.
+
+Gender; Male, Female
+
+Critter Selection: like Pikachu, Squirtle, etc. but different, fitting towards my game
+
+
+	GAME:
+Talking to a NPC who offers rewards for critters you capture. you can keep critters for yourself to use. they can get xp, etc etc
+
+	Critters can be combined to 'Evolve' them.
+
+	own move sets.
+
+
+each character has buffs. making some better then others.  e.g., one might be able to increase strength of pokemon.

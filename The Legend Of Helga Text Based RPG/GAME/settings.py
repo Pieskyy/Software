@@ -1,61 +1,27 @@
 import sys
 import time #imported here to make story.py cleaner!
-
-
-
-
-
-
+import shutil
+import os
 
 
 #______________________________CLASSES____________________________________
 
 
-
-
-
-
-
-
-
-
 #______________________________Races________________________________________
 
-
-
-
-
-
-
-
 #Race Class
-
 class Race:
-
-    #Things used in race, name, strength, etc
-    
+    #Things used in race, name, strength, et
     def __init__(self, name, strength, health_bonus):
-
         #Later in code theres name = input. that overides this here to set name
-
         self.name = name
-
         #same logic
-
         self.strength = strength
-
-        #same logic
-
+        #same loic
         self.health_bonus = health_bonus
 
-
-
-
 #Race Stats
-
 #race = RACE CLASS(Race name, Race base strength, Race health (adds or subtracts to health total))
-
-
 human = Race(
     "Human",
     strength=5,
@@ -87,8 +53,6 @@ worm = Race(
     )
 
 #SECRET RACES
-
-
 grug = Race(
     "Grug",
     strength=40,
@@ -101,9 +65,7 @@ no = Race(
     health_bonus=-95
     )
 
-
 #Dictionary
-
 races = {
 
     "human": human,
@@ -123,44 +85,30 @@ races = {
 }
 
 
-
-
 #_________________________________WEAPONS_________________________________________
 
-
-
-
-
-
 class Weapon:
-
 
     def __init__(self, name, base_damage):
 
         #weapon name
-
         self.name = name
         
         #damage
-
         self.base_damage = base_damage
         
 
 
 #weapons
-
-
 axe = Weapon(
     "Axe",
     base_damage=400
     )
 
-
 dimes_sword = Weapon(
     "Dime's Sword",
     base_damage=10
     )
-
 
 sword_of_anguish = Weapon(
     "Sword of Anguish",
@@ -168,29 +116,15 @@ sword_of_anguish = Weapon(
     )
 
 
-
-
-
-
-
-
-
 #_________________________________Character Stuffz_________________________________
-
-
-
-
 
 
 #Character, Player, enemy, etc inherit from this
 
 
-
-
 class Character:
 
     def __init__(self, name, health, race=None, weapon=None):
-
         self.user = name
         self.race = race
         #name and race
@@ -198,7 +132,6 @@ class Character:
         self.max_health = health
         self.health = health
         #health
-
 
         self.weapon = weapon
         self.weapon_damage = (weapon.base_damage + race.strength) if weapon and race else 0
@@ -209,10 +142,6 @@ class Character:
         #inventory
 
     
-
-
-
-
     def take_damage(self, amount):#polymorphism because the share and mody damage and what not
         actual_damage = int(amount * self.defense)
         self.health -= actual_damage
@@ -226,23 +155,15 @@ class Character:
 
 
 
-
-
-
-
 class Player(Character):
     def __init__(self, name, race):
         super().__init__(name, 100 + race.health_bonus, race, axe)
         self.weapon_damage = self.weapon.base_damage + race.strength
         self.inventory = [axe_item]
 
-
-
     def add_to_inventory(self, item):
         self.inventory.append(item)
         print(f"{item.name} added to inventory.")
-
-
 
     def use_item(self, using):
         for item in self.inventory:
@@ -255,25 +176,20 @@ class Player(Character):
                         self.inventory.remove(item)
                     return
                 
-
                 else:
                     print(f"{item.name} can't be used.")
                     return
         print("Item not found in inventory.")
 
-
-
     def equip_item(self, using):
         for item in self.inventory:
             if item.name.lower() == using.lower():
-
 
                 if item.type == "equipment" and item.equip_effect:
                     item.equip_effect(self)
                     print(f"{item.name} equipped!")
                     return
-                
-
+            
                 elif item.type == "weapon":
                     if using.lower() in weapon_registry:
                         self.weapon = weapon_registry[using.lower()]
@@ -281,35 +197,67 @@ class Player(Character):
                         print(f"{item.name} equipped as weapon. Damage: {self.weapon_damage}")
                         return
                     
-
                     else:
                         print(f"{item.name} is not a valid weapon object.")
                         return
                     
-
                 else:
                     print(f"{item.name} can't be equipped.")
                     return
         print("Item not found in inventory.")
 
 
-
-    
     def print_inventory(self):
-        print(f"{'Name':<10} {'Type':<10} {'Description':<10}")
-        print('-' * 30)
-        for item in self.inventory:
-            print(f"{item.name:<10} {item.type:<10} {item.description:<20}")
-        print('-' * 30)
-        selection = input('EQUIP (A)        USE (B)        BACK(C)').lower()
-        if selection == 'c':
-            return
-            return
-        if selection == 'a' or 'b':
-            equip = input('What Item? (Enter Number): ')
-        
-    
+        while True:
+            print(f"{'No.':<4} {'Name':<25} {'Type':<12} {'Description'}")
+            print('-' * 70)
+            for idx, item in enumerate(self.inventory, 1):
+            # Mark equipped items
+                if item.type == 'weapon' and self.weapon and self.weapon.name == item.name:
+                    display_name = f"[{item.name}]"
+                elif item.type == 'equipment':
+                # We assume equipment items apply effects and player has a way to track equipped equipment.
+                # Since your code doesn't track equipped equipment explicitly,
+                # you'd need to add that to Player class (e.g. self.equipped_equipment list)
+                # For now, let's just skip marking equipment unless you want to add that tracking.
+                    display_name = item.name
+                else:
+                    display_name = item.name
 
+                print(f"{idx:<4} {display_name:<25} {item.type:<12} {item.description}")
+
+            print('-' * 70)
+            selection = input('Choose an action: EQUIP (A), USE (B), BACK (C): ').strip().lower()
+
+            if selection == 'c':
+                break  # exit inventory
+
+            elif selection in ['a', 'b']:
+                try:
+                    item_number = int(input("Enter the item number: "))
+                    if 1 <= item_number <= len(self.inventory):
+                        item = self.inventory[item_number - 1]
+                    else:
+                        print("Invalid item number.")
+                        continue
+                except ValueError:
+                    print("Please enter a valid number.")
+                    continue
+
+                if selection == 'a':  # Equip
+                    if item.type in ['weapon', 'equipment']:
+                        self.equip_item(item.name)
+                    else:
+                        print(f"{item.name} cannot be equipped.")
+            
+                elif selection == 'b':  # Use
+                    if item.type == 'consumable':
+                        self.use_item(item.name)
+                    else:
+                        print(f"{item.name} cannot be used.")
+
+            else:
+                print("Invalid selection. Please choose A, B, or C.")
 
 
 
@@ -317,11 +265,6 @@ class Dime(Character):
     def __init__(self):
         super().__init__("Dime", 100, human, dimes_sword)
         self.weapon_damage = self.weapon.base_damage + self.race.strength
-
-
-
-
-
 
 class Enemy(Character):
     def __init__(self, name, health, damage, drop_items=None):
@@ -331,13 +274,7 @@ class Enemy(Character):
 
 
 
-
-
-
 #__________________________________ITEMS_____________________________________
-
-
-
 
 
 class Item:
@@ -348,17 +285,11 @@ class Item:
         self.type = type
         self.description = description
 
-
-
-
-
 axe_item = Item(
     "Axe",
     type='weapon',
     description='Your axe used to chop wood.'
 )
-
-
 
 dimes_sword_item = Item(
     "Dime's Sword",
@@ -366,16 +297,11 @@ dimes_sword_item = Item(
     description="Dimes sword he tried to attack you with"
 )
 
-
-
 sword_of_anguish_item = Item(
     "Sword of Anguish",
     type='weapon',
     description='A stick. Literally a stick.'
 )
-
-
-
 
 weapon_registry = {
     "axe": axe,
@@ -384,17 +310,7 @@ weapon_registry = {
 }
 
 
-
-
-
-
-
-
 #______________________________ITEM EFFECTS_________________________________
-
-
-
-
 
 
 def use_sap_of_life(player):
@@ -404,22 +320,12 @@ def use_sap_of_life(player):
         player.health = player.max_health
     print(f"{player.user} used the Sap of Life and healed {heal_amount} health! Current health: {player.health}")
 
-
-
-
-
 def equip_bark_shield(player):
     player.defense = 0.5
     print(f"{player.user} equipped the Bark Shield. Less damage will be taken!")
 
 
-
-
 #_______________________________ACTUAL ITEMS_______________________________________
-
-
-
-
 
 
 sap_of_life = Item(
@@ -429,7 +335,6 @@ sap_of_life = Item(
     description='Mystical tree juice, capable of healing'
     )
 
-
 bark_shield = Item(
     "Bark Shield",
     equip_effect=equip_bark_shield,
@@ -437,19 +342,7 @@ bark_shield = Item(
     description='Bark Ripped off the tree, deflects damage.'
     )
 
-
-
-
-
-
-
-
 #_______________________________ENEMIES______________________________________
-
-
-
-
-
 
 tree = Enemy(
     "Tree",
@@ -459,15 +352,9 @@ tree = Enemy(
     sap_of_life]
     )
 
-
-
 barry = Enemy(
     "Barry",
     health=15,
     damage=2,
     drop_items=[sword_of_anguish]
     )
-
-
-
-
