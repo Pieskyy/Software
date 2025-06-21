@@ -3,6 +3,9 @@ import time #imported here to make story.py cleaner!
 import shutil
 import os
 
+enter = 0  # Set initial value for Bar
+columns, rows = shutil.get_terminal_size()
+
 
 #______________________________CLASSES____________________________________
 
@@ -209,39 +212,35 @@ class Player(Character):
 
     def print_inventory(self):
         while True:
-            print(f"{'No.':<4} {'Name':<25} {'Type':<12} {'Description'}")
+            print(f"{'No.':<4} {'Name':<25} {'Type':<12} {'Description'}".center(columns))
             print('-' * 70)
             for idx, item in enumerate(self.inventory, 1):
             # Mark equipped items
                 if item.type == 'weapon' and self.weapon and self.weapon.name == item.name:
                     display_name = f"[{item.name}]"
                 elif item.type == 'equipment':
-                # We assume equipment items apply effects and player has a way to track equipped equipment.
-                # Since your code doesn't track equipped equipment explicitly,
-                # you'd need to add that to Player class (e.g. self.equipped_equipment list)
-                # For now, let's just skip marking equipment unless you want to add that tracking.
                     display_name = item.name
                 else:
                     display_name = item.name
 
-                print(f"{idx:<4} {display_name:<25} {item.type:<12} {item.description}")
+                print(f"{idx:<4} {display_name:<25} {item.type:<12} {item.description}".center(columns))
 
             print('-' * 70)
-            selection = input('Choose an action: EQUIP (A), USE (B), BACK (C): ').strip().lower()
+            selection = input('Choose an action: EQUIP (A), USE (B), BACK (C): '.center(columns)).strip().lower()
 
             if selection == 'c':
                 break  # exit inventory
 
             elif selection in ['a', 'b']:
                 try:
-                    item_number = int(input("Enter the item number: "))
+                    item_number = int(input("Enter the item number: >> ".center(columns)))
                     if 1 <= item_number <= len(self.inventory):
                         item = self.inventory[item_number - 1]
                     else:
-                        print("Invalid item number.")
+                        print("Invalid item number.".center(columns))
                         continue
                 except ValueError:
-                    print("Please enter a valid number.")
+                    print("Please enter a valid number.".center(columns))
                     continue
 
                 if selection == 'a':  # Equip
