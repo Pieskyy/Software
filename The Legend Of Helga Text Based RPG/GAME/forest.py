@@ -38,10 +38,11 @@ def tree_picture():
     for line in tree_lines:
         print(line.center(columns))
     time.sleep(5)
-    clear_console()
+    #clear_console()
 
 def tree_battle(player, tree):
     while True:
+        clear_console()
         print('You see a Walking Tree. You can either:'.center(columns))
         print('a) Fight it'.center(columns))
         print('b) Go back'.center(columns))
@@ -52,6 +53,7 @@ def tree_battle(player, tree):
         fight = centered_input()
 
         if fight == 'a':
+            clear_console()
             print('You get your weapon ready and engage in battle... against a tree?\n\n'.center(columns))
             time.sleep(3)
             print('   You attack the Tree and it smacks you back'.center(columns))
@@ -71,8 +73,9 @@ def tree_battle(player, tree):
                     player.add_to_inventory(item)
 
                 while True:
-                    print('You keep walking through the forest.'.center(columns))
-                    print('What do you want to do?'.center(columns))
+                    clear_console()
+                    print('You keep walking through the forest.\n'.center(columns))
+                    print('What do you want to do?\n'.center(columns))
                     print('a) Go back'.center(columns))
                     print('b) Check inventory'.center(columns))
 
@@ -87,19 +90,23 @@ def tree_battle(player, tree):
                         print("Invalid option. Try again.\n".center(columns))
 
         elif fight == 'b':
+            clear_console()
             print('You decide to retreat... Bok Bok!'.center(columns))
+            time.sleep(3)
             return  # Go back to main path loop
 
         elif fight == 'c':
+            clear_console()
             print('You try to befriend the tree... and it attacks you!\n'.center(columns))
             time.sleep(3)
             player.take_damage(20)
-            print(f'Your Health is now: {player.health}'.center(columns))
+            print(f'Your Health is now: {player.health}\n'.center(columns))
             time.sleep(3)
             print('The tree still stands there, rustling ominously...'.center(columns))
             time.sleep(3)
 
         elif fight == 'd':
+            clear_console()
             player.print_inventory()
             time.sleep(3)
         else:
@@ -121,6 +128,7 @@ def forest(player, tree):
     print('“So, what makes you want to go through the forest?”\n'.center(columns))
     centered_input()
     time.sleep(3)
+    print('\n')
 
     print('“Uh huh . . . Okay . . . Whatever you say, Brochacho.”\n'.center(columns))
     time.sleep(3)

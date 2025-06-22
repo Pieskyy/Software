@@ -1,11 +1,9 @@
 from settings import *
 
 def start():
- 
         clear_console()# screen clear.
 
-        # ASCII Art as string
-        ascii_art = """
+        ascii_art = """        
 ████████╗██╗  ██╗███████╗     ██╗     ███████╗ ██████╗ ███████╗███╗   ██╗██████╗      ██████╗ ███████╗
 ╚══██╔══╝██║  ██║██╔════╝     ██║     ██╔════╝██╔════╝ ██╔════╝████╗  ██║██╔══██╗    ██╔═══██╗██╔════╝
    ██║   ███████║█████╗       ██║     █████╗  ██║  ███╗█████╗  ██╔██╗ ██║██║  ██║    ██║   ██║█████╗  
@@ -19,41 +17,28 @@ def start():
 ██╔══██║██╔══╝  ██║     ██║   ██║ ██╔══██║
 ██║  ██║███████╗███████╗╚██████╔╝ ██║  ██║
 ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═╝  ╚═╝
-
-        """
-
-
-        # Split lines and calculate vertical centering
-        ascii_lines = ascii_art.strip('\n').split('\n')
-        vertical_padding = (rows - len(ascii_lines)) // 2 # ( ChatGPT aswell)
-
-
-        # Print empty lines to vertically center
-        print('\n' * vertical_padding)
-
-        # Print each line centered horizontally
-        for line in ascii_lines:
+        """ # ASCII Art as string
+        ascii_lines = ascii_art.strip('\n').split('\n') # Split lines and calculate vertical centering
+        vertical_padding = (rows - len(ascii_lines)) // 2 # ( ChatGPT aswell (settings for link))
+        print('\n' * vertical_padding) # Print empty lines to vertically center
+        for line in ascii_lines: # Print each line centered horizontally
             print(line.center(columns))
 
-        # Pause before transitioning
-        time.sleep(5)
-        os.system('cls' if os.name == 'nt' else 'clear')# clean screar
+        time.sleep(5)# Pause before transitioning
+        clear_console() # clean screar
 
-        # Print selection screen title at top (not vertically centered)
-        print('______________________________________SELECTION_SCREEN______________________________________'.center(columns))
+        print('______________________________________SELECTION_SCREEN______________________________________'.center(columns))# Print selection screen title at top (not vertically centered)
         print('\n' * 3)  # Some spacing under the heading
 
 
-
         print('What do you wish to be called?: \n'.center(columns) )  # Input a word of sorts, Becomes name.
-        name = centered_input() # ChatGPT help
+        name = centered_input()
 
         time.sleep(3)
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_console()
 
         print('\n' * 3)
-        print('Possible Races:'.center(columns))
-        # 'Viewable' Races, Theres 2 hidden ones. Grug as Tribute and No for annoying people.
+        print('Possible Races:'.center(columns))  # 'Viewable' Races, Theres 2 hidden ones. Grug as Tribute and No for annoying people.
 
         race_selection ='''   
         Human:
@@ -77,15 +62,12 @@ def start():
             Health: 95
 
             '''
-
         race_select = race_selection.strip('\n').split('\n')
-
-        # Print each line centered horizontally
-        for line in race_select:
+        
+        for line in race_select:# Print each line centered horizontally
             print(line.center(columns))
         
-        # List of races from dictionary in settings
-        valid_races = list(races.keys())
+        valid_races = list(races.keys())# List of races from dictionary in settings
 
         while True:     # loop
             print('So what race do you wish to be?\n'.center(columns))
@@ -104,17 +86,15 @@ def start():
         dime = Dime()   # so you can do thinks like player.user etc later on
         player = Player(name, chosen_race)
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_console()
         print(f'Player created with name: {player.user} and race: {player.race.name} and health: {player.health} '.center(columns))
         time.sleep(3)
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_console() # Hint like screen
 
-        # Hint like screen
         print('"TEXT" Refers to other characters. if without "", it is your Character. \n\n\n\n\n'.center(columns))
         print('(FOR BEST EXPIRENCE PLAY IN FULL SCREEN)\n\n\n\n\n'.center(columns))
         print('Thanks Mathew for helping with printing inventory <3'.center(columns))
 
         time.sleep(5)
-        os.system('cls' if os.name == 'nt' else 'clear')
-
+        clear_console()
         return player, dime

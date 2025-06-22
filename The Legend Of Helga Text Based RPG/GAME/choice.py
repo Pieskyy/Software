@@ -4,11 +4,10 @@ from doors import field_of_foe
 from bar import enter_bar
 
 
-def choose_path(player, dime, tree, enter):
-    clear_console()
-
+def choose_path(player, dime, tree):
+    
     while True:
-
+        clear_console()
         print('______________________________________________ WHERE TO ______________________________________________\n\n\n'.center(columns))
         print('Where will you go?\n'.center(columns))
 
@@ -28,8 +27,8 @@ def choose_path(player, dime, tree, enter):
            field_of_foe(player, dime, barry)
 
         elif choice == 'c': 
-            enter_bar(player, dime, tree, enter)
+            enter_bar(player, dime, tree)
 
         else:
-            print('Not an Option')
+            print('Not an Option'.center(columns))
             time.sleep(3)

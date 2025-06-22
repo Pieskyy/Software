@@ -11,8 +11,7 @@ def clear_console(): # ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-b
 def centered_input(prompt='>> '): # centers input statements
     return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # same chatgpt log
 
-
-enter = 0  # Set initial value for bar
+enter = 0
 
 columns, rows = shutil.get_terminal_size() # same ai log. for centering messages.
 
