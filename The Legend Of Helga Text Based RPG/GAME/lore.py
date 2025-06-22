@@ -1,4 +1,3 @@
-
 from settings import *
 import os, time, shutil
 from start import *
@@ -55,7 +54,7 @@ def lore(player, dime):
     time.sleep(3)
 
     print('"Are you up for the Challenge?"\n'.center(columns))
-    first_no = input(' ' * ((columns - 3) // 2) + '>> ')
+    first_no = centered_input
     time.sleep(3)   # No Matter whats said, its a yes so storyc an continue
 
     if first_no.lower() in ['no', 'nah', 'nope', 'nuhuh', 'nuh huh', 'nuh uh', 'nop', 'nup']:
@@ -82,7 +81,7 @@ def lore(player, dime):
     time.sleep(3)
 
     print('"Are you still able to help me?"\n '.center(columns))
-    second_no = input(' ' * ((columns - 3) // 2) + '>> ').lower()
+    second_no = centered_input.lower()
     time.sleep(3) # same as before
 
     if first_no.lower() in ['no', 'nah', 'nope', 'nuhuh', 'nuh huh', 'nuh uh', 'nop', 'nup']:

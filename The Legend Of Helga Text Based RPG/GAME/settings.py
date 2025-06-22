@@ -3,6 +3,14 @@ import time #imported here to make story.py cleaner!
 import shutil
 import os
 
+def clear_console():
+     os.system('cls' if os.name == 'nt' else 'clear') 
+
+
+def centered_input(prompt='>> '):
+    return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower()
+
+
 enter = 0  # Set initial value for Bar
 columns, rows = shutil.get_terminal_size()
 
@@ -201,19 +209,19 @@ class Player(Character):
                         return
                     
                     else:
-                        print(f"{item.name} is not a valid weapon object.")
+                        print(f"{item.name} is not a valid weapon object.".center(columns))
                         return
                     
                 else:
-                    print(f"{item.name} can't be equipped.")
+                    print(f"{item.name} can't be equipped.".center(columns))
                     return
-        print("Item not found in inventory.")
+        print("Item not found in inventory.".center(columns))
 
 
     def print_inventory(self):
         while True:
             print(f"{'No.':<4} {'Name':<25} {'Type':<12} {'Description'}".center(columns))
-            print('-' * 70)
+            print(('-' * 70).center(columns))
             for idx, item in enumerate(self.inventory, 1):
             # Mark equipped items
                 if item.type == 'weapon' and self.weapon and self.weapon.name == item.name:
@@ -225,7 +233,7 @@ class Player(Character):
 
                 print(f"{idx:<4} {display_name:<25} {item.type:<12} {item.description}".center(columns))
 
-            print('-' * 70)
+            print(('-' * 70).center(columns))
             selection = input('Choose an action: EQUIP (A), USE (B), BACK (C): '.center(columns)).strip().lower()
 
             if selection == 'c':
@@ -247,16 +255,16 @@ class Player(Character):
                     if item.type in ['weapon', 'equipment']:
                         self.equip_item(item.name)
                     else:
-                        print(f"{item.name} cannot be equipped.")
+                        print(f"{item.name} cannot be equipped.").center(columns)
             
                 elif selection == 'b':  # Use
                     if item.type == 'consumable':
                         self.use_item(item.name)
                     else:
-                        print(f"{item.name} cannot be used.")
+                        print(f"{item.name} cannot be used.".center(columns))
 
             else:
-                print("Invalid selection. Please choose A, B, or C.")
+                print("Invalid selection. Please choose A, B, or C.".center(columns))
 
 
 

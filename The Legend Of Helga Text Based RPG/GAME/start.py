@@ -8,7 +8,7 @@ def start():
 
 
         # Clear screen 
-        os.system('cls' if os.name == 'nt' else 'clear') # ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-bfea96e06e38)
+        clear_console()# ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-bfea96e06e38)
 
         # ASCII Art as string
         ascii_art = """
@@ -52,7 +52,7 @@ def start():
 
 
         print('What do you wish to be called?: \n'.center(columns) )  # Input a word of sorts, Becomes name.
-        name = input(' ' * ((columns - 3) // 2) + '>> ') # ChatGPT help
+        name = centered_input # ChatGPT help
 
         time.sleep(3)
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -96,7 +96,7 @@ def start():
         while True:     # loop
             print('So what race do you wish to be?\n'.center(columns))
 
-            race_input = input(' ' * ((columns - 3) // 2) + '>> ')              # Get input from user
+            race_input = centered_input              # Get input from user
             race_input = race_input.lower()  # Make input lowercase
             
             if race_input in valid_races:          # Check if input is valid
