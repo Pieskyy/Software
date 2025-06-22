@@ -1,7 +1,7 @@
 from settings import *
 
 def tree_picture():
-    clear_console
+    clear_console()
     tree_ascii = '''
                                                          .
                                               .         ;  
@@ -65,7 +65,7 @@ def tree_battle(player, tree):
             time.sleep(3)
 
             if tree.health == 0:
-                print('\n\n     *THUD*. The tree drops.'.center(columns))
+                print('*THUD*. The tree drops.'.center(columns))
                 print("     It dropped some items.".center(columns))
                 for item in tree.drop_items:
                     player.add_to_inventory(item)

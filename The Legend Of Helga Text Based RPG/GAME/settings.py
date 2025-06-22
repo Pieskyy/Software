@@ -1,38 +1,29 @@
 import sys
-import time #imported here to make story.py cleaner!
+import time
 import shutil
 import os
 
-def clear_console():
+
+def clear_console(): # ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-bfea96e06e38) Screen Clear
      os.system('cls' if os.name == 'nt' else 'clear') 
 
 
-def centered_input(prompt='>> '):
-    return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower()
+def centered_input(prompt='>> '): # centers input statements
+    return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # same chatgpt log
 
 
-enter = 0  # Set initial value for Bar
-columns, rows = shutil.get_terminal_size()
+enter = 0  # Set initial value for bar
+
+columns, rows = shutil.get_terminal_size() # same ai log. for centering messages.
 
 
-#______________________________CLASSES____________________________________
 
-
-#______________________________Races________________________________________
-
-#Race Class
 class Race:
-    #Things used in race, name, strength, et
     def __init__(self, name, strength, health_bonus):
-        #Later in code theres name = input. that overides this here to set name
         self.name = name
-        #same logic
         self.strength = strength
-        #same loic
         self.health_bonus = health_bonus
 
-#Race Stats
-#race = RACE CLASS(Race name, Race base strength, Race health (adds or subtracts to health total))
 human = Race(
     "Human",
     strength=5,
@@ -63,8 +54,7 @@ worm = Race(
     health_bonus=-5
     )
 
-#SECRET RACES
-grug = Race(
+grug = Race( # SECRET RACES
     "Grug",
     strength=40,
     health_bonus=200
@@ -76,41 +66,23 @@ no = Race(
     health_bonus=-95
     )
 
-#Dictionary
-races = {
+races = { # Dictionary
 
     "human": human,
-
     "elf": elf,
-
     "orc": orc,
-
     "dwarf": dwarf,
-
     "worm": worm,
-
     "grug": grug,
-
     "no": no,
-    
 }
 
 
-#_________________________________WEAPONS_________________________________________
-
 class Weapon:
-
     def __init__(self, name, base_damage):
-
-        #weapon name
         self.name = name
-        
-        #damage
         self.base_damage = base_damage
         
-
-
-#weapons
 axe = Weapon(
     "Axe",
     base_damage=400
@@ -127,54 +99,40 @@ sword_of_anguish = Weapon(
     )
 
 
-#_________________________________Character Stuffz_________________________________
-
-
-#Character, Player, enemy, etc inherit from this
-
-
 class Character:
-
     def __init__(self, name, health, race=None, weapon=None):
         self.user = name
         self.race = race
-        #name and race
-
         self.max_health = health
         self.health = health
-        #health
-
         self.weapon = weapon
         self.weapon_damage = (weapon.base_damage + race.strength) if weapon and race else 0
         self.defense = 1.0
-        #weapon damage and defense
-
         self.inventory = []
-        #inventory
 
-    
-    def take_damage(self, amount):#polymorphism because the share and mody damage and what not
-        actual_damage = int(amount * self.defense)
+    def take_damage(self, amount):
+        actual_damage = max(0, int(amount * self.defense))  # apply defense multiplier
         self.health -= actual_damage
-        if self.health < 0:     #some mathy stuff, dont worry about all this
-            self.health = 0     #just prints that if the user has no health hten its dead
+        if self.health < 0:
+            self.health = 0
         if self.health == 0:
-            print(f"{self.user} has died.")
+            print(f"{self.user} has died.".center(columns))
             if isinstance(self, Player):
-                print("You died, idiot. Game over.")
+                print("You died, idiot. Game over.".center(columns))
                 sys.exit()
-
-
+        return actual_damage
 
 class Player(Character):
     def __init__(self, name, race):
         super().__init__(name, 100 + race.health_bonus, race, axe)
         self.weapon_damage = self.weapon.base_damage + race.strength
         self.inventory = [axe_item]
+        self.equipped_equipment = None
+
 
     def add_to_inventory(self, item):
         self.inventory.append(item)
-        print(f"{item.name} added to inventory.")
+        print(f"{item.name} added to inventory.".center(columns))
 
     def use_item(self, using):
         for item in self.inventory:
@@ -188,24 +146,26 @@ class Player(Character):
                     return
                 
                 else:
-                    print(f"{item.name} can't be used.")
+                    print(f"{item.name} can't be used.".center(columns))
                     return
-        print("Item not found in inventory.")
+        print("Item not found in inventory.".center(columns))
 
     def equip_item(self, using):
         for item in self.inventory:
             if item.name.lower() == using.lower():
 
                 if item.type == "equipment" and item.equip_effect:
+                    self.equipped_equipment = item  # Track it
                     item.equip_effect(self)
-                    print(f"{item.name} equipped!")
+                    print(f"{item.name} equipped!".center(columns))
                     return
+
             
                 elif item.type == "weapon":
                     if using.lower() in weapon_registry:
                         self.weapon = weapon_registry[using.lower()]
                         self.weapon_damage = self.weapon.base_damage + self.race.strength
-                        print(f"{item.name} equipped as weapon. Damage: {self.weapon_damage}")
+                        print(f"{item.name} equipped as weapon. Damage: {self.weapon_damage}".center(columns))
                         return
                     
                     else:
@@ -220,28 +180,36 @@ class Player(Character):
 
     def print_inventory(self):
         while True:
+            clear_console()
             print(f"{'No.':<4} {'Name':<25} {'Type':<12} {'Description'}".center(columns))
             print(('-' * 70).center(columns))
             for idx, item in enumerate(self.inventory, 1):
             # Mark equipped items
                 if item.type == 'weapon' and self.weapon and self.weapon.name == item.name:
                     display_name = f"[{item.name}]"
+                elif item.type == 'equipment' and self.equipped_equipment and self.equipped_equipment.name == item.name:
+                    display_name = f"[{item.name}]"
                 elif item.type == 'equipment':
                     display_name = item.name
+
                 else:
                     display_name = item.name
 
                 print(f"{idx:<4} {display_name:<25} {item.type:<12} {item.description}".center(columns))
 
             print(('-' * 70).center(columns))
-            selection = input('Choose an action: EQUIP (A), USE (B), BACK (C): '.center(columns)).strip().lower()
+            print('Choose an action: EQUIP (A), USE (B), BACK (C): '.center(columns))
+            selection = centered_input()
 
             if selection == 'c':
+                clear_console
                 break  # exit inventory
 
             elif selection in ['a', 'b']:
                 try:
-                    item_number = int(input("Enter the item number: >> ".center(columns)))
+                    print("Enter the item number:".center(columns))
+                    item_number = centered_input()
+                    item_number = int(item_number)
                     if 1 <= item_number <= len(self.inventory):
                         item = self.inventory[item_number - 1]
                     else:
@@ -280,10 +248,6 @@ class Enemy(Character):
         self.drop_items = drop_items or []
 
 
-
-#__________________________________ITEMS_____________________________________
-
-
 class Item:
     def __init__(self, name, use_effect=None, equip_effect=None, type='consumable', description='No Description'):
         self.name = name
@@ -317,23 +281,16 @@ weapon_registry = {
 }
 
 
-#______________________________ITEM EFFECTS_________________________________
-
-
 def use_sap_of_life(player):
     heal_amount = 30
     player.health += heal_amount
     if player.health > player.max_health:
         player.health = player.max_health
-    print(f"{player.user} used the Sap of Life and healed {heal_amount} health! Current health: {player.health}")
+    print(f"{player.user} used the Sap of Life and healed {heal_amount} health! Current health: {player.health}".center(columns))
 
 def equip_bark_shield(player):
     player.defense = 0.5
-    print(f"{player.user} equipped the Bark Shield. Less damage will be taken!")
-
-
-#_______________________________ACTUAL ITEMS_______________________________________
-
+    print(f"{player.user} equipped the Bark Shield. Less damage will be taken!".center(columns))
 
 sap_of_life = Item(
     "Sap of Life",
@@ -348,8 +305,6 @@ bark_shield = Item(
     type='equipment',
     description='Bark Ripped off the tree, deflects damage.'
     )
-
-#_______________________________ENEMIES______________________________________
 
 tree = Enemy(
     "Tree",

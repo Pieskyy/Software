@@ -5,4 +5,4 @@ from fights import *
 
 player, dime = start()
 lore(player, dime)
-choose_path(player, dime, tree)
+choose_path(player, dime, tree, enter)

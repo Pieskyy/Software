@@ -1,7 +1,7 @@
 from settings import *
-from fights import choose_path
 
 def enter_bar(player, dime, tree, enter):
+    from fights import choose_path
 
 
     if enter == 1: # If you've already entered.
@@ -143,6 +143,7 @@ def grumpy(player, dime, tree):
 
 
 def trowser(player, dime, tree):
+    from fights import choose_path
     print('     "Helga was taken by a Humaniod Turtle called Trowser"')
     time.sleep(3)
 

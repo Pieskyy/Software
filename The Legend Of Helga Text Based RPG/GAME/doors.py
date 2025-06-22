@@ -44,8 +44,10 @@ def barry_battle(player, barry):
 
             print('   You attack Barry and he begins to cry and flails his stick like a toddler... it still nicks you.'.center(columns))
             time.sleep(3)
+            actual_damage = player.take_damage(barry.damage)
+            barry.health -= player.weapon_damage
+            print(f"You do {player.weapon_damage} to Barry, and he does {actual_damage} back (reduced from {barry.damage}).".center(columns))
 
-            print(f'   You do {player.weapon_damage} to Barry, and he does {barry.damage} back.'.center(columns))
 
             player.take_damage(barry.damage)
             barry.health -= player.weapon_damage
