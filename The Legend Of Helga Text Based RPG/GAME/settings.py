@@ -84,7 +84,7 @@ class Weapon:
         
 axe = Weapon(
     "Axe",
-    base_damage=400
+    base_damage=8
     )
 
 dimes_sword = Weapon(
@@ -92,10 +92,6 @@ dimes_sword = Weapon(
     base_damage=10
     )
 
-sword_of_anguish = Weapon(
-    "Sword of Anguish",
-    base_damage=0.5
-    )
 
 
 class Character:
@@ -222,7 +218,7 @@ class Player(Character):
                     if item.type in ['weapon', 'equipment']:
                         self.equip_item(item.name)
                     else:
-                        print(f"{item.name} cannot be equipped.").center(columns)
+                        print(f"{item.name} cannot be equipped.".center(columns))
             
                 elif selection == 'b':  # Use
                     if item.type == 'consumable':
@@ -267,16 +263,9 @@ dimes_sword_item = Item(
     description="Dimes sword he tried to attack you with"
 )
 
-sword_of_anguish_item = Item(
-    "Sword of Anguish",
-    type='weapon',
-    description='A stick. Literally a stick.'
-)
-
 weapon_registry = {
     "axe": axe,
     "dime's sword": dimes_sword,
-    "sword of anguish": sword_of_anguish
 }
 
 
@@ -286,10 +275,29 @@ def use_sap_of_life(player):
     if player.health > player.max_health:
         player.health = player.max_health
     print(f"{player.user} used the Sap of Life and healed {heal_amount} health! Current health: {player.health}".center(columns))
+    time.sleep(3)
+
+def use_barrys_tears(player):
+    heal_amount = 10
+    player.health += heal_amount
+    if player.health > player.max_health:
+        player.health = player.max_health
+    print(f"{player.user} drank barrys tears like a wierdo but healed {heal_amount} health! Current health: {player.health}".center(columns))
+    time.sleep(3)
 
 def equip_bark_shield(player):
     player.defense = 0.5
     print(f"{player.user} equipped the Bark Shield. Less damage will be taken!".center(columns))
+
+def equip_bucket_hat(player):
+    player.defense = 0.2
+    print(f"{player.user} put on the stolen hat and now takes a little less damage".center(columns))
+
+def equip_sandals(player):
+    player.defense = 0.2
+    print(f"{player.user} put on some fresh kicks!".center(columns))
+
+
 
 sap_of_life = Item(
     "Sap of Life",
@@ -298,11 +306,33 @@ sap_of_life = Item(
     description='Mystical tree juice, capable of healing'
     )
 
+barrys_tears = Item(
+    "Tears of Barry",
+    use_effect=use_barrys_tears,
+    type='consumable',
+    description='Tears from the unstoppable Barry'
+    )
+
+
 bark_shield = Item(
     "Bark Shield",
     equip_effect=equip_bark_shield,
     type='equipment',
     description='Bark Ripped off the tree, deflects damage.'
+    )
+
+bucket_hat = Item(
+    "Bucket Hat",
+    equip_effect=equip_bucket_hat,
+    type='equipment',
+    description='You Stole his hat? Meany'
+    )
+
+sandals = Item(
+    "Bark Shield",
+    equip_effect=equip_sandals,
+    type='equipment',
+    description='you robbed him for his shoes?'
     )
 
 tree = Enemy(
@@ -317,5 +347,13 @@ barry = Enemy(
     "Barry",
     health=15,
     damage=2,
-    drop_items=[sword_of_anguish]
+    drop_items=[barrys_tears]
     )
+
+harry = Enemy(
+    "Harry",
+    health=30,
+    damage=4,
+    drop_items=[sandals, bucket_hat]
+    )
+

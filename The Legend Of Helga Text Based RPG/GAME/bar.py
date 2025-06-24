@@ -1,8 +1,49 @@
 from settings import *
 
-def enter_bar(player, dime, tree):
+def swoosh(): # cowboy door for tavern. This functions holds the ascii art of said door
+    clear_console()
+    swoosh_ascii = '''       
+          =========#%%%%*                                                 :#%%%%#+========          
+          =========#%%##*                                                 :#%%%%#=========                   
+          =========#%%%%*                :==+++++#++****=.                :%%%%%#=========          
+          =========*%%%%*****+=======+++++++++++*#***********+===---=***#*=%%%%%#+========          
+          =========*%%%%**+**********************#************************=%%%%%#=========          
+          -=--=====#%%%%**+***%%%%%%%%%%%%%%%%***#***#%%%%%%%%%%%%%%%***=+=%%%%%#=========          
+          =-=======*%%%%#*+***%%%%%%%%%%%%%%%%***#***#%%%%%%%%%%%%%%%#**++=%%%%%*=========          
+          -=--=====#%%%%#*****%%%%%%%%%%%%%%%%***%****%%%%%%%%%%%%%%%###%*=%%%%%#=========          
+          ---=-====#%%%%#*****%%%%%%%%%%%%%%%%***#***#%%%%%%%%%%%%%%%**#%#+%%%%%*=========          
+          --=-=====*%%%%#*****%%%%%%%%%%%%%%%%***#***#%%%%%%%%%%%%%%%###%#+%%%%%#=========          
+          -----====#%%%%#********#############***%*********#############%%+%%%%%*=========          
+          -----====#%%%%#*******##############*+*%******##############%%%%+%%%%%*=========          
+          -----====*%%%%#**************#*********%*************#*****###%%+%%%%%*=========          
+          ------===#%%%%#********##*##########***%****#*################%%+%%%%%*=========          
+          -----=-==*%%%%#******##############****%****##################%%+%%%%%*=======-=          
+          -----====*%%%%#****#%%%%%%%%%%%%%%%%***%***#%%%%%%%%%%%%%%%%%%%%+%%%%%*========-          
+          ------===*%%%%#****#%%%%%%%%%%%%%%%%***%***#%%%%%%%%%%%%%%%%%%%%+%%%%%*========-          
+          ------===*%%%%%****#%%%%%%%%%%%%%%%%***%##*#%%%%%%%%%%%%%%%##%%%+%%%%%*====-=-=-          
+          -------==*%%%%#*#*##%%%%%%%%%%%%%%%%#*#%####%%%%%%%%%%%%%%%%#%%%+%%%%%*=====----          
+          ------===*%%%%%****#********########*##%####*******#########*#+#+%%%%%*===--=---          
+          -------==*%%%%%***#################*###%####################*#*#+%%%%%*===------          
+          :-:----==*%%%%%*#**#*################*#%###########********##%%%+%%%%%*==-------          
+          ::-----==*%%%%%***********=-:.      :::::::      ..:=*****##%%%%+%%%%%*===------          
+          :::----==*%%%%%+++*=-::                                 .:-=****=%%%%%*==------:          
+          ::::---==*%%%%#                                                 :%%%%%#==---:-::          
+                 :-:----==*%%%%#    Like a bar door used in cowboy movies:p      :%%%%%#==---::::                                                                                                              
+        '''
+    swoosh_lines = swoosh_ascii.strip('\n').split('\n')
+    vertical_padding = (rows - len(swoosh_lines)) // 2
+    print('\n' * vertical_padding)
+    for line in swoosh_lines:
+        print(line.center(columns))
+    time.sleep(5)
+    clear_console()
+
+def enter_bar(player, dime, tree): # Holds output of first entering bar and checks to make sure its you first, if 2nd or more, prints other stuff
     from choice import choose_path
+    clear_console()
     global enter
+
+    swoosh()
 
     if enter == 1: # If you've already entered.
         print('*swish swoosh*\n'.center(columns))
@@ -82,7 +123,7 @@ def enter_bar(player, dime, tree):
     print('Thanks, We never got you name.\n'.center(columns))
     time.sleep(3)
 
-    print('Bane, Cad Bane" - stranger\n'.center(columns))
+    print('"Bane, Cad Bane" - stranger\n'.center(columns))
     time.sleep(3)
 
     print('"Go sit in that booth there and wait for me" - Cad Bane\n'.center(columns))  # totally not a taken name
@@ -96,7 +137,7 @@ def enter_bar(player, dime, tree):
 
     question(player, dime, tree)
 
-def question(player, dime, tree):
+def question(player, dime, tree): # THe questions that are asked
     while True:
         print('a) I dont know her, Dimes friend'.center(columns))
         print('b) Our Friend'.center(columns))
@@ -108,7 +149,7 @@ def question(player, dime, tree):
         time.sleep(3)
         clear_console()
 
-        if stranger == 'a':
+        if stranger == 'a': # if answer == so and so, do this function
             pet(player, dime, tree)
 
         elif stranger == 'b':
@@ -124,7 +165,7 @@ def question(player, dime, tree):
             print('Invalid input. Try again.'.center(columns))
 
 
-def pet(player, dime, tree):
+def pet(player, dime, tree): # question 1
     print('What are you some pet?" - Cad Bane'.center(columns))
     print('a) Yes'.center(columns))
     print('b) No'.center(columns))
@@ -152,25 +193,25 @@ def pet(player, dime, tree):
         trowser(player, dime, tree)
 
 
-def friend(player, dime, tree):
+def friend(player, dime, tree): # question 2
     print('"I Doubt she is friends with YOU." - Cad Bane\n'.center(columns))
     time.sleep(3)
     trowser(player, dime, tree)
 
 
-def mother(player, dime, tree):
+def mother(player, dime, tree): # question 3
     print('"Oh Really? Shes YOUR mother? She had no kids idiot\n" - Cad Bane'.center(columns))
     time.sleep(3)
     trowser(player, dime, tree)
 
 
-def grumpy(player, dime, tree):
+def grumpy(player, dime, tree): # question 4
     print('"Oh Mr Grumpy pants over here." - Cad Bane\n'.center(columns))
     time.sleep(3)
     trowser(player, dime, tree)
 
 
-def trowser(player, dime, tree):
+def trowser(player, dime, tree): # where the boss is locatated 
     from choice import choose_path
     clear_console()
     print('"Helga was taken by a Humaniod Turtle called Trowser" - Cad Bane'.center(columns))
@@ -179,16 +220,16 @@ def trowser(player, dime, tree):
     
     print('a) Trowser?'.center(columns))
     print('b) Ive heard of him. Where is he?'.center(columns))
-    trowser = centered_input()
+    whereabouts = centered_input()
     time.sleep(3)
     print('\n')
 
-    if trowser == 'a':
+    if whereabouts == 'a':
         print('"The Humanoid Turtle? I just said that, anyways, go through the Field of Foe" - Cad Bane\n'.center(columns))
         time.sleep(3)
         return choose_path(player, dime, tree)
 
-    elif trowser == 'b':
+    elif whereabouts == 'b':
         print('"I doubt you of all people have heard of him. He can be found in the Field of Foe" - Cad Bane\n'.center(columns))
         time.sleep(3)
         return choose_path(player, dime, tree)

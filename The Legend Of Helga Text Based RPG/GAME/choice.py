@@ -27,7 +27,7 @@ def choose_path(player, dime, tree):
            field_of_foe(player, dime, barry)
 
         elif choice == 'c': 
-            enter_bar(player, dime, tree)
+            enter_bar(player, dime, tree, harry)
 
         else:
             print('Not an Option'.center(columns))
