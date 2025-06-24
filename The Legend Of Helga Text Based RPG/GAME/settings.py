@@ -123,6 +123,14 @@ class Player(Character):
         self.weapon_damage = self.weapon.base_damage + race.strength
         self.inventory = [axe_item]
         self.equipped_equipment = None
+        self.equipped = {
+        "head": None,
+        "feet": None,
+        "chest": None,
+        "pants": None,
+        "shield": None
+        }
+        self.field_of_foe_stage = 0 
 
 
     def add_to_inventory(self, item):
@@ -149,10 +157,9 @@ class Player(Character):
         for item in self.inventory:
             if item.name.lower() == using.lower():
 
-                if item.type == "equipment" and item.equip_effect:
-                    self.equipped_equipment = item  # Track it
+                if item.type == "equipment" and item.equip_effect and item.slot:
+                    self.equipped[item.slot] = item
                     item.equip_effect(self)
-                    print(f"{item.name} equipped!".center(columns))
                     return
 
             
@@ -182,7 +189,7 @@ class Player(Character):
             # Mark equipped items
                 if item.type == 'weapon' and self.weapon and self.weapon.name == item.name:
                     display_name = f"[{item.name}]"
-                elif item.type == 'equipment' and self.equipped_equipment and self.equipped_equipment.name == item.name:
+                elif item.type == 'equipment' and item in self.equipped.values():
                     display_name = f"[{item.name}]"
                 elif item.type == 'equipment':
                     display_name = item.name
@@ -197,7 +204,7 @@ class Player(Character):
             selection = centered_input()
 
             if selection == 'c':
-                clear_console
+                clear_console()
                 break  # exit inventory
 
             elif selection in ['a', 'b']:
@@ -226,6 +233,7 @@ class Player(Character):
                     else:
                         print(f"{item.name} cannot be used.".center(columns))
 
+
             else:
                 print("Invalid selection. Please choose A, B, or C.".center(columns))
 
@@ -244,12 +252,13 @@ class Enemy(Character):
 
 
 class Item:
-    def __init__(self, name, use_effect=None, equip_effect=None, type='consumable', description='No Description'):
+    def __init__(self, name, use_effect=None, equip_effect=None, type='consumable', description='No Description', slot=None):
         self.name = name
         self.use_effect = use_effect
         self.equip_effect = equip_effect
         self.type = type
         self.description = description
+        self.slot = slot 
 
 axe_item = Item(
     "Axe",
@@ -286,7 +295,7 @@ def use_barrys_tears(player):
     time.sleep(3)
 
 def equip_bark_shield(player):
-    player.defense = 0.5
+    player.defense = 0.2
     print(f"{player.user} equipped the Bark Shield. Less damage will be taken!".center(columns))
 
 def equip_bucket_hat(player):
@@ -296,6 +305,14 @@ def equip_bucket_hat(player):
 def equip_sandals(player):
     player.defense = 0.2
     print(f"{player.user} put on some fresh kicks!".center(columns))
+
+def equip_brown_stained_pants(player):
+    player.defense = 0.2
+    print(f"Why would you want this equiped".center(columns))
+
+def equip_chopping_board_chest_plate(player):
+    player.defense = 0.2
+    print(f"{player.user} put on some a wooden board".center(columns))
 
 
 
@@ -318,21 +335,40 @@ bark_shield = Item(
     "Bark Shield",
     equip_effect=equip_bark_shield,
     type='equipment',
-    description='Bark Ripped off the tree, deflects damage.'
+    description='Bark Ripped off the tree, deflects damage.',
+    slot='shield'
     )
 
 bucket_hat = Item(
     "Bucket Hat",
     equip_effect=equip_bucket_hat,
     type='equipment',
-    description='You Stole his hat? Meany'
+    description='You Stole his hat? Meany',
+    slot='head'
     )
 
 sandals = Item(
-    "Bark Shield",
+    "Sandals",
     equip_effect=equip_sandals,
     type='equipment',
-    description='you robbed him for his shoes?'
+    description='you robbed him for his shoes?',
+    slot='feet'
+    )
+
+brown_stained_pants = Item(
+    "Brown Stained Pants",
+    equip_effect=equip_brown_stained_pants,
+    type='equipment',
+    description='Some Pants with an awful smell . . . ',
+    slot='pants'
+    )
+
+chopping_board_chest_plate = Item(
+    "Chopping Board Chest Plate",
+    equip_effect=equip_chopping_board_chest_plate,
+    type='equipment',
+    description='With a chopping board and tape you are protected from danger',
+    slot='chest'
     )
 
 tree = Enemy(
@@ -357,3 +393,22 @@ harry = Enemy(
     drop_items=[sandals, bucket_hat]
     )
 
+larry = Enemy(
+    "Larry",
+    health=45,
+    damage=6,
+    drop_items=[brown_stained_pants]
+    )
+
+garry = Enemy(
+    "Garry",
+    health=60,
+    damage=10,
+    drop_items=[chopping_board_chest_plate]
+    )
+
+trowser = Enemy(
+    "Trowser",
+    health=200,
+    damage=20,
+    )

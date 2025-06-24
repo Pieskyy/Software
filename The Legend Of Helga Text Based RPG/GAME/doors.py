@@ -1,6 +1,53 @@
 from settings import *
+import time
 
-def door_picture():
+def trowser_picture():
+    clear_console()
+    print(r'''
+                ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                       
+            ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                        
+     ░ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ░   ░  ░ ░░░░ ░░░  ░░░░ ░░░░ ░░░   ░  ░ ░░░  ░░     
+    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                   
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                  
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ ░ ░▒▒░░░░  ░░░░░░░░░░░░░░  ░░░░░░░░░░░░░    
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒░▒▓██████▓▓██▓█░                            ░         
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓▒░░░░░░░▒████▓▓▓▓▓▓▓▓▓▓▓▓██▒▓░ ░░                                 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▓▒▒▓░░░░░░▒█▓▓█▓▒▓▓▓▓▒▓▓▓▓▓▓████ ░▓▓█░              ░                
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▓▒░░█▒░░░░░▒▓▒▒▒▒▒▒▒▓▒▒▒▒▒▒▒▒▒▒▓▒░░▓░▒▓░░░░░░░░░░░░ ░░░░░░░░░░░░░░    
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█▒░░▒█░░░░░▒▓▒▓▓▓▓▓▓▒▓▓▓▓▒▓▓▒▓▓████▒░░▓▒                              
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█▓░░░▒██▒▒▒▒▓█▓▓▓█████▓▓▓▓▓▓▓▓▓▓█▒░░░▒█▒                            ░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒█▒░░░░▒██████▓▓▓▓▓▓▓▓▓▓▓▓█████▓░░░░░▒▓░       ░     ░░        ░    ░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓░░░▒█▓▒▒▒▒█▒▒▒▒▒▓▓▓▒▒▒▒▓▒▒▒▒▓█▒░░▒▓▒░░░░ ░░ ░░░   ░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒█▓▓▓█▓▓▓▓▓▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▓▓▓█▓▓▓█░░░░░               ░░░ ░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓▓██▓▒▓▓▓▓▓██▓▓▓▓██▓▓▓▓▓▓▓██▓█▒░░░░░░░░░░         ░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█▓█▓▓█▒▒▓▒▒▒▓▒▒▓▓▓▒▒▓▓▒░▓▓▓▓▒█▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██▓▓█  ▒▓███▓▓▓▓███▓░  ▓▓▓▓█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓██▓▓▓▓▓▓▓▒░████████▒▒▓▓▓▓▓▓███▓▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒█▒░░░░░▒▓█████▒░░░░░░▒█████▓▒░░░░░▒█▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▓▒░░░░░░░░░░░░░▓▒░░░░▒▓▒░░░░░░░░░░░░░▓▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█▓░░░░░░░░░░░░░░▒░░░░░░░░░░░░░░░▒░░░░░▒█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█▓░░░░░▓▒░░░░░░░░░░░░░░░░░░░░░░░▒█░░░░▒█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░ ░░░░░░░░░░▓▓░░░░███▓░░░░░░░░░░░░░░░░░░░░▒███▒░░░▒█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░ ░░░░░░░░░░░▓▒░░░██▓▓░▓▒░░░░░▒██▒░░░░░▒▒▒▓▓▓█▒░░▒▓▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░ ░░ ░░ ░░░ ░░ ░░░░░░░░░░░░░░▒█▓░░░▒▓▓█▓▓░▒██▓▓▓▓▓▓██▓▒█▓█▓▓▒░░░▒█▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░ ░░         ░  ░░░░░░░░░░░░░░░▒██▒░▒█▓▓▓█░▓▓▓▓▓▓▓▓▓▓▒▒▓▓█▓░░░▓█▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒█░░░▓▒▒▓▓▒▒▒▒▒▓▓▒▓▓▓▒▓█▒░░░█▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░░░░░░░░░░░ ░░ ░░░░░░░░░░░░░░░░░░▓█░░░▒▓▒▓░░▓▒▓▓▓▓░░▒▓█░░░▒▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░░░░ ░  ░            ░░░░░░░░░░░░░░░░▒█░░░▓█▒░▒██████▓░▒█░░░▒█▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    ░░░      ░░  ░░ ░░░░░░░░░░░░░░░░░░▒█▒░▒▓▒░░░░░░░░░░▒▓▒░██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     ░░░░░░░░░░░░░░  ░░░░░░░░░░░░░░░░░▒█░░░░░░░░░░░░░░░░░░░▒█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                ░       ░░░░░░░░░░░░░░▓▒░░░░░░░░░░░░░░░░░░░░█▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                                   ░░░▒█▓▒░░░▒▒▓█▓▓█▓▒▒░░░▒▓█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                                       ░░▒▓▓▒▒░░░░░░░░▒▒▓▓▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    ░░░░░░░░░░░░░░   ░░░░░░░░░░░░░   ░░░░░░░░░ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  
+                                                   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░           
+                                                       ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░               
+     ░      ░░░░      ░░░ ░░   ░░░   ░░░ ░░   ░░░   ░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░ ░░ ░░      
+     ░░░░  ░    ░░         ░░   ░         ░░   ░    ░  ░  ░░░░░░░░░░░░░░░░░░  ░░   ░     ░   ░      
+''')
+    time.sleep(5)
+    clear_console()
+def door_picture(): # Door Ascii
     clear_console()
     print(r"""
    _________________________                                                           _________________________
@@ -21,221 +68,368 @@ def door_picture():
  |                            |                    |                                 |                            |
  |                            |                    |                                 |                            |
  +----------------------------+                    |                                 +----------------------------+
-___________________________________________________________________________________________________________________
-""")
+_________________________________________________________________________________________________________________
+          """)
     time.sleep(5)
     clear_console()
 
-def harry_battle(player, harry):
-    from choice import choose_path
-    if harry.health == 0:
-        clear_console()
-        while True:
-            print('You can either:'.center(columns))
-            print('a) Fight him'.center(columns))
-            print('b) Go back'.center(columns))
-            print('c) Check Inventiory'.center(columns))
-            fight2 = centered_input()
-            time.sleep(2)
 
-            if fight2 == 'a':
-                print('\n\n')
-                print('You get your weapon ready to fight Harry in his unusual fit \n\n'.center(columns))
-                time.sleep(3)
-
-                print('You attack Harry and he gets annoyed and attacks you back'.center(columns))
-                time.sleep(3)
-                actual_damage = player.take_damage(harry.damage)
-                harry.health -= player.weapon_damage
-                print(f"You do {player.weapon_damage} to Barry, and he does {actual_damage} back.".center(columns))
-
-
-                player.take_damage(harry.damage)
-                harry.health -= player.weapon_damage
-                if harry.health < 0:
-                    harry.health = 0
-                    for item in harry.drop_items:
-                        player.add_to_inventory(item)
-
-                time.sleep(2)
-                print(f"{player.user}'s health: {player.health}".center(columns))
-                print(f"{harry.user}'s health: {harry.health}".center(columns))
-                time.sleep(3)
-
-                if harry.health == 0:
-                    print('Harry is down for good you monster.'.center(columns))
-                    while True:
-                        print('wown'.center(columns))
-                        print('What do you want to do?\n'.center(columns))
-                        print('a) Keep Walking'.center(columns))
-                        print('b) go back'.center(columns))
-                        print('c) Check inventory'.center(columns))
-
-                        choice = centered_input()
-
-                        if choice in ['a', 'Keep Walking']:
-                            print("You\n".center(columns))
-                            time.sleep(3)
-                        elif choice in ['b', 'go back']:
-                            time.sleep(3)
-                            return
-                        elif choice in ['c', 'check inventory']:
-                            player.print_inventory()
-                        else:
-                            print("Invalid option. Try again.\n".center(columns))
-                            break
-
-def barry_battle(player, barry):
+def barry_battle(player, barry): # Controls the first battle, the one with barry!
     if barry.health == 0:
-        harry_battle(player, harry)
-        return
-    
-    clear_console()
+        return True
+
     while True:
-        print('You can either:'.center(columns))
-        print('a) Fight him'.center(columns))
-        print('b) Go back'.center(columns))
-        print('c) Check Inventiory'.center(columns))
-        fight1 = centered_input()
-        time.sleep(2)
+        print("You can either:".center(columns))
+        print("a) Fight Barry".center(columns))
+        print("b) Go back".center(columns))
+        print("c) Check Inventory".center(columns))
+        choice = centered_input()
+        time.sleep(1)
 
-        if fight1 == 'a':
-            print('\n\n')
-            print('You get your weapon ready to fight Barry and his "Stick of Anguish" \n\n'.center(columns))
-            time.sleep(3)
-
-            print('   You attack Barry and he begins to cry and flails his stick like a toddler... it still nicks you.'.center(columns))
-            time.sleep(3)
-            actual_damage = player.take_damage(barry.damage)
-            barry.health -= player.weapon_damage
-            print(f"You do {player.weapon_damage} to Barry, and he does {actual_damage} back.".center(columns))
-
-
+        if choice == 'a':
+            print("You attack Barry with your axe!".center(columns))
+            time.sleep(2)
+            print("barry throws his stick at you\n".center(columns))
+            time.sleep(2)
             player.take_damage(barry.damage)
             barry.health -= player.weapon_damage
             if barry.health < 0:
                 barry.health = 0
-                for item in barry.drop_items:
-                    player.add_to_inventory(item)
 
-            time.sleep(2)
             print(f"{player.user}'s health: {player.health}".center(columns))
-            print(f"{barry.user}'s health: {barry.health}".center(columns))
-            time.sleep(3)
+            print(f"Barry's health: {barry.health}".center(columns))
+            time.sleep(2)
+            clear_console()
 
             if barry.health == 0:
-                print('Barry is down for good. Poor fella.'.center(columns))
-                while True:
-                    time.sleep(3)
-                    clear_console()
-                    print('What do you want to do now?\n'.center(columns))
-                    print('What do you want to do?\n'.center(columns))
-                    print('a) Keep Walking'.center(columns))
-                    print('b) Check inventory'.center(columns))
+                print("YOU KILLED BARRY YOU MONSTER".center(columns))
+                for item in barry.drop_items:
+                    player.add_to_inventory(item)
+                return True
 
-                    choice1 = centered_input()
+        elif choice == 'b':
+            return False
 
-                    if choice1 in ['a', 'Keep Walking']:
-                        print("You Keep walking until you see another figure . . . \n".center(columns))
-                        time.sleep(3)
-                        harry_battle(player, harry)
-                        
-                    elif choice1 in ['b', 'go back']:
-                        time.sleep(3)
-                        return
-                    elif choice1 in ['c', 'check inventory']:
-                        player.print_inventory()
-                    else:
-                        print("Invalid option. Try again.\n".center(columns))
-
-                break
-
-        elif fight1 == 'b':
-            print("You decide not to fight the tiny stick-wielding gremlin today.".center(columns))
-            break
-
-        elif fight1 == 'c':
-            clear_console()
+        elif choice == 'c':
             player.print_inventory()
-            time.sleep(3)
 
         else:
-            print("That’s not a valid option.".center(columns))
+            print("Invalid option.".center(columns))
+            clear_console()
 
-        
 
-def left_door(player, barry):
-    print('     "Hmm the Left door, Without my riddles? . . .  Ouch."\n'.center(columns))
-    time.sleep(3)
-    print('     "The left door contains a battle!" '.center(columns))
-    time.sleep(2)
-    print('You see a . . . short guy named Barry wielding a stick?'.center(columns))
-    time.sleep(3)
-
-    barry_battle(player, barry)
-
-def right_door():
-    print('     "The Right door, Let\'s hope you made the RIGHT choice!"'.center(columns))
-    time.sleep(3)
-    print('     "The Right door is SAFE! You may continue your venture!"'.center(columns))
-    time.sleep(3)
-
-def field_of_foe(player, dime, barry):
-    time.sleep(3)
-    print('     *Squish, Squash*\n'.center(columns))
-    time.sleep(3)
-
-    print('"The Grass sure is wet here"\n'.center(columns))
-    time.sleep(3)
-
-    print('Yeah, I guess\n'.center(columns))
-    time.sleep(1)
-
-    print('"LOOK OVER THERE"\n'.center(columns))
-    time.sleep(3)
-
-    print('     You and Dime look into the distance and see your first challenge in the Field of Foe\n'.center(columns))
-    time.sleep(3)
-
-    print('     Two doors: The Left Door, and The Right Door.\n'.center(columns))
-    time.sleep(3)
-
-    print('     The only other thing you can see is a sign.\n'.center(columns))
-    time.sleep(4)
-
-    door_picture()
-
-    print('Upon getting closer, you can read the sign.\n\n'.center(columns))
-    time.sleep(3)
-
-    print('"Answer my riddle three, and leave your fate up to me"'.center(columns))
-    time.sleep(2)
-    print('"Behind one of the doors is a Foe, and behind the other... you won’t know."'.center(columns))
-    time.sleep(4)
-
-    print('"Only one door has an enemy. That gives us good odds."'.center(columns))
-    time.sleep(3)
-
-    print('I guess you’re right, Dime.\n'.center(columns))
-    time.sleep(3)
+def harry_battle(player, harry): # Second Battle
+    if harry.health == 0:
+        return True
 
     while True:
-        print('What door do you open?'.center(columns))
-        print('a) The left door'.center(columns))
-        print('b) The right door'.center(columns))
+        print('You are now about to fight "harry"\n'.center(columns))
+        time.sleep(2)
+        print("You can either:".center(columns))
+        print("a) Fight Harry".center(columns))
+        print("b) Go back".center(columns))
+        print("c) Check Inventory".center(columns))
+        choice = centered_input()
+        time.sleep(1)
 
-        door = centered_input()
+        if choice == 'a':
+            print('"harry harry harry" - you hear this guy chanting. trying to boost himself up'.center(columns))
+            time.sleep(2)
+            player.take_damage(harry.damage)
+            harry.health -= player.weapon_damage
+            if harry.health < 0:
+                harry.health = 0
 
-        if door == 'a':
-            left_door(player, barry)
-            break
-        elif door == 'b':
-            right_door()
-            break
+            print(f"{player.user}'s health: {player.health}".center(columns))
+            print(f"Harry's health: {harry.health}".center(columns))
+            time.sleep(2)
+            clear_console()
+
+            if harry.health == 0:
+                print("Harry is defeated!".center(columns))
+                for item in harry.drop_items:
+                    player.add_to_inventory(item)
+                return True
+
+        elif choice == 'b':
+            return False
+
+        elif choice == 'c':
+            player.print_inventory()
+
         else:
-            print(' . . . ')
-            time.sleep(3)
-            print(' . . . ')
-            time.sleep(3)
-            print('     "Uhhh dude, there’s 2 doors. Pick one"')
-            time.sleep(3)
+            print("Invalid option.".center(columns))
+            clear_console()
+
+
+def larry_battle(player, larry): # 3rd
+    if larry.health == 0:
+        return True
+
+    while True:
+        print('"You See Larry. JEEZ 3 of em"\n'.center(columns))
+        time.sleep(2)
+        print("You can either:".center(columns))
+        print("a) Fight Larry".center(columns))
+        print("b) Go back".center(columns))
+        print("c) Check Inventory".center(columns))
+        choice3 = centered_input()
+        time.sleep(1)
+
+        if choice3 == 'a':
+            print("You battle Larry, who swings wildly!".center(columns))
+            time.sleep(2)
+            player.take_damage(larry.damage)
+            larry.health -= player.weapon_damage
+            if larry.health < 0:
+                larry.health = 0
+
+            print(f"{player.user}'s health: {player.health}".center(columns))
+            print(f"Larry's health: {larry.health}".center(columns))
+            time.sleep(2)
+            clear_console()
+
+            if larry.health == 0:
+                print("Larry collapses, defeated.".center(columns))
+                for item in larry.drop_items:
+                    player.add_to_inventory(item)
+                return True
+
+        elif choice3 == 'b':
+            return False
+
+        elif choice3 == 'c':
+            player.print_inventory()
+
+        else:
+            print("Invalid option.".center(columns))
+            clear_console()
+
+
+def garry_battle(player, garry): # 4th
+    if garry.health == 0:
+        return True
+
+    while True:
+        print('"Oh my god! Where is Trowser . . ."\n'.center(columns))
+        time.sleep(2)
+        print("You can either:".center(columns))
+        print("a) Fight Garry".center(columns))
+        print("b) Go back".center(columns))
+        print("c) Check Inventory".center(columns))
+        choice4 = centered_input()
+        time.sleep(1)
+
+        if choice4 == 'a':
+            print("You lunge at Garry for a showdown!".center(columns))
+            time.sleep(2)
+            player.take_damage(garry.damage)
+            garry.health -= player.weapon_damage
+            if garry.health < 0:
+                garry.health = 0
+
+            print(f"{player.user}'s health: {player.health}".center(columns))
+            print(f"Garry's health: {garry.health}".center(columns))
+            time.sleep(2)
+            clear_console()
+
+            if garry.health == 0:
+                print("Garry is vanquished. one enemy to go,.".center(columns))
+                for item in garry.drop_items:
+                    player.add_to_inventory(item)
+                return True
+
+        elif choice4 == 'b':
+            return False
+
+        elif choice4 == 'c':
+            player.print_inventory()
+
+        else:
+            print("Invalid option.".center(columns))
+            clear_console()
+
+def trowser_battle(player, trowser): # Controls the last battle
+    if trowser.health == 0:
+        return True
+    
+    trowser_picture()
+
+    while True:
+        print('"You Have made it. You Are now able to save Helga"\n'.center(columns))
+        time.sleep(3)
+        print("You can either:".center(columns))
+        print("a) Fight trowser".center(columns))
+        print("b) Go back".center(columns))
+        print("c) Check Inventory".center(columns))
+        choice5 = centered_input()
+        time.sleep(1)
+
+        if choice5 == 'a':
+            print("You attack trowser with your axe!".center(columns))
+            time.sleep(2)
+            print("Trowsers jumps at you\n".center(columns))
+            time.sleep(2)
+            player.take_damage(trowser.damage)
+            trowser.health -= player.weapon_damage
+            if trowser.health < 0:
+                trowser.health = 0
+
+            print(f"{player.user}'s health: {player.health}".center(columns))
+            print(f"trowser's health: {trowser.health}".center(columns))
+            time.sleep(2)
+            clear_console()
+
+            if trowser.health == 0:
+                print("YOU KILLED TROWSER!!!".center(columns))
+                time.sleep(3)
+                print('"H- Hello is that you Dime ??" - Helga'.center(columns))
+                print('"HELGAAAAAAAAAA"'.center(columns))
+                time.sleep(2)
+                clear_console()
+                print('This was -'.center(columns))
+                time.sleep(3)
+                clear_console()
+                print(r'''
+████████╗██╗  ██╗███████╗      
+╚══██╔══╝██║  ██║██╔════╝      
+   ██║   ███████║█████╗          
+   ██║   ██╔══██║██╔══╝           
+   ██║   ██║  ██║███████╗        
+   ╚═╝   ╚═╝  ╚═╝╚══════╝         
+
+ ██╗     ███████╗ ██████╗ ███████╗███╗   ██╗██████╗      
+ ██║     ██╔════╝██╔════╝ ██╔════╝████╗  ██║██╔══██╗  
+ ██║     █████╗  ██║  ███╗█████╗  ██╔██╗ ██║██║  ██║
+ ██║     ██╔══╝  ██║   ██║██╔══╝  ██║╚██╗██║██║  ██║
+ ███████╗███████╗╚██████╔╝███████╗██║ ╚████║██████╔╝
+ ╚══════╝╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═════╝ 
+                      
+  ██████╗ ███████╗
+ ██╔═══██╗██╔════╝  
+ ██║   ██║█████╗   
+ ██║   ██║██╔══╝   
+ ╚██████╔╝██╗      
+  ╚═════╝ ╚═╝   
+                      
+██╗  ██╗███████╗██╗      █████╗   █████╗ 
+██║  ██║██╔════╝██║     ██╔═══╝   ██╔══██╗
+███████║█████╗  ██║     ██║  ███╗ ███████║
+██╔══██║██╔══╝  ██║     ██║   ██║ ██╔══██║
+██║  ██║███████╗███████╗╚██████╔╝ ██║  ██║
+╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═╝  ╚═╝
+''')
+                time.sleep(5)
+                clear_console()
+                print('Congrats on Beating "The Legand of Helga". I hope you enjoyed it <3'.center(columns))
+                time.sleep(5)
+                exit()
+
+        elif choice5 == 'b':
+            return False
+
+        elif choice5 == 'c':
+            player.print_inventory()
+
+        else:
+            print("Invalid option.".center(columns))
+            clear_console()
+
+
+def field_of_foe(player, dime, barry, harry, larry, garry, trowser): # where all is collated and to be called in choice.py
+    from choice import choose_path
+
+    if not hasattr(player, 'entered_field_of_foe'): # to check what battle you are up to
+        player.entered_field_of_foe = False
+    
+    if not player.entered_field_of_foe:
+        print("You and Dime enter the Field of Foe...".center(columns))
+        time.sleep(3)
+        door_picture()
+        print("You read the mysterious sign...".center(columns))
+        time.sleep(3)
+
+        while True:
+            print("What door do you open?".center(columns))
+            print("a) The left door".center(columns))
+            print("b) The right door".center(columns))
+            door = centered_input()
+
+            if door == 'a':
+                print('The left door contains a battle!'.center(columns))
+                time.sleep(2)
+                clear_console()
+                break
+
+
+            elif door == 'b':
+                print("You open the right door and see no enemy.".center(columns))
+                time.sleep(2)
+                print("You then glance left and realize...".center(columns))
+                time.sleep(2)
+                print("These doors aren't actually separated.".center(columns))
+                time.sleep(2)
+                print("A small man named Barry is waiting for you regardless.".center(columns))
+                time.sleep(3)
+                clear_console()
+                break
+
+            else:
+                print("Invalid choice. Pick left or right.".center(columns))
+                clear_console()
+        
+        # Mark that intro was completed
+        player.entered_field_of_foe = True
+
+    # Now proceed to battles based on progress
+    while player.field_of_foe_stage < 5:
+        if player.field_of_foe_stage == 0:
+            success = barry_battle(player, barry)
+            if success:
+                player.field_of_foe_stage += 1
+                print("A path opens forward...".center(columns))
+                time.sleep(2)
+            else:
+                choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
+                return
+
+        elif player.field_of_foe_stage == 1:
+            success = harry_battle(player, harry)
+            if success:
+                player.field_of_foe_stage += 1
+                print("Another foe awaits...".center(columns))
+                time.sleep(2)
+            else:
+                choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
+                return
+
+        elif player.field_of_foe_stage == 2:
+            success = larry_battle(player, larry)
+            if success:
+                player.field_of_foe_stage += 1
+                print("Almost there... few remains.".center(columns))
+                time.sleep(2)
+            else:
+                choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
+                return
+            
+        elif player.field_of_foe_stage == 3:
+            success = larry_battle(player, garry)
+            if success:
+                player.field_of_foe_stage += 1
+                print("You’ve defeated them all! Atleast, all but one!.".center(columns))
+                time.sleep(2)
+            else:
+                choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
+                return
+
+        elif player.field_of_foe_stage == 4:
+            success = trowser_battle(player, trowser)
+            if success:
+                player.field_of_foe_stage += 1
+                print("You have defeated Trowser! Congratualations, You have completed the game.".center(columns))
+                time.sleep(2)
+                return
+            else:
+                choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
+                return
