@@ -1,6 +1,6 @@
 from settings import *
 
-def start():
+def start(): # Start function, called into main
         clear_console()# screen clear.
 
         ascii_art = """        

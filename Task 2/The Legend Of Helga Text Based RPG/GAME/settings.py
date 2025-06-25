@@ -2,11 +2,11 @@ import sys
 import time
 import shutil
 import os
-
+# ALl Class are encapsulation (1/4)
 
 def clear_console(): # ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-bfea96e06e38) Screen Clear
      os.system('cls' if os.name == 'nt' else 'clear') 
-
+    # Abstraction (2/4)
 
 def centered_input(prompt='>> '): # centers input statements
     return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # same chatgpt log
@@ -17,7 +17,7 @@ columns, rows = shutil.get_terminal_size() # same ai log. for centering messages
 
 
 
-class Race:
+class Race: # race class
     def __init__(self, name, strength, health_bonus):
         self.name = name
         self.strength = strength
@@ -77,7 +77,7 @@ races = { # Dictionary
 }
 
 
-class Weapon:
+class Weapon: # Weapon controls, such as damage, etc
     def __init__(self, name, base_damage):
         self.name = name
         self.base_damage = base_damage
@@ -94,7 +94,7 @@ dimes_sword = Weapon(
 
 
 
-class Character:
+class Character: # everything to do with players, inventory, enemies, dime, etc
     def __init__(self, name, health, race=None, weapon=None):
         self.user = name
         self.race = race
@@ -105,7 +105,8 @@ class Character:
         self.defense = 1.0
         self.inventory = []
 
-    def take_damage(self, amount):
+    def take_damage(self, amount): 
+# Polymorphism. If player has 0 health. prints you die message, if others. prints so and so died. (3/4)
         actual_damage = max(0, int(amount * self.defense))  # apply defense multiplier
         self.health -= actual_damage
         if self.health < 0:
@@ -117,7 +118,8 @@ class Character:
                 sys.exit()
         return actual_damage
 
-class Player(Character):
+class Player(Character): # Player Class 
+    # Inheritance, same as Dime and Enemie classes (4/4)
     def __init__(self, name, race):
         super().__init__(name, 100 + race.health_bonus, race, axe)
         self.weapon_damage = self.weapon.base_damage + race.strength
@@ -133,11 +135,11 @@ class Player(Character):
         self.field_of_foe_stage = 0 
 
 
-    def add_to_inventory(self, item):
+    def add_to_inventory(self, item): # adding items to ibv
         self.inventory.append(item)
         print(f"{item.name} added to inventory.".center(columns))
 
-    def use_item(self, using):
+    def use_item(self, using): # using items
         for item in self.inventory:
 
             if item.name.lower() == using.lower():
@@ -153,7 +155,7 @@ class Player(Character):
                     return
         print("Item not found in inventory.".center(columns))
 
-    def equip_item(self, using):
+    def equip_item(self, using): # equiping items
         for item in self.inventory:
             if item.name.lower() == using.lower():
 
