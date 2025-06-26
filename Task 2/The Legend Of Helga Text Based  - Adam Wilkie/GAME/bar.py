@@ -199,7 +199,7 @@ def friend(player, dime, tree): # question 2
 
 
 def mother(player, dime, tree): # question 3
-    print('"Oh Really? Shes YOUR mother? She had no kids idiot\n" - Cad Bane'.center(columns))
+    print('"Oh Really? Shes YOUR mother? She had no kids idiot" - Cad Bane\n'.center(columns))
     time.sleep(3)
     trowser(player, dime, tree)
 

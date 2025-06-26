@@ -224,8 +224,10 @@ class Player(Character): # Player Class
                 if selection == 'a':  # Equip
                     if item.type in ['weapon', 'equipment']:
                         self.equip_item(item.name)
+                        time.sleep(4)
                     else:
                         print(f"{item.name} cannot be equipped.".center(columns))
+                        time.sleep(3)
             
                 elif selection == 'b':  # Use
                     if item.type == 'consumable':
@@ -297,23 +299,27 @@ def use_barrys_tears(player):
 def equip_bark_shield(player):
     player.defense = 0.2
     print(f"{player.user} equipped the Bark Shield. Less damage will be taken!".center(columns))
+    time.sleep(3)
 
 def equip_bucket_hat(player):
     player.defense = 0.2
     print(f"{player.user} put on the stolen hat and now takes a little less damage".center(columns))
+    time.sleep(3)
 
 def equip_sandals(player):
     player.defense = 0.2
     print(f"{player.user} put on some fresh kicks!".center(columns))
+    time.sleep(3)
 
 def equip_brown_stained_pants(player):
     player.defense = 0.2
     print(f"Why would you want this equiped".center(columns))
+    time.sleep(3)
 
 def equip_chopping_board_chest_plate(player):
     player.defense = 0.2
     print(f"{player.user} put on some a wooden board".center(columns))
-
+    time.sleep(3)
 
 
 sap_of_life = Item( # stats once again (fo below aswell)
