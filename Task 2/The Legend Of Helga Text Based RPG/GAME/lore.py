@@ -3,7 +3,7 @@ import os, time, shutil
 from start import *
 
 
-def lore(player, dime):
+def lore(player, dime): # lroe at start of game
     columns, _ = shutil.get_terminal_size()
     name = player.user # Back story lore ish idk
     

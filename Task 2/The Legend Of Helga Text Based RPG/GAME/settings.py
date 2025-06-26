@@ -8,12 +8,11 @@ def clear_console(): # clears the terminal
     # Abstraction (1/4)
 
 def centered_input(prompt='>> '): # centers input statements
-    return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # same chatgpt log
+    return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # centers inoput statements
 
 enter = 0
 
-columns, rows = shutil.get_terminal_size() # same ai log. for centering messages.
-
+columns, rows = shutil.get_terminal_size() # gets terminal size for centering
 
 # ALl Class are encapsulation (2/4)
 class Race: # race class
@@ -240,19 +239,19 @@ class Player(Character): # Player Class
 
 
 
-class Dime(Character):
+class Dime(Character): # dime fucntion
     def __init__(self):
         super().__init__("Dime", 100, human, dimes_sword)
         self.weapon_damage = self.weapon.base_damage + self.race.strength
 
-class Enemy(Character):
+class Enemy(Character): # controls enemies
     def __init__(self, name, health, damage, drop_items=None):
         super().__init__(name, health)
         self.damage = damage
         self.drop_items = drop_items or []
 
 
-class Item:
+class Item: # Cotnrols items
     def __init__(self, name, use_effect=None, equip_effect=None, type='consumable', description='No Description', slot=None):
         self.name = name
         self.use_effect = use_effect
@@ -261,7 +260,7 @@ class Item:
         self.description = description
         self.slot = slot 
 
-axe_item = Item(
+axe_item = Item( # items stats
     "Axe",
     type='weapon',
     description='Your axe used to chop wood.'
@@ -279,7 +278,7 @@ weapon_registry = {
 }
 
 
-def use_sap_of_life(player):
+def use_sap_of_life(player): # item and equipment controlling (for those below aswell)
     heal_amount = 30
     player.health += heal_amount
     if player.health > player.max_health:
@@ -317,7 +316,7 @@ def equip_chopping_board_chest_plate(player):
 
 
 
-sap_of_life = Item(
+sap_of_life = Item( # stats once again (fo below aswell)
     "Sap of Life",
     use_effect=use_sap_of_life,
     type='consumable',

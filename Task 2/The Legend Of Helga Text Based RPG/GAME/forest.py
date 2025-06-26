@@ -1,6 +1,6 @@
 from settings import *
 
-def tree_picture():
+def tree_picture(): # tree ascii art
     clear_console()
     tree_ascii = '''
                                                          .
@@ -40,7 +40,7 @@ def tree_picture():
     time.sleep(5)
     #clear_console()
 
-def tree_battle(player, tree):
+def tree_battle(player, tree): # for the battle that coms up
     while True:
         clear_console()
         print('You see a Walking Tree. You can either:'.center(columns))
@@ -112,7 +112,7 @@ def tree_battle(player, tree):
         else:
             print("That’s not a valid option. Try again.".center(columns))
 
-def forest(player, tree):
+def forest(player, tree): # if youve already killed tree and come back
     if tree.health == 0:
         print('"You have already killed the beast that is here"\n'.center(columns))
         time.sleep(3)
@@ -122,7 +122,7 @@ def forest(player, tree):
         time.sleep(3)
         return
 
-    print('You venture into the forest, you hear whispers...\n'.center(columns))
+    print('You venture into the forest, you hear whispers...\n'.center(columns)) # when you first enter forest / comeback aftr leaving but didnt kill
     time.sleep(3)
 
     print('“So, what makes you want to go through the forest?”\n'.center(columns))

@@ -19,7 +19,7 @@ def start(): # Start function, called into main
 ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═╝  ╚═╝
         """ # ASCII Art as string
         ascii_lines = ascii_art.strip('\n').split('\n') # Split lines and calculate vertical centering
-        vertical_padding = (rows - len(ascii_lines)) // 2 # ( ChatGPT aswell (settings for link))
+        vertical_padding = (rows - len(ascii_lines)) // 2 # verticles for centering
         print('\n' * vertical_padding) # Print empty lines to vertically center
         for line in ascii_lines: # Print each line centered horizontally
             print(line.center(columns))
@@ -39,7 +39,7 @@ def start(): # Start function, called into main
 
         print('\n' * 3)
         print('Possible Races:'.center(columns))  # 'Viewable' Races, Theres 2 hidden ones. Grug as Tribute and No for annoying people.
-
+        # shown races to user, not including secret (cus yk thier secret)
         race_selection ='''   
         Human:
             Strength: 5

@@ -1,7 +1,7 @@
 from settings import *
 import time
 
-def trowser_picture():
+def trowser_picture(): # end boss picture (Trowser)
     clear_console()
     print(r'''
                 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                       

@@ -5,7 +5,7 @@ from bar import enter_bar
 import time
 
 
-tree = Enemy(
+tree = Enemy( # All Enemy stats repeated here (ik is in settigs but done do like barrry=none)
     "Tree",
     health=200,
     damage=10,
@@ -46,7 +46,7 @@ trowser = Enemy(
     health=200,
     damage=20,
     )
-def choose_path(player, dime, tree, barry=None, harry=None, larry=None, garry=None, trowser=None, progress_stage=0):
+def choose_path(player, dime, tree, barry=None, harry=None, larry=None, garry=None, trowser=None, progress_stage=0): # path options
     while True:
         clear_console()
         print('______________________________________________ WHERE TO ______________________________________________\n\n\n'.center(columns))
