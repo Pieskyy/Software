@@ -224,7 +224,6 @@ class Player(Character): # Player Class
                 if selection == 'a':  # Equip
                     if item.type in ['weapon', 'equipment']:
                         self.equip_item(item.name)
-                        time.sleep(4)
                     else:
                         print(f"{item.name} cannot be equipped.".center(columns))
                         time.sleep(3)
