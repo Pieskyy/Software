@@ -2,11 +2,10 @@ import sys
 import time
 import shutil
 import os
-# ALl Class are encapsulation (1/4)
 
-def clear_console(): # ( chatGPT https://chatgpt.com/c/684ea48f-fd48-800b-a4aa-bfea96e06e38) Screen Clear
-     os.system('cls' if os.name == 'nt' else 'clear') 
-    # Abstraction (2/4)
+def clear_console(): # clears the terminal 
+    os.system('cls' if os.name == 'nt' else 'clear') 
+    # Abstraction (1/4)
 
 def centered_input(prompt='>> '): # centers input statements
     return input(' ' * ((columns - len(prompt)) // 2) + prompt).lower() # same chatgpt log
@@ -16,7 +15,7 @@ enter = 0
 columns, rows = shutil.get_terminal_size() # same ai log. for centering messages.
 
 
-
+# ALl Class are encapsulation (2/4)
 class Race: # race class
     def __init__(self, name, strength, health_bonus):
         self.name = name

@@ -60,12 +60,15 @@ def choose_path(player, dime, tree, barry=None, harry=None, larry=None, garry=No
         clear_console()
 
         if choice == 'a':
+            clear_console()
             forest(player, tree)
 
         elif choice == 'b':
+            clear_console()
             field_of_foe(player, dime, barry, harry, larry, garry, trowser)
 
         elif choice == 'c': 
+            clear_console()
             enter_bar(player, dime, tree)
 
         else:

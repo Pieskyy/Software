@@ -58,8 +58,7 @@ def enter_bar(player, dime, tree): # Holds output of first entering bar and chec
         print('     You exit the bar'.center(columns))
         time.sleep(3)
 
-        return choose_path(player, dime, tree)
-    
+        return choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
 
     enter += 1
 
@@ -227,12 +226,12 @@ def trowser(player, dime, tree): # where the boss is locatated
     if whereabouts == 'a':
         print('"The Humanoid Turtle? I just said that, anyways, go through the Field of Foe" - Cad Bane\n'.center(columns))
         time.sleep(3)
-        return choose_path(player, dime, tree)
+        return choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
 
     elif whereabouts == 'b':
         print('"I doubt you of all people have heard of him. He can be found in the Field of Foe" - Cad Bane\n'.center(columns))
         time.sleep(3)
-        return choose_path(player, dime, tree)
+        return choose_path(player, dime, tree, barry, harry, larry, garry, trowser)
     else:
         print('"Weird way to answer a yes or no question - Cad Bane\n"'.center(columns))
         time.sleep(3)

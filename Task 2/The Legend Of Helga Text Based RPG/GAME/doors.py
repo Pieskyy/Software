@@ -254,6 +254,7 @@ def trowser_battle(player, trowser): # Controls the last battle
         return True
     
     trowser_picture()
+    clear_console()
 
     while True:
         print('"You Have made it. You Are now able to save Helga"\n'.center(columns))
