@@ -2158,6 +2158,26 @@
     "count": 1
     },
     {
+    "id": 112,
+    "name": "Mega Knight",
+    "type": "Troop",
+    "rarity": "Legendary",
+    "targets": "Ground",
+    "unit": "Ground",
+    "elixir": 7,
+    "description": "He lands with the force of 1,000 mustaches, then jumps from one foe to the next dealing huge area damage. Stand aside!",
+    "arena": "Arena 11",
+    "image": "megaknight.png",
+    "evo": true,
+    "health": 3993,
+    "damage": 268,
+    "splash": true,
+    "range": [1.2, 3.5],
+    "hit_speed": 1.7,
+    "speed": "Meduim",
+    "count": 1
+    },
+    {
     "id": 113,
     "name": "Lava Hound",
     "type": "Troop",
