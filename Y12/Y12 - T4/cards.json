@@ -1560,7 +1560,7 @@
     "targets": ["Ground", "Air"],
     "unit": "Air",
     "elixir": 5,
-    "descriptio": "Spits out bolts of electricity hitting up to three targets. Suffers from middle child syndrome to boot",
+    "description": "Spits out bolts of electricity hitting up to three targets. Suffers from middle child syndrome to boot",
     "arena": "Arena 12",
     "image": "electrodragon.png",
     "evo": true,
