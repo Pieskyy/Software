@@ -1,0 +1,18 @@
+SITE IDEA:
+
+Clash Database.
+
+Has all the cards.
+
+Maybe something like:
+Name. Type. Elixir. Description
+
+Maybe a deck build section or a how to play.
+
+Maybe popular/meta decks tabs
+
+Maybe stats
+
+
+
+
