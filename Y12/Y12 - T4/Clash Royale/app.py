@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 DATABASE = os.path.join('database', 'cards.db')
 CARDS_FOLDER = os.path.join('database', 'Cards')  # Capital C
+IMAGES_FOLDER = os.path.join('static', 'images')  # Add this line for background images
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -52,10 +53,15 @@ def card_detail(card_id):
         abort(404)
     return render_template('card_detail.html', card=card)
 
-# Serve images from /database/Cards/
+# Serve card images from /database/Cards/
 @app.route('/Cards/<path:filename>')
 def card_image(filename):
     return send_from_directory(CARDS_FOLDER, filename)
+
+# Serve background images from /static/images/
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory(IMAGES_FOLDER, filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -2,23 +2,7 @@
 <html>
 <head>
     <title>{{ card['name'] }}</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #1c1c1c;
-            color: white;
-            text-align: center;
-        }
-        img {
-            width: 200px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-        a {
-            color: #00ffff;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <h1>{{ card['name'] }}</h1>
