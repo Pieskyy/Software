@@ -25,18 +25,33 @@
             <p>       Description:     {{ card['description'] }} </p>
             <p>       Targets:         {{ card['targets'] }}     </p>
             <p>       Arena:           {{ card['arena'] }}       </p>
-            <p>       Has Evo?:        {{ card['evo'] }}         </p>
-            <p>       Count:           {{ card['count'] }}       </p>
+            {% if card['evo'] %} <p>Evo: True</p> {% endif %}
+            {% if card['count'] %}   <p>count: {{ card['count'] }}</p>   {% endif %}
 
                     <button class="dropbtn">Additional Information</button>
             <div class="dropdown-content">
-                <p>       Health:           {{ card['health'] }}       </p>
+                {% if card['health'] %}   <p>Health: {{ card['health'] }}</p>   {% endif %}
                 <p>       Damage:           {{ card['damage'] }}       </p>
+                {% if card['crown_tower_damage'] %}   <p>Crown Tower Damage: {{ card['crown_tower_damage'] }}</p>   {% endif %}
+                {% if card['building_damage'] %}   <p>Building Damage: {{ card['building_damage'] }}</p>   {% endif %}
                 {% if card['splash'] %} <p>Splash: True</p> {% endif %}
-                <p>       Speed:            {{ card['speed'] }}       </p>
-                <p>       Range:            {{ card['range'] }}       </p>
-                <p>       Hit Speed:        {{ card['hit_speed'] }}       </p>
+                {% if card['speed'] %}   <p>Speed: {{ card['speed'] }}</p>   {% endif %}
+                {% if card['range'] %}   <p>Range: {{ card['range'] }}</p>   {% endif %}
+                {% if card['radius'] %}   <p>Radius: {{ card['radius'] }}</p>   {% endif %}
+                {% if card['hit_speed'] %}   <p>Hit Speed: {{ card['hit_speed'] }}</p>   {% endif %}
+                {% if card['duration'] %}   <p>Duration: {{ card['duration'] }}</p>   {% endif %}
+                {% if card['lifetime'] %}   <p>Lifetime: {{ card['lifetime'] }}</p>   {% endif %}
+                {% if card['spawn_unit'] %} <p>Spawns units: True</p> {% endif %}
+                {% if card['spawn_unit'] %} <p>Spawn Count: {{ card['spawn_count'] }}</p> {% endif %}
+                {% if card['spawn_unit'] %} <p>Spawn Time: {{ card['spawn_time'] }}</p> {% endif %}
+                {% if card['spawn_unit'] %} <p>Troop Spawned: {{ card['troop_spawned'] }}</p> {% endif %}
+                {% if card['death_troops'] %}   <p>Death Troops: {{ card['death_troops'] }}</p>   {% endif %}
                 {% if card['stun_duration'] %}   <p>Stun Duration: {{ card['stun_duration'] }}</p>   {% endif %}
+                {% if card['stun_radius'] %}   <p>Stun Radius: {{ card['stun_radius'] }}</p>   {% endif %}
+                {% if card['production_time'] %}   <p>Production Time: {{ card['production_time'] }}</p>   {% endif %}
+                {% if card['effect'] %}   <p>Effect: {{ card['effect'] }}</p>   {% endif %}
+                {% if card['heal_duration'] %}   <p>Heal: {{ card['heal_duration'] }}</p>   {% endif %}
+                
             </div>
         </div>
             <a href="/"><strong>Back to All Cards</strong></a> <! Link back !>
