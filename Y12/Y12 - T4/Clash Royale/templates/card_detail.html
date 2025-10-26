@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ card['name'] }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    
+    <title>{{ card['name'] }}</title> <!  card name (at the tab name)  !>
+    <link rel="stylesheet" href="/static/css/card_detail.css"> <!  css file   !>
+
 </head>
 <body>
-    <h1>{{ card['name'] }}</h1>
-    <img src="{{ '/' + card['image'] }}" alt="{{ card['name'] }}">
-    <p><strong>Elixir:</strong> {{ card['elixir'] }}</p>
-    <p><strong>Type:</strong> {{ card['type'] }}</p>
-    <p><strong>Rarity:</strong> {{ card['rarity'] }}</p>
-    <p><strong>Description:</strong> {{ card['description'] }}</p>
-    <a href="/">← Back to all cards</a>
+    <div class="card-container">
+
+        <div class="card-image">
+            <img src="{{ '/' + card['image'] }}"> <! Card Image !>
+        </div>
+
+        <div class="card-info">
+
+            <! all the card information !>
+            <h1>{{ card['name'] }}</h1> <! Title of card  !>
+            <p>       Elixir Cost:     {{ card['elixir'] }}      </p> <! Ive spaced out so its easier to read !>
+            <p>       Type:            {{ card['type'] }}        </p>
+            <p>       Unit:            {{ card['unit'] }}        </p>
+            <p>       Rarity:          {{ card['rarity'] }}      </p> <! card['etc']. Card is the card itself. e.g, hog rider, then etc is attribute, e.g., descriptions!>
+            <p>       Description:     {{ card['description'] }} </p>
+            <p>       Targets:         {{ card['targets'] }}     </p>
+            <p>       Arena:           {{ card['arena'] }}       </p>
+            <p>       Has Evo?:        {{ card['evo'] }}         </p>
+            <p>       Count:           {{ card['count'] }}       </p>
+
+                    <button class="dropbtn">Additional Information</button>
+            <div class="dropdown-content">
+                <p>       Health:           {{ card['health'] }}       </p>
+                <p>       Damage:           {{ card['damage'] }}       </p>
+                {% if card['splash'] %} <p>Splash: True</p> {% endif %}
+                <p>       Speed:            {{ card['speed'] }}       </p>
+                <p>       Range:            {{ card['range'] }}       </p>
+                <p>       Hit Speed:        {{ card['hit_speed'] }}       </p>
+                {% if card['stun_duration'] %}   <p>Stun Duration: {{ card['stun_duration'] }}</p>   {% endif %}
+            </div>
+        </div>
+            <a href="/"><strong>Back to All Cards</strong></a> <! Link back !>
+        </div>
+    </div>
+
+<script src="/static/js/script.js"></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
-/* === Import Custom Font === */
-@font-face {
+@font-face { /* Font found on Google, Ai used to incorperate */
     font-family: 'Beachday';
     src: url('../fonts/beachday.woff2') format('woff2'),
          url('../fonts/beachday.ttf') format('truetype'),
@@ -10,40 +9,89 @@
 
 
 body {
-    font-family: 'Beachday', sans-serif;
-    background-image: url('../images/background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: rgb(255, 255, 255);
-    letter-spacing: 2px;
-    text-align: center;
-    margin: 0;
-    font-size: 18px;
-    padding: 0;
+    font-family: 'Beachday', sans-serif; /* Font */
+    background-image: url('../images/card-background.jpg'); /* background image - blue with the wood in the middle */
+    background-size: cover; /* makes it so the background takes up the entire screen */
+    background-position: center; /* centres background */
+    letter-spacing: 2px; /* spaces the letters out more so it actually looks like the games */
+    text-align: left; /* text aligns to left of container */
+    font-size: 24px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* center container horizontally */
+    align-items: flex-start; /* top-align content */
 }
 
-h1, h2, h3, p, a {
-    -webkit-text-stroke: 1px black;
-    color: white;
+
+.card-container {
+    display: flex;          /* text and image side by side */
+    align-items: flex-start; /* top-align items */
+    gap: 40px;               /* space between text and image */
+    max-width: 1600px;
+    width: 90%;
+    margin-top: 50px;
 }
-/* === Image Styling === */
-img {
-    width: 200px;
+
+.card-info {
+    flex: 1;                       /* take remaining width */
+    text-align: left;
+    font-size: clamp(20px, 2vw, 24px); /* scale text with screen */
+}
+
+.card-info h1, .card-info p {
+    margin: 12px 0;                 /* vertical spacing */
+}
+
+.card-info strong { 
+    color: #00ffff;
+    -webkit-text-stroke: 0.5px black;
+}
+
+
+.card-image img {
+    width: 550px;                   /* adjust image size */
+    height: auto;
     border-radius: 12px;
-    margin-top: 20px;
     transition: transform 0.3s ease;
 }
 
-img:hover {
+.card-image img:hover {
     transform: scale(1.05);
 }
 
-/* === Link Styling === */
-a {
+.dropbtn {
+    background-color: #dbdbdb;
+    color: black;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.dropbtn:hover {
+    background-color: #777474;
+}
+
+.dropdown-content {
+    display: none; /* hidden by default */
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 15px;
+    margin-top: 5px;
+    border-radius: 8px;
+}
+
+.dropdown-content p {
+    margin: 5px 0;
+}
+
+
+a { /* link stuff */
     color: #00ffff;
     text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
     transition: color 0.3s ease;
 }
 
@@ -52,13 +100,16 @@ a:hover {
     text-decoration: underline;
 }
 
-/* === Optional: Headings === */
-h1, h2, h3 {
+
+h1, h2, h3 { /* heading and text and whatnot */
     font-family: 'Beachday', sans-serif;
     margin-top: 20px;
 }
 
-/* === Optional: Add a subtle shadow for readability === */
-body, h1, h2, p {
+body, h1, h2, p { /* VERY SLIGHT SHADOW */
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+p { /* Text */
+    color: rgb(255, 255, 255);
 }
