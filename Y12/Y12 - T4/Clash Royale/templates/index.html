@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Clash Royale Cards</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
@@ -33,6 +34,23 @@
         </div>
         {% endfor %}
     </div>
-<script src="static/js/script.js"></script>
+
+    <!-- Dock -->
+    <div class="dock">
+        <button class="dock-item" title="Home">
+            <img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png" alt="Home Icon">
+        </button>
+        <button class="dock-item" title="Archive">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828940.png" alt="Archive Icon">
+        </button>
+        <button class="dock-item" title="Profile">
+            <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="Profile Icon">
+        </button>
+        <button class="dock-item" title="Settings">
+            <img src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="Settings Icon">
+        </button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
