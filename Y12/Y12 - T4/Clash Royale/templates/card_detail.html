@@ -18,13 +18,13 @@
 
             <! all the card information !>
             <h1>{{ card['name'] }}</h1> <! Title of card  !>
-            <p><strong>Elixir Cost:</strong>      {{ card['elixir'] }}      </p> <! Ive spaced out so its easier to read !>
-            <p><strong> Type:</strong>             {{ card['type'] }}        </p>
-            <p><strong> Unit:</strong>       {{ card['unit'] }}        </p>
-            <p><strong> Rarity:</strong>      {{ card['rarity'] }}      </p> <! card['etc']. Card is the card itself. e.g, hog rider, then etc is attribute, e.g., descriptions!>
-            <p><strong> Description:</strong>      {{ card['description'] }} </p>
-            <p><strong> Targets:</strong>          {{ card['targets'] }}     </p>
-            <p><strong> Arena:</strong> {{ card['arena'] }}       </p>
+            <p>       Elixir Cost:     {{ card['elixir'] }}      </p> <! Ive spaced out so its easier to read !>
+            <p>       Type:            {{ card['type'] }}        </p>
+            <p>       Unit:            {{ card['unit'] }}        </p>
+            <p>       Rarity:          {{ card['rarity'] }}      </p> <! card['etc']. Card is the card itself. e.g, hog rider, then etc is attribute, e.g., descriptions!>
+            <p>       Description:     {{ card['description'] }} </p>
+            <p>       Targets:         {{ card['targets'] }}     </p>
+            <p>       Arena:           {{ card['arena'] }}       </p>
             {% if card['evo'] %} <p>Evo: True</p> {% endif %}
             {% if card['count'] %}   <p>count: {{ card['count'] }}</p>   {% endif %}
 
