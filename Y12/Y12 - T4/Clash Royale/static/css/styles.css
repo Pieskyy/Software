@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 @font-face { /* Font found on google. Ai used to incorperate*/
-=======
-@font-face {
->>>>>>> parent of b469196 (ZX)
     font-family: 'Beachday';
     src: url('../fonts/beachday.woff2') format('woff2'),
          url('../fonts/beachday.ttf') format('truetype'),
@@ -10,10 +6,6 @@
     font-weight: normal;
     font-style: normal;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of b469196 (ZX)
 body {
     font-family: sans-serif;
     background-image: url('../images/background.jpg');
@@ -31,29 +23,6 @@ h1, h2, h3, p, a {
     color: white;
 }
 
-<<<<<<< HEAD
-=======
-/* Search + Sort Bar */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-#searchInput, #sortSelect {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-}
-
-#searchInput {
-    width: 250px;
-}
-
->>>>>>> parent of b469196 (ZX)
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -70,8 +39,4 @@ h1, h2, h3, p, a {
 a {
     color: white;
     text-decoration: none;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> parent of b469196 (ZX)
