@@ -14,7 +14,7 @@
                 type="text" 
                 id="searchInput" 
                 class="search-input" 
-                placeholder="Search cards by name, description, type, rarity..."
+                placeholder="Search cards by name, description, type, rarity... (Search In Button)"
                 autocomplete="off"
             >
             <div id="autocompleteList" class="autocomplete-list"></div>
@@ -28,10 +28,68 @@
                 <option value="type">Type</option>
                 <option value="rarity">Rarity</option>
                 <option value="arena">Arena</option>
+                <option value="evo">Evo</option>
+                <option value="unit">Unit</option>
+                <option value="targets">Targets</option>
             </select>
             
             <button id="clearSearch" class="btn-clear">Clear</button>
             <button id="resetView" class="btn-reset">Show All</button>
+            <button id="toggleAdvanced" class="btn-advanced">Advanced ▼</button>
+        </div>
+
+        <!-- Advanced search panel (hidden by default) -->
+        <div class="advanced-panel" id="advancedPanel">
+            <div class="advanced-grid">
+                <div class="field">
+                    <label for="raritySelect">Rarity</label>
+                    <select id="raritySelect" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="Common">Common</option>
+                        <option value="Rare">Rare</option>
+                        <option value="Epic">Epic</option>
+                        <option value="Legendary">Legendary</option>
+                        <option value="Champion">Champion</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="arenaSelect">Arena</label>
+                    <input id="arenaSelect" class="search-input" placeholder="Arena (e.g. 1, 2 or name)">
+                </div>
+                <div class="field">
+                    <label for="elixirMin">Elixir min</label>
+                    <input type="number" id="elixirMin" class="search-input" min="0" placeholder="min">
+                </div>
+                <div class="field">
+                    <label for="elixirMax">Elixir max</label>
+                    <input type="number" id="elixirMax" class="search-input" min="0" placeholder="max">
+                </div>
+                <div class="field checkbox">
+                    <label><input type="checkbox" id="filterEvo"> Evo</label>
+                </div>
+                <div class="field checkbox">
+                    <label><input type="checkbox" id="filterSplash"> Splash</label>
+                </div>
+                <div class="field checkbox">
+                    <label><input type="checkbox" id="filterSpawn"> Spawns units</label>
+                </div>
+                <div class="field sort-field">
+                    <div class="sort-control">
+                        <label for="sortSelect">Sort by</label>
+                        <button id="sortDirectionBtn" class="sort-direction-btn" title="Toggle sort direction">↓</button>
+                    </div>
+                    <select id="sortSelect" class="filter-select">
+                        <option value="">Default</option>
+                        <option value="name_asc">Name</option>
+                        <option value="rarity_asc">Rarity</option>
+                        <option value="type_asc">Type</option>
+                        <option value="arena_asc">Arena</option>
+                        <option value="elixir_asc">Elixir</option>
+                        <option value="damage_asc">Damage</option>
+                        <option value="health_asc">Health</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
