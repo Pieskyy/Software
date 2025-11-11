@@ -3,7 +3,8 @@ import sqlite3
 import os
 
 # === Path to JSON file ===
-json_path = r"C:\Users\User\Documents\Adam School\Software\Y12\Y12 - T4\Clash Royale\database\cards.json"
+json_path = r"C:\Users\ANGIE\OneDrive\Documents\Adam - School\Software\Y12\Y12 - T4\Clash Royale"
+json_path = os.path.join(json_path, "database", "cards.json")
 
 # === Load JSON ===
 with open(json_path, "r", encoding="utf-8") as f:

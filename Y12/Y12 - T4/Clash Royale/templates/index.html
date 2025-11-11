@@ -6,14 +6,45 @@
 </head>
 <body>
     <h1>Clash Royale Cards</h1>
-    <div class="grid">
+    
+    <!-- Search Bar with Advanced Filters -->
+    <div class="search-container">
+        <div class="search-bar">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Search cards by name, description, type, rarity..."
+                autocomplete="off"
+            >
+            <div id="autocompleteList" class="autocomplete-list"></div>
+        </div>
+        
+        <div class="advanced-filters">
+            <label for="filterField">Search in:</label>
+            <select id="filterField" class="filter-select">
+                <option value="name">Name</option>
+                <option value="description">Description</option>
+                <option value="type">Type</option>
+                <option value="rarity">Rarity</option>
+                <option value="arena">Arena</option>
+            </select>
+            
+            <button id="clearSearch" class="btn-clear">Clear</button>
+            <button id="resetView" class="btn-reset">Show All</button>
+        </div>
+    </div>
+
+    <div class="grid" id="cardGrid">
         {% for card in cards %}
-        <div class="card">
+        <div class="card" data-card-id="{{ card['id'] }}" data-card-name="{{ card['name'].lower() }}">
             <a href="{{ url_for('card_detail', card_id=card['id']) }}">
                 <img src="{{ '/' + card['image'] }}">
             </a>
         </div>
         {% endfor %}
     </div>
+    
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 </body>
 </html>

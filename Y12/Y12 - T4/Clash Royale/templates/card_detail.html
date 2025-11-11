@@ -1,63 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    
-    <title>{{ card['name'] }}</title> <!  card name (at the tab name)  !>
-    <link rel="stylesheet" href="/static/css/card_detail.css"> <!  css file   !>
-
+    <title>{{ card['name'] }}</title>
+    <link rel="stylesheet" href="/static/css/card_detail.css">
 </head>
 <body>
-    <div class="card-container">
+<div class="card-container">
 
-        <div class="card-image">
-            <img src="{{ '/' + card['image'] }}"> <! Card Image !>
-        </div>
+    <div class="card-image">
+        <img src="{{ '/' + card['image'] }}">
+    </div>
 
-        <div class="card-info">
+    <div class="card-info">
+        <h1>{{ card['name'] }}</h1>
 
-            <! all the card information !>
-            <h1>{{ card['name'] }}</h1> <! Title of card  !>
-            <p>       Elixir Cost:     {{ card['elixir'] }}      </p> <! Ive spaced out so its easier to read !>
-            <p>       Type:            {{ card['type'] }}        </p>
-            <p>       Unit:            {{ card['unit'] }}        </p>
-            <p>       Rarity:          {{ card['rarity'] }}      </p> <! card['etc']. Card is the card itself. e.g, hog rider, then etc is attribute, e.g., descriptions!>
-            <p>       Description:     {{ card['description'] }} </p>
-            <p>       Targets:         {{ card['targets'] }}     </p>
-            <p>       Arena:           {{ card['arena'] }}       </p>
-            {% if card['evo'] %} <p>Evo: True</p> {% endif %}
-            {% if card['count'] %}   <p>count: {{ card['count'] }}</p>   {% endif %}
+        {% set main_fields = [
+            ('elixir', 'Elixir Cost'),
+            ('type', 'Type'),
+            ('unit', 'Unit'),
+            ('rarity', 'Rarity'),
+            ('description', 'Description'),
+            ('targets', 'Targets'),
+            ('arena', 'Arena')
+        ] %}
 
-                    <button class="dropbtn">Additional Information</button>
-            <div class="dropdown-content">
-                {% if card['health'] %}   <p>Health: {{ card['health'] }}</p>   {% endif %}
-                <p>       Damage:           {{ card['damage'] }}       </p>
-                {% if card['crown_tower_damage'] %}   <p>Crown Tower Damage: {{ card['crown_tower_damage'] }}</p>   {% endif %}
-                {% if card['building_damage'] %}   <p>Building Damage: {{ card['building_damage'] }}</p>   {% endif %}
-                {% if card['splash'] %} <p>Splash: True</p> {% endif %}
-                {% if card['speed'] %}   <p>Speed: {{ card['speed'] }}</p>   {% endif %}
-                {% if card['range'] %}   <p>Range: {{ card['range'] }}</p>   {% endif %}
-                {% if card['radius'] %}   <p>Radius: {{ card['radius'] }}</p>   {% endif %}
-                {% if card['hit_speed'] %}   <p>Hit Speed: {{ card['hit_speed'] }}</p>   {% endif %}
-                {% if card['duration'] %}   <p>Duration: {{ card['duration'] }}</p>   {% endif %}
-                {% if card['lifetime'] %}   <p>Lifetime: {{ card['lifetime'] }}</p>   {% endif %}
-                {% if card['spawn_unit'] %} <p>Spawns units: True</p> {% endif %}
-                {% if card['spawn_unit'] %} <p>Spawn Count: {{ card['spawn_count'] }}</p> {% endif %}
-                {% if card['spawn_unit'] %} <p>Spawn Time: {{ card['spawn_time'] }}</p> {% endif %}
-                {% if card['spawn_unit'] %} <p>Troop Spawned: {{ card['troop_spawned'] }}</p> {% endif %}
-                {% if card['death_troops'] %}   <p>Death Troops: {{ card['death_troops'] }}</p>   {% endif %}
-                {% if card['stun_duration'] %}   <p>Stun Duration: {{ card['stun_duration'] }}</p>   {% endif %}
-                {% if card['stun_radius'] %}   <p>Stun Radius: {{ card['stun_radius'] }}</p>   {% endif %}
-                {% if card['production_time'] %}   <p>Production Time: {{ card['production_time'] }}</p>   {% endif %}
-                {% if card['effect'] %}   <p>Effect: {{ card['effect'] }}</p>   {% endif %}
-                {% if card['heal_duration'] %}   <p>Heal: {{ card['heal_duration'] }}</p>   {% endif %}
-                
-            </div>
-        </div>
-            <a href="/"><strong>Back to All Cards</strong></a> <! Link back !>
+        {% for key, label in main_fields %}
+            {% if card[key] %}
+                <p>
+                    <span class="label">{{ label }}:</span>
+                    <span class="value">{{ card[key] }}</span>
+                </p>
+            {% endif %}
+        {% endfor %}
+
+        {% if card['evo'] %}
+            <p><span class="label">Evo:</span> <span class="value">True</span></p>
+        {% endif %}
+        {% if card['count'] %}
+            <p><span class="label">Count:</span> <span class="value">{{ card['count'] }}</span></p>
+        {% endif %}
+
+        <button class="dropbtn">Additional Information</button>
+        <div class="dropdown-content">
+
+            {% set extra_fields = [
+                ('health', 'Health'),
+                ('damage', 'Damage'),
+                ('crown_tower_damage', 'Crown Tower Damage'),
+                ('building_damage', 'Building Damage'),
+                ('speed', 'Speed'),
+                ('range', 'Range'),
+                ('radius', 'Radius'),
+                ('hit_speed', 'Hit Speed'),
+                ('duration', 'Duration'),
+                ('lifetime', 'Lifetime'),
+                ('spawn_count', 'Spawn Count'),
+                ('spawn_time', 'Spawn Time'),
+                ('troop_spawned', 'Troop Spawned'),
+                ('death_troops', 'Death Troops'),
+                ('stun_duration', 'Stun Duration'),
+                ('stun_radius', 'Stun Radius'),
+                ('production_time', 'Production Time'),
+                ('effect', 'Effect'),
+                ('heal_duration', 'Heal Duration')
+            ] %}
+
+            {% for key, label in extra_fields %}
+                {% if card[key] %}
+                    <p>
+                        <span class="label">{{ label }}:</span>
+                        <span class="value">{{ card[key] }}</span>
+                    </p>
+                {% endif %}
+            {% endfor %}
+
+            {% if card['splash'] %}
+                <p><span class="label">Splash:</span> <span class="value">True</span></p>
+            {% endif %}
+            {% if card['spawn_unit'] %}
+                <p><span class="label">Spawns Units:</span> <span class="value">True</span></p>
+            {% endif %}
         </div>
     </div>
 
+    <a href="/">Back to All Cards</a>
+</div>
+
 <script src="/static/js/script.js"></script>
+
+<style>
+
+</style>
+
 </body>
 </html>
