@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         try {
             // Gather advanced filters
+            const unit = document.getElementById('unit')?.value || '';
             const rarity = document.getElementById('raritySelect')?.value || '';
             const arenaVal = document.getElementById('arenaSelect')?.value || '';
             const elixirMin = document.getElementById('elixirMin')?.value || '';
@@ -64,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 field: field,
                 limit: '500'
             });
+            if (unit) params.set('unit', unit);
             if (rarity) params.set('rarity', rarity);
             if (arenaVal) params.set('arena', arenaVal);
             if (elixirMin) params.set('elixir_min', elixirMin);
@@ -135,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     field: field,
                     limit: '8'
                 });
+                const units = document.getElementById('unitselect')?.value || '';
                 const rare = document.getElementById('raritySelect')?.value || '';
                 const arenaVal = document.getElementById('arenaSelect')?.value || '';
                 const elixirMin = document.getElementById('elixirMin')?.value || '';
@@ -142,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const evo = document.getElementById('filterEvo')?.checked ? '1' : '';
                 const splash = document.getElementById('filterSplash')?.checked ? '1' : '';
                 const spawn = document.getElementById('filterSpawn')?.checked ? '1' : '';
+                if (units) advParams.set('unit', rare);
                 if (rare) advParams.set('rarity', rare);
                 if (arenaVal) advParams.set('arena', arenaVal);
                 if (elixirMin) advParams.set('elixir_min', elixirMin);
@@ -201,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Advanced filters -> trigger filter on change
-    ['raritySelect','arenaSelect','elixirMin','elixirMax','filterEvo','filterSplash','filterSpawn','sortSelect'].forEach(id => {
+    ['unitselect', 'raritySelect','arenaSelect','elixirMin','elixirMax','filterEvo','filterSplash','filterSpawn','sortSelect'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) {
             console.warn(`Element with id "${id}" not found`);
