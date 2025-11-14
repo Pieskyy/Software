@@ -397,3 +397,94 @@ a {
     text-align: left;
     color: white;
 }
+
+
+
+
+
+.arena-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    margin: 180px auto;
+    padding: 20px;
+}
+
+.center-image {
+    width: 400px;
+    height: auto;
+    max-width: 90vw;
+    display: block;
+}
+
+/* Blue background container (decorative only) */
+.battle-btn-outside {
+    position: relative; /* needed for centering inner button */
+    width: 450px;
+    height: 80px; /* slightly taller for spacing */
+    padding: 10px;
+    border: 5px solid rgb(89, 97, 219);
+    margin: 0 auto; /* center container horizontally */
+    background-color: rgba(48, 136, 165, 0.8); /* semi-transparent blue */
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default; /* no pointer on container */
+}
+
+/* Button inside the blue container */
+.arena-btn-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer; /* pointer on the clickable area */
+    transition: transform 0.2s ease;
+}
+
+.arena-btn-wrapper:hover {
+    transform: scale(1.05); /* hover effect */
+}
+
+/* Button image */
+.arena-btn-wrapper img {
+    display: block;
+    width: 200px;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Text overlay */
+.arena-btn-wrapper .btn-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(230, 223, 187);
+    font-family: 'Beachday', sans-serif;
+    font-size: 2.6rem;
+    -webkit-text-stroke: 1px black;
+    text-align: center;
+    pointer-events: none; /* ensures text doesn't block clicks */
+    z-index: 2;
+}
+
+/* Mobile scaling */
+@media (max-width: 700px) {
+    .center-image {
+        width: 250px;
+    }
+
+    .arena-btn-wrapper img {
+        width: 180px;
+    }
+
+    .arena-btn-wrapper .btn-text {
+        font-size: 1rem;
+    }
+
+    .battle-btn-outside {
+        width: 90%;
+        height: 60px;
+    }
+}

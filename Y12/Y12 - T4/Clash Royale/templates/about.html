@@ -6,9 +6,19 @@
 </head>
 <body>
   {% include 'navigation/nav.html' %}
-  <main class="page-content">
-    <h1>About</h1>
-    <p>i will do this later</p>
-  </main>
+
+  <div class="arena-container">
+      <img src="/static/images/arena.png" class="center-image">
+
+      <div class="battle-btn-outside">
+          <div class="arena-btn-wrapper" id="battle-btn">
+              <img src="/static/images/battlebutton.png" alt="Battle Button">
+              <div class="btn-text">Battle</div>
+          </div>
+      </div>
+  </div>
+
+  <audio id="battle-audio" src="{{ url_for('static', filename='music/background_music.mp3') }}"></audio>
 </body>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </html>
