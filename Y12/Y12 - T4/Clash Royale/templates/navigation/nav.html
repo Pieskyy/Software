@@ -1,0 +1,14 @@
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" class="nav-logo-img">
+      <span class="nav-logo-text">ClashCards</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link {% if active_page=='home' %}active{% endif %}">Home</a>
+       <a href="/decks" class="nav-link {% if active_page=='decks' %}active{% endif %}">Decks</a>
+      <a href="/about" class="nav-link {% if active_page=='about' %}active{% endif %}">About</a>
+      <a href="/contact" class="nav-link {% if active_page=='contact' %}active{% endif %}">Contact</a>
+    </div>
+  </div>
+</nav>
