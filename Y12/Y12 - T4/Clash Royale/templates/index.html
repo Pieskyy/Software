@@ -6,20 +6,14 @@
 </head>
 <body>
     {% include 'navigation/nav.html' %}
-    <div class="search-container">
-        <div class="search-bar">
-            <input 
-                type="text" 
-                id="searchInput" 
-                class="search-input" 
-                placeholder="Search cards by name, description, type, rarity... (Search In Button)"
-                autocomplete="off"
-            >
+
+    <div class="search-container"> <div class="search-bar">
+        <input type="text" id="searchInput"  class="search-input"  placeholder="Search cards by name, description, type, rarity... (Search In Button)" autocomplete="off">
             <div id="autocompleteList" class="autocomplete-list"></div>
-        </div>
-        
-        <div class="advanced-filters">
-            <label for="filterField">Search in:</label>
+    </div>
+
+    <div class="advanced-filters">
+        <label for="filterField">Search in:</label>
             <select id="filterField" class="filter-select">
                 <option value="name">Name</option>
                 <option value="description">Description</option>
@@ -36,7 +30,6 @@
             <button id="toggleAdvanced" class="btn-advanced">Advanced ▼</button>
         </div>
 
-        <!-- Advanced search panel (hidden by default) -->
         <div class="advanced-panel" id="advancedPanel">
             <div class="advanced-grid">
                 <div class="field">
@@ -50,32 +43,40 @@
                         <option value="Champion">Champion</option>
                     </select>
                 </div>
+                
                 <div class="field">
                     <label for="arenaSelect">Arena</label>
                     <input id="arenaSelect" class="search-input" placeholder="Arena (e.g. 1, 2 or name)">
                 </div>
+
                 <div class="field">
                     <label for="elixirMin">Elixir min</label>
                     <input type="number" id="elixirMin" class="search-input" min="0" placeholder="min">
                 </div>
+
                 <div class="field">
                     <label for="elixirMax">Elixir max</label>
                     <input type="number" id="elixirMax" class="search-input" min="0" placeholder="max">
                 </div>
+
                 <div class="field checkbox">
                     <label><input type="checkbox" id="filterEvo"> Evo</label>
                 </div>
+
                 <div class="field checkbox">
                     <label><input type="checkbox" id="filterSplash"> Splash</label>
                 </div>
+
                 <div class="field checkbox">
                     <label><input type="checkbox" id="filterSpawn"> Spawns units</label>
                 </div>
+
                 <div class="field sort-field">
                     <div class="sort-control">
                         <label for="sortSelect">Sort by</label>
                         <button id="sortDirectionBtn" class="sort-direction-btn" title="Toggle sort direction">↓</button>
                     </div>
+
                     <select id="sortSelect" class="filter-select">
                         <option value="">Default</option>
                         <option value="name_asc">Name</option>
@@ -91,16 +92,23 @@
         </div>
     </div>
 
+    
     <div class="grid" id="cardGrid">
         {% for card in cards %}
-        <div class="card" data-card-id="{{ card['id'] }}" data-card-name="{{ card['name'].lower() }}">
+        <div class="card" data-card-id="{{ card['id'] }}" data-card-name="{{ card['name'] }}" tabindex="0">
             <a href="{{ url_for('card_detail', card_id=card['id']) }}">
-                <img src="{{ '/' + card['image'] }}">
+                <img src="{{ '/' + card['image'] }}" alt="{{ card['name'] }}"> <!--Shows card image and name (AI helped write this line :P)-->
             </a>
         </div>
         {% endfor %}
     </div>
     
+    <audio id="battle-audio" loop>
+        <source src="{{ url_for('static', filename='music/background_music.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
 </body>
 </html>

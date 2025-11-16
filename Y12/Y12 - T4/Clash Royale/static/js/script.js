@@ -11,13 +11,5 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-    const battleBtn = document.getElementById('battle-btn');
-    const battleAudio = document.getElementById('battle-audio');
-
-    if(battleBtn && battleAudio) {
-        battleBtn.addEventListener('click', () => {
-            battleAudio.play().catch(e => console.log("Audio failed to play:", e));
-        });
-    }
 });
+

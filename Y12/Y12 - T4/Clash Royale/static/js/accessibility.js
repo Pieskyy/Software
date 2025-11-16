@@ -1,0 +1,151 @@
+// ---------- Accessibility + Battle Music JS ----------
+
+// ---------- Accessibility Mode ----------
+let accessibilityEnabled = localStorage.getItem("accessibilityMode") === "true";
+if (accessibilityEnabled) {
+    document.body.classList.add("accessibility-mode");
+}
+
+function speak(text) {
+    if (!accessibilityEnabled || !text) return;
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.rate = 0.95;
+    msg.pitch = 0.95;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+}
+
+// ---------- DOMContentLoaded ----------
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ---------- ACCESSIBILITY ----------
+    const speakableSelector = "button, a, input, textarea, select, [role='button'], [tabindex='0'], h1, h2, h3, h4, h5, h6, label";
+
+    // Speakable elements hover/click
+    document.querySelectorAll(speakableSelector).forEach(el => {
+        el.addEventListener("mouseenter", () => {
+            if (!accessibilityEnabled) return;
+            let text = el.textContent.trim() || el.value || el.getAttribute("aria-label") || el.title;
+            if (!text) {
+                const img = el.querySelector("img");
+                text = img?.alt || "link";
+            }
+            speak(text);
+        });
+        el.addEventListener("click", () => {
+            if (!accessibilityEnabled) return;
+            let text = el.textContent.trim() || el.value || el.getAttribute("aria-label") || el.title;
+            if (!text) {
+                const img = el.querySelector("img");
+                text = img?.alt || "link";
+            }
+            speak(text + " selected");
+        });
+    });
+
+    // Images alt text
+    document.querySelectorAll("img").forEach(img => {
+        img.addEventListener("mouseenter", () => {
+            if (!accessibilityEnabled) return;
+            speak(img.alt || "image");
+        });
+    });
+
+    // Settings button
+    const settingsBtn = document.getElementById("settingsButton");
+    const settingsDropdown = document.getElementById("settingsDropdown");
+    if (settingsBtn) {
+        settingsBtn.addEventListener("mouseenter", () => {
+            if (!accessibilityEnabled) return;
+            const img = settingsBtn.querySelector("img");
+            speak(img?.alt || "Settings");
+        });
+        settingsBtn.addEventListener("click", () => {
+            if (!accessibilityEnabled) return;
+            const img = settingsBtn.querySelector("img");
+            speak((img?.alt || "Settings") + " selected");
+        });
+    }
+
+    if (settingsBtn && settingsDropdown) {
+        settingsBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            settingsDropdown.classList.toggle("open");
+        });
+        document.addEventListener("click", () => {
+            settingsDropdown.classList.remove("open");
+        });
+    }
+
+    // Accessibility toggle
+    const accBtn = document.getElementById("accessibilityBtn");
+    if (accBtn) {
+        accBtn.addEventListener("click", () => {
+            accessibilityEnabled = !accessibilityEnabled;
+            if (accessibilityEnabled) document.body.classList.add("accessibility-mode");
+            else document.body.classList.remove("accessibility-mode");
+            localStorage.setItem("accessibilityMode", accessibilityEnabled);
+            speak("Accessibility mode " + (accessibilityEnabled ? "enabled" : "disabled"));
+        });
+    }
+
+    // Cards hover
+    document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("mouseenter", () => {
+            if (!accessibilityEnabled) return;
+            const cardName = card.getAttribute("data-card-name") || card.querySelector("img")?.alt;
+            if (cardName) speak(cardName);
+        });
+        card.addEventListener("focus", () => {
+            if (!accessibilityEnabled) return;
+            const cardName = card.getAttribute("data-card-name") || card.querySelector("img")?.alt;
+            if (cardName) speak(cardName);
+        });
+    });
+
+    // ---------- BATTLE MUSIC ----------
+    const battleBtn = document.getElementById('battle-btn');
+    const battleAudio = document.getElementById('battle-audio');
+    const musicBtn = document.getElementById("musicToggleBtn");
+    const volumeSlider = document.getElementById("musicVolume");
+
+    // Load saved music state
+    let musicPlaying = localStorage.getItem("musicPlaying") === "true";
+    let musicVolume = parseFloat(localStorage.getItem("musicVolume")) || 0.5;
+
+    if (battleAudio) {
+        battleAudio.volume = musicVolume;
+        battleAudio.loop = true; // keeps playing
+        if (musicPlaying) battleAudio.play().catch(e => console.log("Audio failed:", e));
+    }
+
+    if (volumeSlider) volumeSlider.value = musicVolume;
+
+    // Battle button toggle
+    if (battleBtn && battleAudio) {
+        battleBtn.addEventListener('click', () => {
+            musicPlaying = !musicPlaying;
+            if (musicPlaying) battleAudio.play().catch(e => console.log("Audio failed:", e));
+            else battleAudio.pause();
+            localStorage.setItem("musicPlaying", musicPlaying);
+        });
+    }
+
+    // Settings button toggle for music
+    if (musicBtn && battleAudio) {
+        musicBtn.addEventListener('click', () => {
+            musicPlaying = !musicPlaying;
+            if (musicPlaying) battleAudio.play().catch(e => console.log("Audio failed:", e));
+            else battleAudio.pause();
+            localStorage.setItem("musicPlaying", musicPlaying);
+        });
+    }
+
+    // Volume slider
+    if (volumeSlider && battleAudio) {
+        volumeSlider.addEventListener('input', () => {
+            battleAudio.volume = volumeSlider.value;
+            localStorage.setItem("musicVolume", battleAudio.volume);
+        });
+    }
+});
