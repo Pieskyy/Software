@@ -1,6 +1,7 @@
-from flask import render_template, g, send_from_directory, abort
+from flask import render_template, send_from_directory, abort
 import sqlite3
 import os
+from blog_scraper import fetch_blog_list
 from db import get_table_name, get_db
 
 CARDS_FOLDER = os.path.join('database', 'Cards')  # Card images folder
@@ -39,6 +40,11 @@ def card_routes(app):
     @app.route('/contact')
     def contact():
         return render_template('contact.html', active_page='contact')
+
+    @app.route("/blogs")
+    def blogs_page():
+        blogs = fetch_blog_list()
+        return render_template("blogs.html", blogs=blogs)
 
     # Decks page
     @app.route('/decks')
