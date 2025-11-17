@@ -103,25 +103,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ---------- BATTLE MUSIC ----------
+
     const battleBtn = document.getElementById('battle-btn');
     const battleAudio = document.getElementById('battle-audio');
-    const musicBtn = document.getElementById("musicToggleBtn");
     const volumeSlider = document.getElementById("musicVolume");
 
-    // Load saved music state
+
     let musicPlaying = localStorage.getItem("musicPlaying") === "true";
     let musicVolume = parseFloat(localStorage.getItem("musicVolume")) || 0.5;
 
     if (battleAudio) {
         battleAudio.volume = musicVolume;
-        battleAudio.loop = true; // keeps playing
+        battleAudio.loop = true;
         if (musicPlaying) battleAudio.play().catch(e => console.log("Audio failed:", e));
     }
 
     if (volumeSlider) volumeSlider.value = musicVolume;
 
-    // Battle button toggle
+
     if (battleBtn && battleAudio) {
         battleBtn.addEventListener('click', () => {
             musicPlaying = !musicPlaying;
@@ -131,17 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Settings button toggle for music
-    if (musicBtn && battleAudio) {
-        musicBtn.addEventListener('click', () => {
-            musicPlaying = !musicPlaying;
-            if (musicPlaying) battleAudio.play().catch(e => console.log("Audio failed:", e));
-            else battleAudio.pause();
-            localStorage.setItem("musicPlaying", musicPlaying);
-        });
-    }
-
-    // Volume slider
     if (volumeSlider && battleAudio) {
         volumeSlider.addEventListener('input', () => {
             battleAudio.volume = volumeSlider.value;
