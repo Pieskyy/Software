@@ -1,58 +1,83 @@
-const blogsContainer = document.getElementById('blogs-container');
-let cachedBlogs = localStorage.getItem('cachedBlogs');
-const batchSize = 2;
-let renderedCount = 0;
+const blogsContainer = document.getElementById("blogs-container");
+let saved = localStorage.getItem("cachedBlogs");
+let blogsList = [];
+let index = 0;
+let amount = 2;
 
+// load images when seen
+let observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+            let box = entry.target;
+            box.classList.add("visible");
 
-const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting) {
-            const blogEl = entry.target;
-            blogEl.classList.add('visible');
-            const img = blogEl.querySelector('img[data-src]');
-            if(img) {
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
+            let img = box.querySelector("img[data-src]");
+            if (img) {
+                img.src = img.getAttribute("data-src");
+                img.removeAttribute("data-src");
             }
-            obs.unobserve(blogEl);
+
+            observer.unobserve(box);
         }
     });
-}, { rootMargin: '200px' });
-
-
-function renderBatch(blogs) {
-    const nextBatch = blogs.slice(renderedCount, renderedCount + batchSize);
-    nextBatch.forEach(blog => {
-        const div = document.createElement('div');
-        div.className = 'blog ' + (blog.type === 'featured' ? 'featured' : '');
-        div.innerHTML = `
-            <a href="${blog.url}" target="_blank" class="blog-link">
-                ${blog.cover_image ? `<img data-src="${blog.cover_image}" alt="cover">` : ''}
-                <div class="title">${blog.title}</div>
-                <div class="date">${blog.date}</div>
-                ${blog.description ? `<div class="desc">${blog.description}</div>` : ''}
-            </a>
-        `;
-        blogsContainer.appendChild(div);
-        observer.observe(div);
-    });
-    renderedCount += batchSize;
-}
-
-
-window.addEventListener('scroll', () => {
-    if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
-        if(renderedCount < blogs.length) renderBatch(blogs);
-    }
+}, {
+    rootMargin: "200px"
 });
 
 
-let blogs = [];
-if(cachedBlogs) {
-    blogs = JSON.parse(cachedBlogs);
-    renderBatch(blogs);
-} else {
-    blogs = blogsData;
-    localStorage.setItem('cachedBlogs', JSON.stringify(blogs));
-    renderBatch(blogs);
+// draw some blogs each time
+function showMoreBlogs(list) {
+    let part = list.slice(index, index + amount);
+
+    part.forEach(function (b) {
+        let div = document.createElement("div");
+        div.className = "blog";
+
+        if (b.type === "featured") {
+            div.className += " featured";
+        }
+
+        let imgHtml = "";
+        if (b.cover_image) {
+            imgHtml = `<img data-src="${b.cover_image}" alt="">`;
+        }
+
+        div.innerHTML = `
+            <a href="${b.url}" target="_blank" class="blog-link">
+                ${imgHtml}
+                <div class="title">${b.title}</div>
+                <div class="date">${b.date}</div>
+                ${b.description ? `<div class="desc">${b.description}</div>` : ""}
+            </a>
+        `;
+
+        blogsContainer.appendChild(div);
+        observer.observe(div);
+    });
+
+    index += amount;
 }
+
+
+// load cached or fresh data
+if (saved) {
+    blogsList = JSON.parse(saved);
+    showMoreBlogs(blogsList);
+} else {
+    blogsList = blogsData;
+    localStorage.setItem("cachedBlogs", JSON.stringify(blogsList));
+    showMoreBlogs(blogsList);
+}
+
+
+// check scroll for more blogs
+window.addEventListener("scroll", function () {
+    let bottom = window.innerHeight + window.scrollY;
+    let pageHeight = document.body.offsetHeight;
+
+    if (bottom >= pageHeight - 300) {
+        if (index < blogsList.length) {
+            showMoreBlogs(blogsList);
+        }
+    }
+});

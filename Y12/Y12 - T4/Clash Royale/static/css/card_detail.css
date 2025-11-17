@@ -1,23 +1,11 @@
-
-
-/*  Fonts */
-
-@font-face {
-    font-family: 'Beachday';
-    src: url('../fonts/beachday.woff2') format('woff2'),
-         url('../fonts/beachday.ttf') format('truetype'),
-         url('../fonts/beachday.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
+/* Card Detail Page Styles */
+/* this page is for when you click on a card in the searching page */
+/* It shows the image of the card and all the details about it */
+/* seperate from style as its got different styling to other pages */
+/* Doesnt havve navigation as you take it back to the cards page */
 
 
 
-
-
-
-
-/*  General/ background/text/colour/etc */
 
 body {
     font-family: 'Beachday', sans-serif;
@@ -62,15 +50,7 @@ h1, h2, h3 {
 }
 
 
-
-
-
-
-
-
-
 /* Card details, Where image and text are held onto */
-
 .card-container {    /* Square that image and text are connected to  */
     display: grid;
     grid-template-columns: minmax(220px, 45%) 1fr;
@@ -124,16 +104,7 @@ h1, h2, h3 {
     transform: scale(1.05);
 }
 
-
-
-
-
-
-
-
-
 /* Dropdown */
-
 .dropbtn {
     /* Semi-translucent tinted button for subtle color over the card background */
     background-color: rgba(69, 53, 204, 0.25); /* light cyan tint */
@@ -163,17 +134,6 @@ h1, h2, h3 {
     margin: 5px 0;
 }
 
-
-
-
-
-
-
-
-
-
-/* link back */
-
 a {
     color: #00ffff;
     transition: color 0.3s ease;
@@ -184,23 +144,7 @@ a:hover {
     text-decoration: underline;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* for different screen sizes */
-
+/* Responsive Design */
 @media (max-width: 900px) {
     /* On medium screens stack vertically for better readability */
     .card-container {

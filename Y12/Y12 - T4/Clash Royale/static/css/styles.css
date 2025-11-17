@@ -1,4 +1,10 @@
-@font-face { /* Font found on google. Ai used to incorperate*/
+/* Font found on google. Ai used to incorperate*/
+/* My standard style for all pages, like font, size, text colour, ect */
+
+
+
+
+@font-face { 
     font-family: 'Beachday';
     src: url('../fonts/beachday.woff2') format('woff2'),
          url('../fonts/beachday.ttf') format('truetype'),

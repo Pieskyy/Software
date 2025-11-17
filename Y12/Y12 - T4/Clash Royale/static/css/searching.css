@@ -1,3 +1,10 @@
+/* Searching Page Styles */
+/* This also includes the styling of the cards */
+/* This is essentially the CSS for everything about my cards */
+
+
+
+
 .search-container {
     display: flex;
     flex-direction: column;
