@@ -198,8 +198,8 @@ body {
 
 .settings-logo-overlay {
     position: absolute;
-    left: 4px;
-    top: 4px;
+    left: 6px;
+    top: 6px;
     z-index: 10;
 }
 
@@ -225,9 +225,6 @@ body {
     z-index: 5;
 }
 
-/* ---------------------------------------------------
-   DROPDOWN MENU
---------------------------------------------------- */
 .settings-dropdown {
     position: absolute;
     top: calc(100% + 10px);
