@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clash Royale Cards</title>
+    <title>Cards</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="/static/css/searching.css">
     <link rel="stylesheet" href="/static/css/navigation.css">
@@ -94,7 +94,6 @@
         </div>
     </div>
 
-    
     <div class="grid" id="cardGrid">
         {% for card in cards %}
         <div class="card" data-card-id="{{ card['id'] }}" data-card-name="{{ card['name'] }}" tabindex="0">
@@ -105,13 +104,8 @@
         {% endfor %}
     </div>
     
-    <audio id="battle-audio" loop>
-        <source src="{{ url_for('static', filename='music/background_music.mp3') }}" type="audio/mpeg">
-    </audio>
-
-    
+    <audio id="battle-audio" loop><source src="{{ url_for('static', filename='music/background_music.mp3') }}" type="audio/mpeg"></audio>
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
     <script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
-
 </body>
 </html>

@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="/static/css/home.css">
     <link rel="stylesheet" href="/static/css/navigation.css">
+    <link rel="manifest" href="static/manifest.json" />
+    <meta name="theme-color" content="#317EFB">
+
 </head>
 <body>
     {% include 'navigation/nav.html' %}
@@ -83,7 +86,7 @@
     <audio id="battle-audio" loop>
         <source src="{{ url_for('static', filename='music/background_music.mp3') }}" type="audio/mpeg">
     </audio>
-
+    </script src ="{{ url_for('static', filename='js/app.js') }}"></script>
     <script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
