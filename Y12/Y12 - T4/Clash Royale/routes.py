@@ -3,23 +3,21 @@ import sqlite3
 import os
 from blog_scraper import fetch_blog_list
 from db import get_table_name, get_db
-
 CARDS_FOLDER = os.path.join('database', 'Cards')  # Card images folder
 
-def card_routes(app):
-    # Home page - list all cards
-    @app.route('/')
-    def index():
+def routes(app):
+    
+    @app.route('/cards') # the route to cards is different as i need my sql db to connect to it
+    def cards():
         table_name = get_table_name()  # Get the table name
         db = get_db()  # Connect to the database
         try:
             rows = db.execute(f"SELECT * FROM {table_name}").fetchall()  # Select everything from that table
         except sqlite3.OperationalError as error:
             return f"Database error: {error}"
-        return render_template("index.html", cards=rows, active_page='home')
+        return render_template("cards.html", cards=rows, active_page='home')
 
-    # Card detail page
-    @app.route('/card/<int:card_id>')
+    @app.route('/card/<int:card_id>')# Card detail page, same as cards with DB connection
     def card_detail(card_id):
         table = get_table_name()
         con = get_db()
@@ -31,27 +29,23 @@ def card_routes(app):
             abort(404)
         return render_template('card_detail.html', card=card, active_page='')
 
-    # About page
-    @app.route('/about')
-    def about():
-        return render_template('about.html', active_page='about')
+    @app.route("/")
+    def index():
+        return render_template("home.html", active_page='home')
 
-    # Contact page
-    @app.route('/contact')
+    @app.route('/contact')# Contact page
     def contact():
         return render_template('contact.html', active_page='contact')
 
-    @app.route("/blogs")
+    @app.route("/blogs") # Blogs page
     def blogs_page():
         blogs = fetch_blog_list()
         return render_template("blogs.html", blogs=blogs)
 
-    # Decks page
-    @app.route('/decks')
+    @app.route('/decks')# Decks page
     def decks():
         return render_template('decks.html', active_page='decks')
 
-    # Serve card images
-    @app.route('/Cards/<path:filename>')
+    @app.route('/Cards/<path:filename>') # Card images route
     def card_image(filename):
         return send_from_directory(CARDS_FOLDER, filename)

@@ -1,20 +1,15 @@
 import sqlite3
 from flask import g
 import os
-
-
 DATABASE = os.path.join('database', 'cards.db') # My database
 
-
-# Database connection
-def get_db():
+def get_db(): # Database connection
     if not hasattr(g, "db"):
         g.db = sqlite3.connect(DATABASE)
         g.db.row_factory = sqlite3.Row # to access columns by name
     return g.db
 
-# getting the table names
-def get_table_name():
+def get_table_name(): # getting the table names
     connection = get_db() # Open the database
     result = connection.execute( # Get all table names in the database
         "SELECT name FROM sqlite_master WHERE type='table';"

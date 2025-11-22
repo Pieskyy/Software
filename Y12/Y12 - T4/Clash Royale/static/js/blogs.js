@@ -2,9 +2,8 @@ const blogsContainer = document.getElementById("blogs-container");
 let saved = localStorage.getItem("cachedBlogs");
 let blogsList = [];
 let index = 0;
-let amount = 2;
+let amount = 2; // amount shown on page
 
-// load images when seen
 let observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -25,7 +24,7 @@ let observer = new IntersectionObserver(function (entries) {
 });
 
 
-// draw some blogs each time
+
 function showMoreBlogs(list) {
     let part = list.slice(index, index + amount);
 
@@ -59,8 +58,8 @@ function showMoreBlogs(list) {
 }
 
 
-// load cached or fresh data
-if (saved) {
+
+if (saved) { // load cache
     blogsList = JSON.parse(saved);
     showMoreBlogs(blogsList);
 } else {
@@ -70,7 +69,7 @@ if (saved) {
 }
 
 
-// check scroll for more blogs
+
 window.addEventListener("scroll", function () {
     let bottom = window.innerHeight + window.scrollY;
     let pageHeight = document.body.offsetHeight;

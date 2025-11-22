@@ -1,20 +1,13 @@
-from flask import Flask, render_template
-from cards import card_routes
+from flask import Flask
+from routes import routes
 from search import search_cards
-from blog_scraper import fetch_blog_list
 app = Flask(__name__)
 
-# card routes for like loading cards
-card_routes(app)
+routes(app)# card routes for like loading cards aswell as links to pages
 
-
-# Search API route
-@app.route('/api/search', methods=['GET'])
+@app.route('/api/search', methods=['GET']) # searching
 def search_route():
     return search_cards()
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

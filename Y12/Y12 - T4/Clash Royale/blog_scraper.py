@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 
 # I learned this from YouTube and my brother helped me understand it better!
 
-URL = "https://royaleapi.com/blog?lang=en"
+URL = "https://royaleapi.com/blog?lang=en" # URL im scraping from
 HEADERS = {
-    "User-Agent": "Mozilla/5.0"
+    "User-Agent": "Mozilla/5.0" # so it sees a user register
 }
 
-def fetch_blog_list():
+def fetch_blog_list(): # get whats in the blog, like image, header, etc
     r = requests.get(URL, headers=HEADERS)
     r.raise_for_status()
 
@@ -33,7 +33,7 @@ def fetch_blog_list():
         else:
             img_src = None
 
-        all_blogs.append({
+        all_blogs.append({ # features page (TOP PAGE/MOST RECENT)
             "type": "featured",
             "url": "https://royaleapi.com" + featured.get("href", ""),
             "title": title_box.get_text(strip=True) if title_box else None,
@@ -42,10 +42,10 @@ def fetch_blog_list():
         })
 
 
-    cards = soup.select("#page_content > div:nth-child(4) > div > a[href^='/blog/']")
+    cards = soup.find_all("a", class_="blog-card")
 
     for card in cards:
-        title_box = card.select_one("div.content > div.header")
+        title_box = card.select_one("div.content > div.header") #getting the blog 
 
 
         date_box = card.select_one("div.content > div.description")
@@ -59,12 +59,11 @@ def fetch_blog_list():
         else:
             img_src = None
 
-        all_blogs.append({
+        all_blogs.append({ # normal blog posts
             "type": "normal",
             "url": "https://royaleapi.com" + card.get("href", ""),
             "title": title_box.get_text(strip=True) if title_box else None,
             "date": date_box.get_text(strip=True) if date_box else None,
             "cover_image": img_src
         })
-
     return all_blogs

@@ -2,7 +2,7 @@ const CACHE_NAME = 'my-site-cache-v1';
 
 const STATIC_ASSETS = [
   '/index.html',
-  '/about.html',
+  '/home.html',
   '/blogs.html',
   '/card_detail.html',
   '/contact.html',

@@ -21,9 +21,9 @@ def add():
 		return render_template('/add.html')
 	
 	
-@app.route('/about.html', methods=['POST', 'GET'])
+@app.route('/home.html', methods=['POST', 'GET'])
 def about():
-	return render_template('/about.html')
+	return render_template('/home.html')
 
 
 

@@ -1,6 +1,3 @@
-// ---------- Accessibility + Battle Music JS ----------
-
-// ---------- Accessibility Mode ----------
 let accessibilityEnabled = localStorage.getItem("accessibilityMode") === "true";
 if (accessibilityEnabled) {
     document.body.classList.add("accessibility-mode");
@@ -15,13 +12,10 @@ function speak(text) {
     speechSynthesis.speak(msg);
 }
 
-// ---------- DOMContentLoaded ----------
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ---------- ACCESSIBILITY ----------
     const speakableSelector = "button, a, input, textarea, select, [role='button'], [tabindex='0'], h1, h2, h3, h4, h5, h6, label";
 
-    // Speakable elements hover/click
     document.querySelectorAll(speakableSelector).forEach(el => {
         el.addEventListener("mouseenter", () => {
             if (!accessibilityEnabled) return;
@@ -43,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Images alt text
     document.querySelectorAll("img").forEach(img => {
         img.addEventListener("mouseenter", () => {
             if (!accessibilityEnabled) return;
@@ -51,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Settings button
     const settingsBtn = document.getElementById("settingsButton");
     const settingsDropdown = document.getElementById("settingsDropdown");
     if (settingsBtn) {
@@ -77,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Accessibility toggle
     const accBtn = document.getElementById("accessibilityBtn");
     if (accBtn) {
         accBtn.addEventListener("click", () => {
@@ -89,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Cards hover
     document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("mouseenter", () => {
             if (!accessibilityEnabled) return;

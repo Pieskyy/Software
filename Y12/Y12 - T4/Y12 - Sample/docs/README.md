@@ -356,7 +356,7 @@ code menu.html
   <ul class="topnav">
     <li><a href="#">Home</a></li>
     <li><a href="add.html">Add me</a></li>
-    <li><a href="about.html">About</a></li>
+    <li><a href="home.html">About</a></li>
   </ul>
 </nav>
 ```

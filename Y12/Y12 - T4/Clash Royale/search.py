@@ -1,17 +1,20 @@
 from flask import request, jsonify
 from db import get_db, get_table_name
 
-
-
 #   SEARCHING
 # https://www.youtube.com/watch?v=SrTn_tq2yNU&t=661s THis was used
 # Search with auto coplete
-def search_cards(): # PERSONAL note "request.args.get" Sends a GET request
- 
+# PERSONAL note "request.args.get" Sends a GET request
+
+
+def search_cards(): 
+    table = get_table_name()
+    con = get_db() # connection
+
+
     query = request.args.get('q', '').strip().lower() # gets keyword of hte search
     field = request.args.get('field', 'name').lower() # column like name or description
     limit = request.args.get('limit', 125, type=int) # how many can show up, like 125 cards at most
-
 
     # Advanced filter
     rarity = request.args.get('rarity', '').strip() # this just means the user can search through
@@ -23,13 +26,6 @@ def search_cards(): # PERSONAL note "request.args.get" Sends a GET request
     splash = request.args.get('splash', '').strip()
     spawn = request.args.get('spawn', '').strip()
     sort = request.args.get('sort', '').strip()
-    
-    table = get_table_name()
-    con = get_db() # connection
-
-
-
-
 
 
     try: # Get column names to ensure field exists and to validate sort column
@@ -70,12 +66,7 @@ def search_cards(): # PERSONAL note "request.args.get" Sends a GET request
             where_clauses.append("CAST(elixir AS INTEGER) <= ?")
             params.append(elixir_max)
 
-
-
-
-
         # boolean filters, like has evo
-
         truthy_clause = "{col} IS NOT NULL AND TRIM({col}) != '' AND LOWER({col}) NOT IN ('false','0','no','none')" 
         
         if evo: # truthy_clause is a reusable bit of SQL that checks if a column has a meaningful value.

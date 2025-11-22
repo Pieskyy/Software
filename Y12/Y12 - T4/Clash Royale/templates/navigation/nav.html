@@ -1,22 +1,21 @@
 <nav class="top-nav">
   <div class="bottom-nav-center nav-bg-img">
-    
-      <a href="/decks" class="nav-link {% if active_page=='decks' %}active{% endif %}">
-      <img src="{{ url_for('static', filename='icons/icon_menu_shop.png') }}" alt="Decks" class="nav-link-icon">
+    <a href="/contact" class="nav-link {% if active_page=='contact' %}active{% endif %}">
+      <img src="{{ url_for('static', filename='icons/icon_menu_shop.png') }}" alt="Contact" class="nav-link-icon">
     </a>
 
-    <a href="/" class="nav-link {% if active_page=='home' %}active{% endif %}">
+    <a href="/cards" class="nav-link {% if active_page=='cards' %}active{% endif %}">
       <img src="{{ url_for('static', filename='icons/icon_menu_cards.png') }}" alt="Cards" class="nav-link-icon">
     </a>
 
-    <a href="/about" class="nav-link {% if active_page=='about' %}active{% endif %}">
+    <a href="/home" class="nav-link {% if active_page=='home' %}active{% endif %}">
       <img src="{{ url_for('static', filename='icons/icon_menu_battle.png') }}" alt="Home" class="nav-link-icon">
     </a>
 
-    <a href="/contact" class="nav-link {% if active_page=='contact' %}active{% endif %}">
-      <img src="{{ url_for('static', filename='icons/icon_menu_clan_wars.png') }}" alt="Contact" class="nav-link-icon">
+    <a href="/decks" class="nav-link {% if active_page=='decks' %}active{% endif %}">
+      <img src="{{ url_for('static', filename='icons/icon_menu_clan_wars.png') }}" alt="Decks" class="nav-link-icon">
     </a>
-
+    
     <a href="/blogs" class="nav-link {% if active_page=='blogs' %}active{% endif %}">
       <img src="{{ url_for('static', filename='icons/icon_menu_tournament.png') }}" alt="blogs" class="nav-link-icon">
     </a>

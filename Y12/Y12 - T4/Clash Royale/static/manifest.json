@@ -1,7 +1,7 @@
 {
   "name": "Clash Royale Cards Database",
   "short_name": "Clash Royale",
-  "start_url": "/about.html",
+  "start_url": "/home.html",
   "display": "standalone",
   "background_color": "gold",
   "theme_color": "Blue",
