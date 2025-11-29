@@ -2,14 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Logs</title>
+    <title>RoyaleAPI Blogs</title>
     <link rel="stylesheet" href="/static/css/navigation.css">
     <link rel="stylesheet" href="/static/css/blogs.css">
-    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
     {% include 'navigation/nav.html' %}
-    <div class="container"><div id="blogs-container"></div></div>
-    <script src="/static/js/blogs.js"></script>
+
+    <div class="container">
+        {% if blogs %}
+            {% for blog in blogs %}
+            <div class="blog {% if blog.type == 'featured' %}featured{% endif %}">
+                <a href="{{ blog.url }}" class="blog-link" target="_blank" rel="noopener noreferrer">
+                    {% if blog.cover_image %}
+                    <img src="{{ blog.cover_image }}" alt="{{ blog.title }}" onerror="this.style.display='none'">
+                    {% endif %}
+                    <div class="title">{{ blog.title }}</div>
+                    <div class="date">{{ blog.date }}</div>
+                    <div class="desc">Click to read more</div>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="blog visible">
+                <div class="title">Unable to Load Blog Posts</div>
+                <div class="desc">Please check your connection and try again later.</div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Add fade-in animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const blogs = document.querySelectorAll('.blog');
+            blogs.forEach((blog, index) => {
+                setTimeout(() => {
+                    blog.classList.add('visible');
+                }, index * 100);
+            });
+        });
+    </script>
 </body>
 </html>

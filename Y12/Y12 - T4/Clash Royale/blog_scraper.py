@@ -1,69 +1,41 @@
 import requests
 from bs4 import BeautifulSoup
 
-# I learned this from YouTube and my brother helped me understand it better!
-
-URL = "https://royaleapi.com/blog?lang=en" # URL im scraping from
+URL = "https://royaleapi.com/blog?lang=en"
 HEADERS = {
-    "User-Agent": "Mozilla/5.0" # so it sees a user register
+    "User-Agent": "Mozilla/5.0"
 }
 
-def fetch_blog_list(): # get whats in the blog, like image, header, etc
-    r = requests.get(URL, headers=HEADERS)
-    r.raise_for_status()
+def fetch_blog_list():
+    resp = requests.get(URL, headers=HEADERS)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
 
-    soup = BeautifulSoup(r.text, "html.parser")
+    blogs = []
 
-    all_blogs = []
+    # Featured
     featured = soup.select_one("#page_content > div:nth-child(4) > a")
-
-    if featured is not None:
-  
-        title_box = featured.select_one("h2")
-        if title_box is None:
-            title_box = featured.select_one(".header")
-
-
-        date_box = featured.select_one("div.content > p")
-
-
-        image_box = featured.select_one("img")
-        if image_box:
-            img_src = image_box.get("src")
-        else:
-            img_src = None
-
-        all_blogs.append({ # features page (TOP PAGE/MOST RECENT)
+    if featured:
+        blogs.append({
             "type": "featured",
-            "url": "https://royaleapi.com" + featured.get("href", ""),
-            "title": title_box.get_text(strip=True) if title_box else None,
-            "date": date_box.get_text(strip=True) if date_box else None,
-            "cover_image": img_src
+            "url": "https://royaleapi.com" + featured["href"],
+            "title": featured.select_one("h2, .header").get_text(strip=True),
+            "date": featured.select_one("div.content > p").get_text(strip=True),
+            "cover_image": featured.select_one("img")["src"],
         })
 
+    # Normal posts
+    cards = soup.select("#page_content > div:nth-child(4) > div > a[href^='/blog/']")
+    for a in cards:
+        img = a.select_one("div.image img")
+        cover_image = img.get("data-src") or img.get("src")
 
-    cards = soup.find_all("a", class_="blog-card")
-
-    for card in cards:
-        title_box = card.select_one("div.content > div.header") #getting the blog 
-
-
-        date_box = card.select_one("div.content > div.description")
-
-        image_box = card.select_one("div.image > div > img")
-        if image_box:
-            if image_box.get("data-src"):
-                img_src = image_box.get("data-src")
-            else:
-                img_src = image_box.get("src")
-        else:
-            img_src = None
-
-        all_blogs.append({ # normal blog posts
+        blogs.append({
             "type": "normal",
-            "url": "https://royaleapi.com" + card.get("href", ""),
-            "title": title_box.get_text(strip=True) if title_box else None,
-            "date": date_box.get_text(strip=True) if date_box else None,
-            "cover_image": img_src
+            "url": "https://royaleapi.com" + a["href"],
+            "title": a.select_one("div.content > div.header").get_text(strip=True),
+            "date": a.select_one("div.content > div.description").get_text(strip=True),
+            "cover_image": cover_image,
         })
-    return all_blogs
+
+    return blogs
