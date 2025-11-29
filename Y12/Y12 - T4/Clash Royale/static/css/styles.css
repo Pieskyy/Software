@@ -1,9 +1,6 @@
 /* Font found on google. Ai used to incorperate*/
 /* My standard style for all pages, like font, size, text colour, ect */
 
-
-
-
 @font-face { 
     font-family: 'Beachday';
     src: url('../fonts/beachday.woff2') format('woff2'),
@@ -37,4 +34,8 @@ a {
     -webkit-text-stroke: 1px black;
     color: gold;
 }
+
+
+
+
 

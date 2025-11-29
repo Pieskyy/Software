@@ -1,14 +1,25 @@
 {
   "name": "Clash Royale Cards Database",
   "short_name": "Clash Royale",
-  "start_url": "/home.html",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "gold",
-  "theme_color": "Blue",
-  "description": "A multi page Clash royale Website",
+  "background_color": "#ffffff",
+  "theme_color": "#317EFB",
+  "description": "A multi-page Clash Royale Website",
   "icons": [
     {
-      "src": "icons/crown.png"
+      "src": "/static/icons/crown.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/crown-512.png",
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "scope": "/",
+  "orientation": "portrait"
 }

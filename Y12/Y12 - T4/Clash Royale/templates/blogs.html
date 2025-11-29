@@ -31,16 +31,6 @@
         {% endif %}
     </div>
 
-    <script>
-        // Add fade-in animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const blogs = document.querySelectorAll('.blog');
-            blogs.forEach((blog, index) => {
-                setTimeout(() => {
-                    blog.classList.add('visible');
-                }, index * 100);
-            });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/blogs.js') }}"></script>
 </body>
 </html>

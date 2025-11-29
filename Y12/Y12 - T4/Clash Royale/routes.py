@@ -49,3 +49,8 @@ def routes(app):
     @app.route('/Cards/<path:filename>') # Card images route
     def card_image(filename):
         return send_from_directory(CARDS_FOLDER, filename)
+    
+    @app.route('/serviceworker.js')
+    def serve_serviceworker():
+        return send_from_directory('static/js', 'serviceworker.js', mimetype='application/javascript')
+

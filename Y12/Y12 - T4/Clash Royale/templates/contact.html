@@ -2,15 +2,26 @@
 <html>
 <head>
   <title>Contact</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/basic.css') }}">
   <link rel="stylesheet" href="/static/css/navigation.css">
 </head>
 <body>
   {% include 'navigation/nav.html' %}
   <main class="page-content">
     <h1>Contact</h1>
-    <p>idk if i need/want this but ill do it later</p>
+
+    <p>If you have any questions about the website, the project, or Clash Royale content, feel free to reach out using the details below:</p>
+
+    <div class="contact-info">
+      <h2>Contact Details</h2>
+      <ul>
+        <li><strong>Name:</strong> Adam Wilkie</li>
+        <li><strong>Email:</strong> 26wilkiea@student.pac.nsw.edu.au</li>
+        <li><strong>School:</strong> Penrith Anglican Colledge PAC</li>
+      </ul>
+
+      </p>
+    </div>
   </main>
-  <script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
 </body>
 </html>

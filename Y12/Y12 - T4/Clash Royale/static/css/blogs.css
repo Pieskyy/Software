@@ -1,4 +1,17 @@
+body {
+    font-family: sans-serif;
+    background-image: url('../images/background.jpg');
+    text-align: center;
+    letter-spacing: 2px;
+    text-align: center;
+    font-size: 18px;
+}
 
+.body {
+    background-image: url('../images/background.jpg');
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
 .container {
     max-width: 900px;
     margin: auto;
