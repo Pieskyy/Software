@@ -3,6 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     blogs.forEach((blog, index) => {
         setTimeout(() => {
             blog.classList.add('visible');
-        }, index * 100);
+        }, index * 10);
     });
 });

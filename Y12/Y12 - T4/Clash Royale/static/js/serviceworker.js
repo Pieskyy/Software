@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clash-royale-pwa-v5';
+const CACHE_NAME = 'clash-royale-pwa-v6';
 
 const APP_SHELL = [
   '/',
