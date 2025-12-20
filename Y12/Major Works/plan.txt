@@ -1,0 +1,15 @@
+A Mathmatics Study App:
+
+Scrapes math question sites for diffrent stages (stage 5, 6, etc)
+
+allows an email page
+
+Has Students sign into their account -- Possible security risk
+
+Scrapes their box of books account for their math books
+
+displays those books in parts in acoordance to the syllabus
+
+send messages to teachers
+
+ai bot
